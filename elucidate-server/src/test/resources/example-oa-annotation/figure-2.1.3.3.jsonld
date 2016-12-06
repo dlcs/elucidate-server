@@ -1,0 +1,16 @@
+{
+	"@context": "https://raw.githubusercontent.com/stain/oa/master/oa.jsonld",
+	"@type": "oa:Annotation",
+	"motivatedBy": "oa:tagging",
+	"hasBody": {
+		"@id": "http://www.example.org/term1",
+		"@type": [
+			"oa:SemanticTag"
+		],
+		"page": "http://www.example.org/document1"
+	},
+	"hasTarget": {
+		"@id": "http://www.example.org/target1",
+		"@type": "dctypes:Image"
+	}
+}

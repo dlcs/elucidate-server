@@ -1,0 +1,76 @@
+{
+  "type": "array",
+  "items": {
+    "type": "object",
+    "properties": {
+      "http://www.w3.org/ns/activitystreams#first": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "@id": {
+              "type": "string",
+              "format": "uri"
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "@id": {
+        "type": "string",
+        "format": "uri"
+      },
+      "http://www.w3.org/2000/01/rdf-schema#label": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "@value": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "http://www.w3.org/ns/activitystreams#last": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "@id": {
+              "type": "string",
+              "format": "uri"
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "http://www.w3.org/ns/activitystreams#totalItems": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "@type": {
+              "type": "string",
+              "format": "uri"
+            },
+            "@value": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 2147483647
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "@type": {
+        "type": "array",
+        "items": {
+          "type": "string",
+          "format": "uri"
+        }
+      }
+    },
+    "additionalProperties": false
+  }
+}

@@ -1,0 +1,12 @@
+{
+	"@context": "https://raw.githubusercontent.com/stain/oa/master/oa.jsonld",
+	"@type": "oa:Annotation",
+	"hasBody": {
+		"@id": "http://www.example.org/body1",
+		"@type": "dctypes:Text"
+	},
+	"hasTarget": {
+		"@id": "http://www.example.org/target1",
+		"@type": "dctypes:Image"
+	}
+}

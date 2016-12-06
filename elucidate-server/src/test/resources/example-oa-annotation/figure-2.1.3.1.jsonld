@@ -1,0 +1,17 @@
+{
+	"@context": "https://raw.githubusercontent.com/stain/oa/master/oa.jsonld",
+	"@type": "oa:Annotation",
+	"motivatedBy": "oa:tagging",
+	"hasBody": {
+		"@id": "http://www.example.org/tag1",
+		"@type": [
+			"cnt:ContentAsText",
+			"oa:Tag"
+		],
+		"chars": "tag"
+	},
+	"hasTarget": {
+		"@id": "http://www.example.org/target1",
+		"@type": "dctypes:Image"
+	}
+}

@@ -1,0 +1,18 @@
+{
+	"@context": "https://raw.githubusercontent.com/stain/oa/master/oa.jsonld",
+	"@type": "oa:Annotation",
+	"annotatedBy": {
+		"@id": "http://www.example.org/agent1",
+		"@type": "foaf:Person",
+		"name": "A. Person",
+		"foaf:openid": "http://www.example.org/openid1"
+	},
+	"serializedBy": {
+		"@id": "http://www.example.org/agent2",
+		"@type": "prov:SoftwareAgent",
+		"name": "Code v2.1",
+		"foaf:homepage": "http://www.example.org/homepage1"
+	},
+	"hasBody": "http://www.example.org/body1",
+	"hasTarget": "http://www.example.org/target1"
+}

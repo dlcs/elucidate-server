@@ -1,0 +1,17 @@
+[
+	{
+		"Content-Location": "http://www.w3.org/ns/anno.jsonld",
+		"X-Classpath": "contexts/anno.jsonld",
+		"Content-Type": "application/ld+json"
+	},
+	{
+		"Content-Location": "http://www.w3.org/ns/ldp.jsonld",
+		"X-Classpath": "contexts/ldp.jsonld",
+		"Content-Type": "application/ld+json"
+	},
+	{
+		"Content-Location": "https://raw.githubusercontent.com/stain/oa/master/oa.jsonld",
+		"X-Classpath": "contexts/oa.jsonld",
+		"Content-Type": "application/ld+json"
+	}
+]

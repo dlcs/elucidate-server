@@ -1,0 +1,506 @@
+{
+  "type": "array",
+  "items": {
+    "type": "object",
+    "properties": {
+      "@type": {
+        "type": "array",
+        "items": {
+          "type": "string",
+          "format": "uri"
+        }
+      },
+      "http://www.w3.org/ns/oa#hasBody": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "@id": {
+              "type": "string",
+              "format": "uri"
+            },
+            "@type": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "format": "uri"
+              }
+            },
+            "http://www.w3.org/ns/oa#default": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "@id": {
+                    "type": "string",
+                    "format": "uri"
+                  }
+                }
+              }
+            },
+            "http://www.w3.org/ns/oa#item": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "@id": {
+                    "type": "string",
+                    "format": "uri"
+                  }
+                }
+              }
+            },
+            "http://www.w3.org/2011/content#chars": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "@value": {
+                    "type": "string"
+                  }
+                }
+              }
+            },
+            "http://purl.org/dc/elements/1.1/format": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "@value": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "http://www.w3.org/ns/oa#hasTarget": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "@id": {
+              "type": "string",
+              "format": "uri"
+            },
+            "@type": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "format": "uri"
+              }
+            },
+            "http://www.w3.org/ns/oa#hasSelector": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "@id": {
+                    "type": "string",
+                    "format": "uri"
+                  },
+                  "@type": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "format": "uri"
+                    }
+                  },
+                  "http://www.w3.org/1999/02/22-rdf-syntax-ns#first": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "@id": {
+                          "type": "string",
+                          "format": "uri"
+                        }
+                      }
+                    }
+                  },
+                  "http://www.w3.org/ns/oa#item": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "@id": {
+                          "type": "string",
+                          "format": "uri"
+                        }
+                      }
+                    }
+                  },
+                  "http://www.w3.org/1999/02/22-rdf-syntax-ns#rest": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "@list": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "@id": {
+                                "type": "string",
+                                "format": "uri"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "http://www.w3.org/ns/oa#end": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "@value": {
+                          "type": "integer",
+                          "minimum": 0,
+                          "maximum": 32767
+                        },
+                        "@type": {
+                          "type": "string",
+                          "format": "uri"
+                        }
+                      }
+                    }
+                  },
+                  "http://www.w3.org/ns/oa#start": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "@value": {
+                          "type": "integer",
+                          "minimum": 0,
+                          "maximum": 32767
+                        },
+                        "@type": {
+                          "type": "string",
+                          "format": "uri"
+                        }
+                      }
+                    }
+                  },
+                  "http://www.w3.org/ns/oa#exact": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "@value": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  },
+                  "http://www.w3.org/ns/oa#prefix": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "@value": {
+                          "type": "string",
+                          "pattern": "^([A-Za-z0-9+/]{4})*([A-Za-z0-9+/]{4}|[A-Za-z0-9+/]{3}=|[A-Za-z0-9+/]{2}==)$"
+                        }
+                      }
+                    }
+                  },
+                  "http://www.w3.org/ns/oa#suffix": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "@value": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  },
+                  "http://purl.org/dc/terms/conformsTo": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "@id": {
+                          "type": "string",
+                          "format": "uri"
+                        }
+                      }
+                    }
+                  },
+                  "http://www.w3.org/1999/02/22-rdf-syntax-ns#value": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "@value": {
+                          "type": "string",
+                          "pattern": "^([A-Za-z0-9+/]{4})*([A-Za-z0-9+/]{4}|[A-Za-z0-9+/]{3}=|[A-Za-z0-9+/]{2}==)$"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "http://www.w3.org/ns/oa#hasSource": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "@id": {
+                    "type": "string",
+                    "format": "uri"
+                  }
+                }
+              }
+            },
+            "http://www.w3.org/ns/oa#item": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "@id": {
+                    "type": "string",
+                    "format": "uri"
+                  }
+                }
+              }
+            },
+            "http://www.w3.org/ns/oa#hasScope": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "@id": {
+                    "type": "string",
+                    "format": "uri"
+                  }
+                }
+              }
+            },
+            "http://www.w3.org/ns/oa#styleClass": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "@value": {
+                    "type": "string"
+                  }
+                }
+              }
+            },
+            "http://www.w3.org/ns/oa#hasState": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "@id": {
+                    "type": "string",
+                    "format": "uri"
+                  },
+                  "@type": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "format": "uri"
+                    }
+                  },
+                  "http://www.w3.org/1999/02/22-rdf-syntax-ns#value": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "@value": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  },
+                  "http://www.w3.org/ns/oa#cachedSource": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "@id": {
+                          "type": "string",
+                          "format": "uri"
+                        }
+                      }
+                    }
+                  },
+                  "http://www.w3.org/ns/oa#when": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "@value": {
+                          "type": "string",
+                          "format": "date-time"
+                        },
+                        "@type": {
+                          "type": "string",
+                          "format": "uri"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "http://www.w3.org/ns/oa#styledBy": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "@id": {
+              "type": "string",
+              "format": "uri"
+            },
+            "@type": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "format": "uri"
+              }
+            }
+          }
+        }
+      },
+      "http://www.w3.org/ns/oa#annotatedAt": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "@value": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "@type": {
+              "type": "string",
+              "format": "uri"
+            }
+          }
+        }
+      },
+      "http://www.w3.org/ns/oa#annotatedBy": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "@id": {
+              "type": "string",
+              "format": "uri"
+            },
+            "@type": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "format": "uri"
+              }
+            },
+            "http://xmlns.com/foaf/0.1/openid": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "@value": {
+                    "type": "string",
+                    "format": "uri"
+                  }
+                }
+              }
+            },
+            "http://xmlns.com/foaf/0.1/name": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "@value": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "http://www.w3.org/ns/oa#serializedAt": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "@value": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "@type": {
+              "type": "string",
+              "format": "uri"
+            }
+          }
+        }
+      },
+      "http://www.w3.org/ns/oa#serializedBy": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "@id": {
+              "type": "string",
+              "format": "uri"
+            },
+            "@type": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "format": "uri"
+              }
+            },
+            "http://xmlns.com/foaf/0.1/homepage": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "@value": {
+                    "type": "string",
+                    "format": "uri"
+                  }
+                }
+              }
+            },
+            "http://xmlns.com/foaf/0.1/name": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "@value": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "http://www.w3.org/ns/oa#motivatedBy": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "@id": {
+              "type": "string",
+              "format": "uri"
+            }
+          }
+        }
+      }
+    }
+  }
+}

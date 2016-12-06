@@ -1,0 +1,17 @@
+{
+	"@context": "https://raw.githubusercontent.com/stain/oa/master/oa.jsonld",
+	"@type": "oa:Annotation",
+	"hasBody": "http://www.example.org/body1",
+	"hasTarget": {
+		"@id": "http://www.example.org/sptarget1",
+		"@type": "oa:SpecificResource",
+		"hasSource": "http://www.example.org/source1",
+		"hasSelector": {
+			"@id": "http://www.example.org/selector1",
+			"@type": "oa:TextQuoteSelector",
+			"prefix": "abcd",
+			"exact": "efg",
+			"suffix": "hij"
+		}
+	}
+}
