@@ -1,0 +1,7 @@
+{
+	"@context": "https://raw.githubusercontent.com/stain/oa/master/oa.jsonld",
+	"@type": "oa:Annotation",
+	"motivatedBy": "oa:editing",
+	"hasBody": "http://www.example.org/body1",
+	"hasTarget": "http://www.example.org/target1"
+}

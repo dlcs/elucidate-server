@@ -1,0 +1,20 @@
+{
+	"@context": "https://raw.githubusercontent.com/stain/oa/master/oa.jsonld",
+	"@type": "oa:Annotation",
+	"hasBody": "http://www.example.org/body1",
+	"hasTarget": {
+		"@id": "http://www.example.org/sptarget1",
+		"@type": "oa:SpecificResource",
+		"hasSource": "http://www.example.org/source1",
+		"hasSelector": {
+			"@id": "http://www.example.org/list1",
+			"@type": "oa:List",
+			"item": [
+				"http://www.example.org/selector1",
+				"http://www.example.org/selector2"
+			],
+			"first": "http://www.example.org/selector1",
+			"rest": "http://www.example.org/selector2"
+		}
+	}
+}

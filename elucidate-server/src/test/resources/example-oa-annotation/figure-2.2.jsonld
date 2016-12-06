@@ -1,0 +1,10 @@
+{
+	"@context": "https://raw.githubusercontent.com/stain/oa/master/oa.jsonld",
+	"@type": "oa:Annotation",
+	"annotatedBy": "http://www.example.org/agent1",
+	"annotatedAt": "2013-01-28T12:00:00Z",
+	"serializedBy": "http://www.example.org/agent2",
+	"serializedAt": "2013-02-04T12:00:00Z",
+	"hasBody": "http://www.example.org/body1",
+	"hasTarget": "http://www.example.org/target1"
+}

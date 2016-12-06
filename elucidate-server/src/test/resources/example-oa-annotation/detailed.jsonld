@@ -1,0 +1,35 @@
+{
+    "@context": "https://raw.githubusercontent.com/stain/oa/master/oa.jsonld", 
+    "@id": "http://www.example.org/annotations/anno1", 
+    "@type": "oa:Annotation",
+
+    "annotatedAt": "2012-11-10T09:08:07", 
+    "annotatedBy": {
+        "@id": "http://www.example.org/people/person1", 
+        "@type": "foaf:Person", 
+        "mbox": {
+            "@id": "mailto:person1@example.org"
+        }, 
+        "name": "Person One"
+    },
+
+    "hasBody": {
+        "@id": "urn:uuid:1d823e02-60a1-47ae-ae7f-a02f2ac348f8", 
+        "@type": ["cnt:ContentAsText", "dctypes:Text"], 
+        "chars": "This is part of our logo"
+    }, 
+    "hasTarget": {
+        "@id": "urn:uuid:cc2c8f08-3597-4d73-a529-1c5fed58268b", 
+        "@type": "oa:SpecificResource", 
+        "hasSelector": {
+            "@id": "urn:uuid:7978fa7b-3e03-47e2-89d8-fa39d1280765", 
+            "@type": "oa:FragmentSelector", 
+            "conformsTo": "http://www.w3.org/TR/media-frags/", 
+            "value": "xywh=10,10,5,5"
+        }, 
+        "hasSource": {
+            "@id": "http://www.example.org/images/logo.jpg", 
+            "@type": "dctypes:Image"
+        }
+    }
+}

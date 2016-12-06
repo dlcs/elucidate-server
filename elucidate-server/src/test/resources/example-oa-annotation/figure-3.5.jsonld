@@ -1,0 +1,15 @@
+{
+	"@context": "https://raw.githubusercontent.com/stain/oa/master/oa.jsonld",
+	"@type": "oa:Annotation",
+	"styledBy": {
+		"@id": "http://www.example.org/style1",
+		"@type": "oa:CssStyle"
+	},
+	"hasBody": "http://www.example.org/body1",
+	"hasTarget": {
+		"@id": "http://www.example.org/sptarget1",
+		"@type": "oa:SpecificResource",
+		"hasSource": "http://www.example.org/source1",
+		"hasScope": "http://www.example.org/scope1"
+	}
+}
