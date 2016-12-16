@@ -1,5 +1,5 @@
 {
-	"@context": "https://raw.githubusercontent.com/stain/oa/master/oa.jsonld",
+	"@context": "https://raw.githubusercontent.com/dlcs/elucidate-server/master/elucidate-server/src/main/resources/contexts/oa.jsonld",
 	"@type": "oa:Annotation",
 	"motivatedBy": "oa:tagging",
 	"hasBody": {

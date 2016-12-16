@@ -10,7 +10,7 @@
 		"Content-Type": "application/ld+json"
 	},
 	{
-		"Content-Location": "https://raw.githubusercontent.com/stain/oa/master/oa.jsonld",
+		"Content-Location": "https://raw.githubusercontent.com/dlcs/elucidate-server/master/elucidate-server/src/main/resources/contexts/oa.jsonld",
 		"X-Classpath": "contexts/oa.jsonld",
 		"Content-Type": "application/ld+json"
 	}

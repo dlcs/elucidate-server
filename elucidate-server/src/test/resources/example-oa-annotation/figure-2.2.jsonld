@@ -1,5 +1,5 @@
 {
-	"@context": "https://raw.githubusercontent.com/stain/oa/master/oa.jsonld",
+	"@context": "https://raw.githubusercontent.com/dlcs/elucidate-server/master/elucidate-server/src/main/resources/contexts/oa.jsonld",
 	"@type": "oa:Annotation",
 	"annotatedBy": "http://www.example.org/agent1",
 	"annotatedAt": "2013-01-28T12:00:00Z",
