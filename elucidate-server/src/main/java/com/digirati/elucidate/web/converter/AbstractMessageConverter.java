@@ -9,7 +9,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
+import org.apache.commons.collections.map.ListOrderedMap;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
@@ -90,21 +92,20 @@ public abstract class AbstractMessageConverter<T> extends AbstractHttpMessageCon
         return jsonLdProfile;
     }
 
-    private Format extractFormat(String profile) {
-        String format = StringUtils.substringAfterLast(profile, "#");
-        format = StringUtils.strip(format, "\"");
 
-        if (StringUtils.isNotBlank(format)) {
-            format = StringUtils.capitalize(format);
-            return Format.valueOf(format);
+    @SuppressWarnings("unchecked")
+    protected Map<String, Object> reorderJsonAttributes(Map<String, Object> jsonMap) {
+
+        ListOrderedMap orderedJsonMap = new ListOrderedMap();
+        orderedJsonMap.putAll(jsonMap);
+
+        Object context = orderedJsonMap.get(JSONLDConstants.ATTRIBUTE_CONTEXT);
+        if (context != null) {
+            orderedJsonMap.remove(JSONLDConstants.ATTRIBUTE_CONTEXT);
+            orderedJsonMap.put(0, JSONLDConstants.ATTRIBUTE_CONTEXT, context);
         }
 
-        return Format.COMPACTED;
-    }
-
-    private String prepareContext(String profile) {
-        profile = StringUtils.substringBeforeLast(profile, "#");
-        return StringUtils.strip(profile, "\"");
+        return orderedJsonMap;
     }
 
     protected String validate(String jsonStr, JsonNode validationSchema) throws ProcessingException, JsonGenerationException, IOException {
@@ -127,6 +128,23 @@ public abstract class AbstractMessageConverter<T> extends AbstractHttpMessageCon
         }
 
         return null;
+    }
+
+    private Format extractFormat(String profile) {
+        String format = StringUtils.substringAfterLast(profile, "#");
+        format = StringUtils.strip(format, "\"");
+
+        if (StringUtils.isNotBlank(format)) {
+            format = StringUtils.capitalize(format);
+            return Format.valueOf(format);
+        }
+
+        return Format.COMPACTED;
+    }
+
+    private String prepareContext(String profile) {
+        profile = StringUtils.substringBeforeLast(profile, "#");
+        return StringUtils.strip(profile, "\"");
     }
 
     @Override

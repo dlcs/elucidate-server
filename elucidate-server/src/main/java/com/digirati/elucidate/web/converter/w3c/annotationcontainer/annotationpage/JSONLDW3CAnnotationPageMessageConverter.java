@@ -71,6 +71,7 @@ public class JSONLDW3CAnnotationPageMessageConverter extends AbstractW3CAnnotati
             throw new HttpMediaTypeNotSupportedException(contentType, getSupportedMediaTypes());
         }
 
+        jsonMap = reorderJsonAttributes(jsonMap);
         return JsonUtils.toPrettyString(jsonMap);
     }
 

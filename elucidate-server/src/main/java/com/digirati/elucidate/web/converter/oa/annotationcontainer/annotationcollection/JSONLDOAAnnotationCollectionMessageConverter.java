@@ -72,6 +72,7 @@ public class JSONLDOAAnnotationCollectionMessageConverter extends AbstractOAAnno
             throw new HttpMediaTypeNotSupportedException(contentType, getSupportedMediaTypes());
         }
 
+        jsonMap = reorderJsonAttributes(jsonMap);
         return JsonUtils.toPrettyString(jsonMap);
     }
 
