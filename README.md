@@ -66,7 +66,7 @@ Database scripts are available in the [`elucidate-db-scripts`](elucidate-db-scri
 
 Please read [`CONTRIBUTING.md`](CONTRIBUTING.md) for details on our code of conduct, and the process for submitting pull requests to us.
 
-Contributors should ensure that their code is formatted in a style that is as close to the existing style as possible. For contributors who use the Eclipse IDE, we have included the [`eclipse-java-digirati-style.xml`](eclipse-java-digirati-style.xml).
+Contributors should ensure that their code is formatted in a style that is as close to the existing style as possible. For contributors who use the Eclipse IDE, we have included the [`eclipse-java-digirati-style`](eclipse-java-digirati-style).
 
 ## Versioning
 
