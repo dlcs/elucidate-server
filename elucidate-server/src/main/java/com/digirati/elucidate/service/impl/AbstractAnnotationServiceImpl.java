@@ -2,6 +2,7 @@ package com.digirati.elucidate.service.impl;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -11,6 +12,7 @@ import org.apache.log4j.Logger;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.digirati.elucidate.common.infrastructure.constants.JSONLDConstants;
+import com.digirati.elucidate.common.infrastructure.constants.OAConstants;
 import com.digirati.elucidate.common.model.annotation.AbstractAnnotation;
 import com.digirati.elucidate.common.model.annotation.AbstractAnnotationCollection;
 import com.digirati.elucidate.common.model.annotation.w3c.W3CAnnotation;
@@ -75,6 +77,7 @@ public abstract class AbstractAnnotationServiceImpl<A extends AbstractAnnotation
     }
 
     @Override
+    @SuppressWarnings("serial")
     @Transactional(readOnly = false)
     public ServiceResponse<A> createAnnotation(String collectionId, String annotationId, A annotation) {
 
@@ -95,8 +98,16 @@ public abstract class AbstractAnnotationServiceImpl<A extends AbstractAnnotation
         W3CAnnotation w3cAnnotation = convertFromAnnotation(annotation);
 
         Map<String, Object> annotationMap = w3cAnnotation.getJsonMap();
-        if (StringUtils.isNotBlank((String) annotationMap.get("id"))) {
-            annotationMap.put("via", annotationMap.get("id"));
+        if (StringUtils.isNotBlank((String) annotationMap.get(JSONLDConstants.ATTRIBUTE_ID))) {
+            annotationMap.put(OAConstants.URI_VIA, new ArrayList<Map<String, Object>>() {
+                {
+                    add(new HashMap<String, Object>() {
+                        {
+                            put(JSONLDConstants.ATTRIBUTE_ID, annotationMap.get(JSONLDConstants.ATTRIBUTE_ID));
+                        }
+                    });
+                }
+            });
         }
 
         String annotationJson;
