@@ -2,6 +2,7 @@ package com.digirati.elucidate.web.controller;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -25,6 +26,9 @@ public abstract class AbstractAnnotationContainerReadController<A extends Abstra
 
     private static final String VARIABLE_COLLECTION_ID = "collectionId";
     private static final String REQUEST_PATH = "/{" + VARIABLE_COLLECTION_ID + "}/";
+    private static final String PREFER_MINIMAL_CONTAINER = "http://www.w3.org/ns/ldp#preferminimalcontainer";
+    private static final String PREFER_CONTAINED_IRIS = "http://www.w3.org/ns/oa#prefercontainediris";
+    private static final String PREFER_CONTAINED_DESCRIPTIONS = "http://www.w3.org/ns/oa#prefercontaineddescriptions";
 
     private AbstractAnnotationCollectionService<A, C> annotationCollectionService;
     private AbstractAnnotationPageService<A, P, C> annotationPageService;
@@ -83,14 +87,37 @@ public abstract class AbstractAnnotationContainerReadController<A extends Abstra
     }
 
     private ClientPreference determineClientPreference(HttpServletRequest request) {
+
         String preferHeader = request.getHeader("Prefer");
-        if (StringUtils.isBlank(preferHeader) || StringUtils.equalsIgnoreCase(preferHeader, "return=representation;include=\"http://www.w3.org/ns/oa#PreferContainedDescriptions\"")) {
+
+        preferHeader = StringUtils.lowerCase(preferHeader);
+        if (!StringUtils.startsWith(preferHeader, "return=representation")) {
             return ClientPreference.CONTAINED_DESCRIPTIONS;
-        } else if (StringUtils.equalsIgnoreCase(preferHeader, "return=representation;include=\"http://www.w3.org/ns/ldp#PreferMinimalContainer\"")) {
-            return ClientPreference.MINIMAL_CONTAINER;
-        } else if (StringUtils.equalsIgnoreCase(preferHeader, "return=representation;include=\"http://www.w3.org/ns/oa#PreferContainedIRIs\"")) {
-            return ClientPreference.CONTAINED_IRIS;
         }
+        preferHeader = StringUtils.stripStart(preferHeader, "return=representation;");
+        preferHeader = StringUtils.strip(preferHeader);
+        preferHeader = StringUtils.stripStart(preferHeader, "include=");
+        preferHeader = StringUtils.strip(preferHeader, "\"");
+
+        String[] preferences = StringUtils.split(preferHeader);
+        if (preferences.length == 0) {
+            return ClientPreference.CONTAINED_DESCRIPTIONS;
+        }
+
+        if (ArrayUtils.contains(preferences, PREFER_CONTAINED_IRIS) && ArrayUtils.contains(preferences, PREFER_CONTAINED_DESCRIPTIONS)) {
+            return null;
+        }
+
+        for (String preference : preferences) {
+            if (StringUtils.equals(preference, PREFER_CONTAINED_DESCRIPTIONS)) {
+                return ClientPreference.CONTAINED_DESCRIPTIONS;
+            } else if (StringUtils.equals(preference, PREFER_MINIMAL_CONTAINER)) {
+                return ClientPreference.MINIMAL_CONTAINER;
+            } else if (StringUtils.equals(preference, PREFER_CONTAINED_IRIS)) {
+                return ClientPreference.CONTAINED_IRIS;
+            }
+        }
+
         return null;
     }
 }
