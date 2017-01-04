@@ -55,6 +55,10 @@ Elucidate Server has been built and tested against PostgreSQL 9.4+  (the `jsonb`
 
 Database scripts are available in the [`elucidate-db-scripts`](elucidate-db-scripts/) folder, and include the creation and assignment of permissions to an `annotations_user` user in the [`annotations_user.sql`](elucidate-db-scripts/login_roles/annotations_user.sql) script - **modify the script and update the password of this before executing it.**
 
+## Usage
+
+See [`USAGE.md`](USAGE.md) for some sample requests.
+
 ## Built With
 
 * [Spring Framework](https://projects.spring.io/spring-framework/)

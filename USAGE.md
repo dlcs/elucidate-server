@@ -186,6 +186,39 @@ Vary: Origin, Accept
 }
 ```
 
+### Fetch
+
+#### Request
+
+```
+GET http://example.org/w3c/my-container/my-annotation HTTP/1.1
+
+Accept: application/ld+json; profile="http://www.w3.org/ns/anno.jsonld"
+```
+
+#### Response
+
+```
+HTTP/1.1 200 OK
+
+Allow: PUT,GET,OPTIONS,HEAD,DELETE
+Content-Type: application/ld+json;charset=UTF-8
+ETag: W/"797c2ee5253966de8882f496c25dd823"
+Link: <http://www.w3.org/ns/ldp#Resource>; rel="type"
+Vary: Accept
+
+{
+  "@context": "http://www.w3.org/ns/anno.jsonld",
+  "id": "http://example.org/w3c/my-container/my-annotation",
+  "type": "Annotation",
+  "body": {
+    "type": "TextualBody",
+    "value": "I like this page!"
+  },
+  "target": "http://www.example.com/index.html",
+}
+```
+
 ### Update
 
 #### Request
