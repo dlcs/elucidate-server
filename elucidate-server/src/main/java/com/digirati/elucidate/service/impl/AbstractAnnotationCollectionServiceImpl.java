@@ -169,7 +169,7 @@ public abstract class AbstractAnnotationCollectionServiceImpl<A extends Abstract
         }
 
         annotationCollectionRepository.createAnnotationCollection(collectionId, w3cAnnotationCollectionJson);
-        return getAnnotationCollection(collectionId, ClientPreference.MINIMAL_CONTAINER);
+        return getAnnotationCollection(collectionId, ClientPreference.CONTAINED_DESCRIPTIONS);
     }
 
     private boolean validateCollectionId(String collectionId) {
