@@ -1,6 +1,7 @@
 package com.digirati.elucidate.web.converter.w3c.annotation;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -24,7 +25,7 @@ public class JSONLDW3CAnnotationMessageConverter extends AbstractW3CAnnotationMe
     @Autowired
     public JSONLDW3CAnnotationMessageConverter(@Value("${annotation.w3c.contexts}") String[] defaultContexts) throws IOException {
         super(APPLICATION_JSON_LD);
-        this.defaultContexts = defaultContexts;
+        this.defaultContexts = Arrays.copyOf(defaultContexts, defaultContexts.length);
     }
 
     @Override

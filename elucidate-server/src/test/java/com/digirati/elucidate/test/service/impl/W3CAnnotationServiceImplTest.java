@@ -35,7 +35,7 @@ public class W3CAnnotationServiceImplTest extends AbstractAnnotationServiceImplT
         return w3cAnnotation;
     }
     
-    private class StaticIDGenerator implements IDGenerator {
+    private static class StaticIDGenerator implements IDGenerator {
 
         @Override
         public String generateId() {

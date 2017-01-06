@@ -1,5 +1,6 @@
 package com.digirati.elucidate.web.converter.oa.annotationcontainer.annotationpage;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -24,7 +25,7 @@ public class JSONLDOAAnnotationPageMessageConverter extends AbstractOAAnnotation
     @Autowired
     public JSONLDOAAnnotationPageMessageConverter(@Value("${annotation.page.oa.contexts}") String[] defaultContexts) {
         super(APPLICATION_JSON_LD);
-        this.defaultContexts = defaultContexts;
+        this.defaultContexts = Arrays.copyOf(defaultContexts, defaultContexts.length);
     }
 
     @Override

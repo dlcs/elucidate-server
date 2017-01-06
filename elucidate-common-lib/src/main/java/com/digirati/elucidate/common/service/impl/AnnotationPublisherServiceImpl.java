@@ -39,8 +39,8 @@ public class AnnotationPublisherServiceImpl implements AnnotationPublisherServic
     public AnnotationPublisherServiceImpl(IRIBuilderService iriBuilderService, AnnotationQueueRepository annotationQueueRepo, @Value("${annotation.w3c.contexts}") String[] defaultW3CContexts, @Value("${annotation.oa.contexts}") String[] defaultOAContexts) {
         this.iriBuilderService = iriBuilderService;
         this.annotationQueueRepo = annotationQueueRepo;
-        this.defaultW3CContexts = defaultW3CContexts;
-        this.defaultOAContexts = defaultOAContexts;
+        this.defaultW3CContexts = Arrays.copyOf(defaultW3CContexts, defaultW3CContexts.length);
+        this.defaultOAContexts = Arrays.copyOf(defaultOAContexts, defaultOAContexts.length);
     }
 
     @Override

@@ -1,5 +1,6 @@
 package com.digirati.elucidate.web.converter.w3c.annotationcontainer.annotationpage;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -23,7 +24,7 @@ public class JSONLDW3CAnnotationPageMessageConverter extends AbstractW3CAnnotati
     @Autowired
     public JSONLDW3CAnnotationPageMessageConverter(@Value("${annotation.page.w3c.contexts}") String[] defaultContexts) {
         super(APPLICATION_JSON_LD);
-        this.defaultContexts = defaultContexts;
+        this.defaultContexts = Arrays.copyOf(defaultContexts, defaultContexts.length);
     }
 
     @Override
