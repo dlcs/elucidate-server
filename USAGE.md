@@ -4,7 +4,7 @@ Elucidate is compliant with the [W3C](https://www.w3.org/TR/annotation-model/) a
 
 The W3C Web Annotation specification also provides a [protocol](https://www.w3.org/TR/annotation-protocol/) that defines the interaction between a client and a server. The OA Web Annotation specification provides no such protocol. Instead, Elucidate utilises the same W3C Web Annotation protocol for OA interactions.
 
-### W3C & OA Conversion
+## W3C & OA Conversion
 
 As well as supporting both W3C and OA Web Annotation specifications, Elucidate also supports conversion between these two models.
 
