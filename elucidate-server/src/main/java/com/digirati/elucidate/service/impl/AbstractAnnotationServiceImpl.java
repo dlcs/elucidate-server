@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
@@ -16,6 +15,7 @@ import com.digirati.elucidate.common.infrastructure.constants.OAConstants;
 import com.digirati.elucidate.common.model.annotation.AbstractAnnotation;
 import com.digirati.elucidate.common.model.annotation.AbstractAnnotationCollection;
 import com.digirati.elucidate.common.model.annotation.w3c.W3CAnnotation;
+import com.digirati.elucidate.infrastructure.generator.IDGenerator;
 import com.digirati.elucidate.model.ServiceResponse;
 import com.digirati.elucidate.model.ServiceResponse.Status;
 import com.digirati.elucidate.repository.AnnotationStoreRepository;
@@ -27,9 +27,11 @@ public abstract class AbstractAnnotationServiceImpl<A extends AbstractAnnotation
     protected final Logger LOGGER = Logger.getLogger(getClass());
 
     private AnnotationStoreRepository annotationStoreRepository;
+    private IDGenerator idGenerator;
 
-    public AbstractAnnotationServiceImpl(AnnotationStoreRepository annotationStoreRepository) {
+    public AbstractAnnotationServiceImpl(AnnotationStoreRepository annotationStoreRepository, IDGenerator idGenerator) {
         this.annotationStoreRepository = annotationStoreRepository;
+        this.idGenerator = idGenerator;
     }
 
     protected abstract A convertToAnnotation(W3CAnnotation w3cAnnotation);
@@ -82,7 +84,7 @@ public abstract class AbstractAnnotationServiceImpl<A extends AbstractAnnotation
     public ServiceResponse<A> createAnnotation(String collectionId, String annotationId, A annotation) {
 
         if (StringUtils.isBlank(annotationId)) {
-            annotationId = UUID.randomUUID().toString();
+            annotationId = idGenerator.generateId();
         }
 
         if (!validateAnnotationId(annotationId)) {

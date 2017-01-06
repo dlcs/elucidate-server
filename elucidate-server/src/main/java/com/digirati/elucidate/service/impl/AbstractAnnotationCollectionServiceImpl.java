@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
@@ -19,6 +18,7 @@ import com.digirati.elucidate.common.model.annotation.AbstractAnnotationCollecti
 import com.digirati.elucidate.common.model.annotation.AbstractAnnotationPage;
 import com.digirati.elucidate.common.model.annotation.w3c.W3CAnnotation;
 import com.digirati.elucidate.common.model.annotation.w3c.W3CAnnotationCollection;
+import com.digirati.elucidate.infrastructure.generator.IDGenerator;
 import com.digirati.elucidate.model.ServiceResponse;
 import com.digirati.elucidate.model.ServiceResponse.Status;
 import com.digirati.elucidate.model.enumeration.ClientPreference;
@@ -35,12 +35,14 @@ public abstract class AbstractAnnotationCollectionServiceImpl<A extends Abstract
     private AbstractAnnotationPageService<A, P, C> annotationPageService;
     private AnnotationStoreRepository annotationStoreRepository;
     private AnnotationCollectionStoreRepository annotationCollectionRepository;
+    private IDGenerator idGenerator;
     private int pageSize;
 
-    public AbstractAnnotationCollectionServiceImpl(AbstractAnnotationPageService<A, P, C> annotationPageService, AnnotationStoreRepository annotationStoreRepository, AnnotationCollectionStoreRepository annotationCollectionRepository, int pageSize) {
+    public AbstractAnnotationCollectionServiceImpl(AbstractAnnotationPageService<A, P, C> annotationPageService, AnnotationStoreRepository annotationStoreRepository, AnnotationCollectionStoreRepository annotationCollectionRepository, IDGenerator idGenerator, int pageSize) {
         this.annotationPageService = annotationPageService;
         this.annotationStoreRepository = annotationStoreRepository;
         this.annotationCollectionRepository = annotationCollectionRepository;
+        this.idGenerator = idGenerator;
         this.pageSize = pageSize;
     }
 
@@ -144,7 +146,7 @@ public abstract class AbstractAnnotationCollectionServiceImpl<A extends Abstract
     public ServiceResponse<C> createAnnotationCollection(String collectionId, C annotationCollection) {
 
         if (StringUtils.isBlank(collectionId)) {
-            collectionId = UUID.randomUUID().toString();
+            collectionId = idGenerator.generateId();
         }
 
         if (!validateCollectionId(collectionId)) {

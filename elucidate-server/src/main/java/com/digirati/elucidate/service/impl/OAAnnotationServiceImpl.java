@@ -3,6 +3,7 @@ package com.digirati.elucidate.service.impl;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import com.digirati.elucidate.common.model.annotation.oa.OAAnnotation;
@@ -11,6 +12,7 @@ import com.digirati.elucidate.common.model.annotation.w3c.W3CAnnotation;
 import com.digirati.elucidate.common.service.IRIBuilderService;
 import com.digirati.elucidate.converter.OAToW3CAnnotationConverter;
 import com.digirati.elucidate.converter.W3CToOAAnnotationConverter;
+import com.digirati.elucidate.infrastructure.generator.IDGenerator;
 import com.digirati.elucidate.repository.AnnotationStoreRepository;
 import com.digirati.elucidate.service.OAAnnotationService;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -24,8 +26,8 @@ public class OAAnnotationServiceImpl extends AbstractAnnotationServiceImpl<OAAnn
     private IRIBuilderService iriBuilderService;
 
     @Autowired
-    public OAAnnotationServiceImpl(IRIBuilderService iriBuilderService, AnnotationStoreRepository annotationRepository) {
-        super(annotationRepository);
+    public OAAnnotationServiceImpl(IRIBuilderService iriBuilderService, AnnotationStoreRepository annotationRepository, @Qualifier("annotationIdGenerator") IDGenerator idGenerator) {
+        super(annotationRepository, idGenerator);
         this.iriBuilderService = iriBuilderService;
     }
 

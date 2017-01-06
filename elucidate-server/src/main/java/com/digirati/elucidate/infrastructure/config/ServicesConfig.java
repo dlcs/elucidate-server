@@ -13,6 +13,8 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.util.Log4jConfigurer;
 import org.springframework.util.MethodInvoker;
 
+import com.digirati.elucidate.infrastructure.generator.IDGenerator;
+
 @Configuration
 @EnableAspectJAutoProxy
 @EnableTransactionManagement
@@ -45,5 +47,17 @@ public class ServicesConfig {
         ThreadPoolTaskExecutor threadPoolTaskExecutor = new ThreadPoolTaskExecutor();
         threadPoolTaskExecutor.setCorePoolSize(environment.getRequiredProperty("aws.sqs.poolSize", Integer.class));
         return threadPoolTaskExecutor;
+    }
+    
+    @Bean(name = "annotationIdGenerator")
+    public IDGenerator annotationIdGenerator() throws ClassNotFoundException, InstantiationException, IllegalAccessException {
+        Class<?> clazz = Class.forName(environment.getProperty("annotation.id.generator"));
+        return (IDGenerator) clazz.newInstance();
+    }
+    
+    @Bean(name = "collectionIdGenerator")
+    public IDGenerator collectionIdGenerator() throws ClassNotFoundException, InstantiationException, IllegalAccessException {
+        Class<?> clazz = Class.forName(environment.getProperty("annotation.collection.id.generator"));
+        return (IDGenerator) clazz.newInstance();
     }
 }
