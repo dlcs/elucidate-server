@@ -8,4 +8,6 @@ public class OAConstants {
     public static final String URI_SERIALIZED_AT = "http://www.w3.org/ns/oa#serializedAt";
     public static final String URI_ITEM = "http://www.w3.org/ns/oa#item";
     public static final String URI_VIA = "http://www.w3.org/ns/oa#via";
+
+    private OAConstants() {}
 }

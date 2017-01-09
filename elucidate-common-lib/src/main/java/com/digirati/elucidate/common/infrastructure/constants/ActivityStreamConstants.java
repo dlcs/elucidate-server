@@ -12,4 +12,6 @@ public class ActivityStreamConstants {
     public static final String URI_START_INDEX = "http://www.w3.org/ns/activitystreams#startIndex";
     public static final String URI_ITEMS = "http://www.w3.org/ns/activitystreams#items";
     public static final String URI_GENERATOR = "http://www.w3.org/ns/activitystreams#generator";
+
+    private ActivityStreamConstants() {}
 }

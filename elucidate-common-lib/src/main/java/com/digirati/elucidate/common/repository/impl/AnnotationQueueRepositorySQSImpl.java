@@ -71,7 +71,7 @@ public class AnnotationQueueRepositorySQSImpl implements AnnotationQueueReposito
 
             String jsonStr;
             if (w3cAnnotationMap != null && oaAnnotationMap != null) {
-                jsonStr = buildPayload(iri, w3cAnnotationMap, oaAnnotationMap);
+                jsonStr = buildPayload(w3cAnnotationMap, oaAnnotationMap);
             } else {
                 jsonStr = "null";
             }
@@ -86,7 +86,7 @@ public class AnnotationQueueRepositorySQSImpl implements AnnotationQueueReposito
         }
     }
 
-    private String buildPayload(String iri, Map<String, Object> w3cAnnotationMap, Map<String, Object> oaAnnotationMap) {
+    private String buildPayload(Map<String, Object> w3cAnnotationMap, Map<String, Object> oaAnnotationMap) {
 
         Map<String, Object> payloadMap = new HashMap<String, Object>();
         payloadMap.put("w3c", w3cAnnotationMap);
