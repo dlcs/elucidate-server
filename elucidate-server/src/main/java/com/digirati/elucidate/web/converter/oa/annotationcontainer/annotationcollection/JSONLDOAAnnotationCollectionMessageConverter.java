@@ -1,6 +1,7 @@
 package com.digirati.elucidate.web.converter.oa.annotationcontainer.annotationcollection;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -24,7 +25,7 @@ public class JSONLDOAAnnotationCollectionMessageConverter extends AbstractOAAnno
     @Autowired
     public JSONLDOAAnnotationCollectionMessageConverter(@Value("${annotation.collection.oa.contexts}") String[] defaultContexts) throws IOException {
         super(APPLICATION_JSON_LD);
-        this.defaultContexts = defaultContexts;
+        this.defaultContexts = Arrays.copyOf(defaultContexts, defaultContexts.length);
     }
 
     @Override
@@ -72,6 +73,7 @@ public class JSONLDOAAnnotationCollectionMessageConverter extends AbstractOAAnno
             throw new HttpMediaTypeNotSupportedException(contentType, getSupportedMediaTypes());
         }
 
+        jsonMap = reorderJsonAttributes(jsonMap);
         return JsonUtils.toPrettyString(jsonMap);
     }
 

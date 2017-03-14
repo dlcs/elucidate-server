@@ -1,6 +1,6 @@
 # Elucidate
 
-Elucidate is a Web Annotation server that is compliant with both the [W3C Web Annotation Data Model](https://www.w3.org/TR/annotation-model/) and associated [Protocol](https://www.w3.org/TR/annotation-protocol/), and the [Open Annotation (OA) Data Model](http://www.openannotation.org/spec/core/).
+Elucidate is a Web Annotation server that is compliant with both the [W3C Web Annotation Data Model](https://www.w3.org/TR/annotation-model/) and associated [protocol](https://www.w3.org/TR/annotation-protocol/), and the [Open Annotation (OA) Data Model](http://www.openannotation.org/spec/core/).
 
 ## Getting Started
 
@@ -55,6 +55,10 @@ Elucidate Server has been built and tested against PostgreSQL 9.4+  (the `jsonb`
 
 Database scripts are available in the [`elucidate-db-scripts`](elucidate-db-scripts/) folder, and include the creation and assignment of permissions to an `annotations_user` user in the [`annotations_user.sql`](elucidate-db-scripts/login_roles/annotations_user.sql) script - **modify the script and update the password of this before executing it.**
 
+## Usage
+
+See [`USAGE.md`](USAGE.md) for some sample requests.
+
 ## Built With
 
 * [Spring Framework](https://projects.spring.io/spring-framework/)
@@ -64,7 +68,9 @@ Database scripts are available in the [`elucidate-db-scripts`](elucidate-db-scri
 
 ## Contributing
 
-Please read [CONTRIBUTING.md](CONTRIBUTING.md) for details on our code of conduct, and the process for submitting pull requests to us.
+Please read [`CONTRIBUTING.md`](CONTRIBUTING.md) for details on our code of conduct, and the process for submitting pull requests to us.
+
+Contributors should ensure that their code is formatted in a style that is as close to the existing style as possible. For contributors who use the Eclipse IDE, we have included the [`eclipse-java-digirati-style.xml`](eclipse-java-digirati-style.xml).
 
 ## Versioning
 
@@ -72,4 +78,4 @@ We use [SemVer](http://semver.org/) for versioning. For the versions available, 
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details
+This project is licensed under the MIT License - see the [`LICENSE`](LICENSE) file for details

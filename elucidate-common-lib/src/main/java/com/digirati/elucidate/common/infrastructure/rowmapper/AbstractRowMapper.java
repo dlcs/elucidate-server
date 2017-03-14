@@ -3,7 +3,6 @@ package com.digirati.elucidate.common.infrastructure.rowmapper;
 import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -41,7 +40,7 @@ public abstract class AbstractRowMapper<T> implements RowMapper<T> {
             Object jsonObject = JsonUtils.fromString(jsonStr);
 
             if (jsonObject instanceof List) {
-                return ((ArrayList<Map<String, Object>>) jsonObject).get(0);
+                return ((List<Map<String, Object>>) jsonObject).get(0);
             }
 
             if (jsonObject instanceof Map) {

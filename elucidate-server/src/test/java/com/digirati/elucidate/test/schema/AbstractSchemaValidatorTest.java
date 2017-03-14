@@ -34,12 +34,12 @@ public abstract class AbstractSchemaValidatorTest {
 
         String jsonStr = getJson(jsonFileName);
         assertNotNull(jsonStr);
-        
+
         Object jsonObj = JsonUtils.fromString(jsonStr);
         List<Object> expandedJson = JsonLdProcessor.expand(jsonObj);
         jsonStr = JsonUtils.toString(expandedJson);
         JsonNode json = JsonLoader.fromString(jsonStr);
-        
+
         JsonValidator jsonValidator = JsonSchemaFactory.byDefault().getValidator();
         ProcessingReport processingReport = jsonValidator.validate(schema, json);
         assertNotNull(processingReport);
@@ -62,7 +62,7 @@ public abstract class AbstractSchemaValidatorTest {
     }
 
     private String getJson(String fileName) throws IOException {
-        InputStream inputStream = getClass().getResourceAsStream(fileName);
+        InputStream inputStream = AbstractSchemaValidatorTest.class.getResourceAsStream(fileName);
         return IOUtils.toString(inputStream, "UTF-8");
     }
 

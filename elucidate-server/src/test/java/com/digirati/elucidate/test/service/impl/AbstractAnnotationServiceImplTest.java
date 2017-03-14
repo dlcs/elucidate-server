@@ -5,9 +5,12 @@ import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
 import static org.hamcrest.Matchers.nullValue;
 import static org.junit.Assert.assertThat;
+import static org.mockito.Matchers.anyString;
+import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+import java.util.Date;
 import java.util.List;
 
 import org.junit.Before;
@@ -32,6 +35,8 @@ public abstract class AbstractAnnotationServiceImplTest<A extends AbstractAnnota
     protected abstract AbstractAnnotationService<A, C> createAnnotationService(IRIBuilderService iriBuilderService, AnnotationStoreRepository annotationStoreRepository);
 
     protected abstract void validateConversionToAnnotation(W3CAnnotation w3cAnnotation, A targetAnnotation);
+
+    protected abstract A generateAnnotationWithJsonMapOnly();
 
     @Before
     public void before() {
@@ -108,8 +113,29 @@ public abstract class AbstractAnnotationServiceImplTest<A extends AbstractAnnota
         }
     }
 
-    public void testCreateAnnotation() {
+    @Test
+    public void testCreateAnnotationWithoutAnnotationId() {
 
+        String collectionId = generateRandomId();
+        A annotation = generateAnnotationWithJsonMapOnly();
+
+        W3CAnnotation w3cAnnotation = new W3CAnnotation();
+        w3cAnnotation.setAnnotationId("test-annotation-id");
+        w3cAnnotation.setCollectionId(collectionId);
+        w3cAnnotation.setCreatedDateTime(new Date());
+        w3cAnnotation.setDeleted(false);
+        w3cAnnotation.setJsonMap(annotation.getJsonMap());
+
+        when(annotationStoreRepository.createAnnotation(eq(collectionId), eq("test-annotation-id"), anyString())).thenReturn(w3cAnnotation);
+
+        ServiceResponse<A> serviceResponse = annotationService.createAnnotation(collectionId, null, annotation);
+        assertThat(serviceResponse, is(not(nullValue())));
+        assertThat(serviceResponse.getStatus(), is(equalTo(Status.OK)));
+
+        A targetAnnotation = serviceResponse.getObj();
+        assertThat(targetAnnotation, is(not(nullValue())));
+        assertThat(targetAnnotation.getCollectionId(), is(equalTo(collectionId)));
+        assertThat(targetAnnotation.getAnnotationId(), is(not(nullValue())));
     }
 
     public void testUpdateAnnotation() {

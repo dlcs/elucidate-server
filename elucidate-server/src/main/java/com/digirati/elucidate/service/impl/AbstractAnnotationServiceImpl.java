@@ -2,18 +2,20 @@ package com.digirati.elucidate.service.impl;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.digirati.elucidate.common.infrastructure.constants.JSONLDConstants;
+import com.digirati.elucidate.common.infrastructure.constants.OAConstants;
 import com.digirati.elucidate.common.model.annotation.AbstractAnnotation;
 import com.digirati.elucidate.common.model.annotation.AbstractAnnotationCollection;
 import com.digirati.elucidate.common.model.annotation.w3c.W3CAnnotation;
+import com.digirati.elucidate.infrastructure.generator.IDGenerator;
 import com.digirati.elucidate.model.ServiceResponse;
 import com.digirati.elucidate.model.ServiceResponse.Status;
 import com.digirati.elucidate.repository.AnnotationStoreRepository;
@@ -25,9 +27,11 @@ public abstract class AbstractAnnotationServiceImpl<A extends AbstractAnnotation
     protected final Logger LOGGER = Logger.getLogger(getClass());
 
     private AnnotationStoreRepository annotationStoreRepository;
+    private IDGenerator idGenerator;
 
-    public AbstractAnnotationServiceImpl(AnnotationStoreRepository annotationStoreRepository) {
+    public AbstractAnnotationServiceImpl(AnnotationStoreRepository annotationStoreRepository, IDGenerator idGenerator) {
         this.annotationStoreRepository = annotationStoreRepository;
+        this.idGenerator = idGenerator;
     }
 
     protected abstract A convertToAnnotation(W3CAnnotation w3cAnnotation);
@@ -75,11 +79,12 @@ public abstract class AbstractAnnotationServiceImpl<A extends AbstractAnnotation
     }
 
     @Override
+    @SuppressWarnings("serial")
     @Transactional(readOnly = false)
     public ServiceResponse<A> createAnnotation(String collectionId, String annotationId, A annotation) {
 
         if (StringUtils.isBlank(annotationId)) {
-            annotationId = UUID.randomUUID().toString();
+            annotationId = idGenerator.generateId();
         }
 
         if (!validateAnnotationId(annotationId)) {
@@ -95,8 +100,16 @@ public abstract class AbstractAnnotationServiceImpl<A extends AbstractAnnotation
         W3CAnnotation w3cAnnotation = convertFromAnnotation(annotation);
 
         Map<String, Object> annotationMap = w3cAnnotation.getJsonMap();
-        if (StringUtils.isNotBlank((String) annotationMap.get("id"))) {
-            annotationMap.put("via", annotationMap.get("id"));
+        if (StringUtils.isNotBlank((String) annotationMap.get(JSONLDConstants.ATTRIBUTE_ID))) {
+            annotationMap.put(OAConstants.URI_VIA, new ArrayList<Map<String, Object>>() {
+                {
+                    add(new HashMap<String, Object>() {
+                        {
+                            put(JSONLDConstants.ATTRIBUTE_ID, annotationMap.get(JSONLDConstants.ATTRIBUTE_ID));
+                        }
+                    });
+                }
+            });
         }
 
         String annotationJson;

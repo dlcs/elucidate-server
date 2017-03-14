@@ -39,12 +39,12 @@ public class AnnotationPublisherServiceImpl implements AnnotationPublisherServic
     public AnnotationPublisherServiceImpl(IRIBuilderService iriBuilderService, AnnotationQueueRepository annotationQueueRepo, @Value("${annotation.w3c.contexts}") String[] defaultW3CContexts, @Value("${annotation.oa.contexts}") String[] defaultOAContexts) {
         this.iriBuilderService = iriBuilderService;
         this.annotationQueueRepo = annotationQueueRepo;
-        this.defaultW3CContexts = defaultW3CContexts;
-        this.defaultOAContexts = defaultOAContexts;
+        this.defaultW3CContexts = Arrays.copyOf(defaultW3CContexts, defaultW3CContexts.length);
+        this.defaultOAContexts = Arrays.copyOf(defaultOAContexts, defaultOAContexts.length);
     }
 
     @Override
-    public void create(W3CAnnotation w3cAnnotation) throws AnnotationPublisherException {
+    public void create(W3CAnnotation w3cAnnotation) {
         LOGGER.info(String.format("Got notification for [%s] on W3CAnnotation [%s]", QueueOperation.CREATE, w3cAnnotation));
         String iri = iriBuilderService.buildW3CAnnotationIri(w3cAnnotation.getCollectionId(), w3cAnnotation.getAnnotationId());
         W3CAnnotation w3cAnnotationCopy = SerializationUtils.clone(w3cAnnotation);
@@ -54,7 +54,7 @@ public class AnnotationPublisherServiceImpl implements AnnotationPublisherServic
     }
 
     @Override
-    public void update(W3CAnnotation w3cAnnotation) throws AnnotationPublisherException {
+    public void update(W3CAnnotation w3cAnnotation) {
         LOGGER.info(String.format("Got notification for [%s] on W3CAnnotation [%s]", QueueOperation.UPDATE, w3cAnnotation));
         String iri = iriBuilderService.buildW3CAnnotationIri(w3cAnnotation.getCollectionId(), w3cAnnotation.getAnnotationId());
         W3CAnnotation w3cAnnotationCopy = SerializationUtils.clone(w3cAnnotation);
@@ -64,14 +64,14 @@ public class AnnotationPublisherServiceImpl implements AnnotationPublisherServic
     }
 
     @Override
-    public void delete(W3CAnnotation w3cAnnotation) throws AnnotationPublisherException {
+    public void delete(W3CAnnotation w3cAnnotation) {
         LOGGER.info(String.format("Got notification for [%s] on W3CAnnotation [%s]", QueueOperation.DELETE, w3cAnnotation));
         String iri = iriBuilderService.buildW3CAnnotationIri(w3cAnnotation.getCollectionId(), w3cAnnotation.getAnnotationId());
         annotationQueueRepo.sendMessage(QueueOperation.DELETE, iri, null, null);
     }
 
     @SuppressWarnings("serial")
-    private Map<String, Object> getW3CAnnotationJson(W3CAnnotation w3cAnnotation) throws AnnotationPublisherException {
+    private Map<String, Object> getW3CAnnotationJson(W3CAnnotation w3cAnnotation) {
 
         Map<String, Object> jsonMap = w3cAnnotation.getJsonMap();
         jsonMap.put(JSONLDConstants.ATTRIBUTE_ID, iriBuilderService.buildW3CAnnotationIri(w3cAnnotation.getCollectionId(), w3cAnnotation.getAnnotationId()));
@@ -94,7 +94,7 @@ public class AnnotationPublisherServiceImpl implements AnnotationPublisherServic
     }
 
     @SuppressWarnings("serial")
-    private Map<String, Object> getOAAnnotationJson(W3CAnnotation w3cAnnotation) throws AnnotationPublisherException {
+    private Map<String, Object> getOAAnnotationJson(W3CAnnotation w3cAnnotation) {
 
         Map<String, Object> jsonMap = w3cAnnotation.getJsonMap();
         jsonMap.put(JSONLDConstants.ATTRIBUTE_ID, iriBuilderService.buildOAAnnotationIri(w3cAnnotation.getCollectionId(), w3cAnnotation.getAnnotationId()));

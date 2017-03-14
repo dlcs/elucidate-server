@@ -9,7 +9,7 @@
 	<parent>
 		<groupId>com.digirati.elucidate</groupId>
 		<artifactId>elucidate-parent</artifactId>
-		<version>1.0.0</version>
+		<version>1.0.1-SNAPSHOT</version>
 	</parent>
 
 	<build>
@@ -31,12 +31,12 @@
 		<dependency>
 			<groupId>com.digirati.elucidate</groupId>
 			<artifactId>elucidate-common-lib</artifactId>
-			<version>1.0.0</version>
+			<version>1.0.1-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>com.digirati.elucidate</groupId>
 			<artifactId>elucidate-converter</artifactId>
-			<version>1.0.0</version>
+			<version>1.0.1-SNAPSHOT</version>
 		</dependency>
 		<!-- JSON-LD Dependencies -->
 		<dependency>
@@ -108,12 +108,17 @@
 		<dependency>
 			<groupId>commons-io</groupId>
 			<artifactId>commons-io</artifactId>
-			<version>${common-io-version}</version>
+			<version>${commons-io-version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.httpcomponents</groupId>
 			<artifactId>httpclient</artifactId>
 			<version>${httpclient-version}</version>
+		</dependency>
+		<dependency>
+			<groupId>commons-collections</groupId>
+			<artifactId>commons-collections</artifactId>
+			<version>${commons-collections-version}</version>
 		</dependency>
 		<!-- Database Dependencies -->
 		<dependency>

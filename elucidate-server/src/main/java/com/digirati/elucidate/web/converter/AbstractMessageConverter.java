@@ -9,10 +9,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
+import org.apache.commons.collections.map.ListOrderedMap;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
 import org.springframework.http.HttpInputMessage;
 import org.springframework.http.HttpOutputMessage;
 import org.springframework.http.MediaType;
@@ -23,10 +24,8 @@ import org.springframework.http.converter.HttpMessageNotWritableException;
 import com.digirati.elucidate.common.infrastructure.constants.JSONLDConstants;
 import com.digirati.elucidate.model.JSONLDProfile;
 import com.digirati.elucidate.model.JSONLDProfile.Format;
-import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.github.fge.jackson.JsonLoader;
@@ -40,17 +39,13 @@ import com.github.jsonldjava.utils.JsonUtils;
 
 public abstract class AbstractMessageConverter<T> extends AbstractHttpMessageConverter<T> {
 
-    protected final Logger LOGGER = Logger.getLogger(getClass());
-
     protected static final MediaType APPLICATION_JSON_LD = MediaType.valueOf("application/ld+json");
     protected static final MediaType APPLICATION_TURTLE = MediaType.valueOf("application/x-turtle");
 
-    protected ObjectMapper objectMapper;
     protected JsonLdOptions jsonLdOptions;
 
     protected AbstractMessageConverter(MediaType... supportedMediaTypes) {
         super(supportedMediaTypes);
-        this.objectMapper = new ObjectMapper().setSerializationInclusion(Include.NON_NULL);
         this.jsonLdOptions = new JsonLdOptions();
     }
 
@@ -90,21 +85,20 @@ public abstract class AbstractMessageConverter<T> extends AbstractHttpMessageCon
         return jsonLdProfile;
     }
 
-    private Format extractFormat(String profile) {
-        String format = StringUtils.substringAfterLast(profile, "#");
-        format = StringUtils.strip(format, "\"");
 
-        if (StringUtils.isNotBlank(format)) {
-            format = StringUtils.capitalize(format);
-            return Format.valueOf(format);
+    @SuppressWarnings("unchecked")
+    protected Map<String, Object> reorderJsonAttributes(Map<String, Object> jsonMap) {
+
+        ListOrderedMap orderedJsonMap = new ListOrderedMap();
+        orderedJsonMap.putAll(jsonMap);
+
+        Object context = orderedJsonMap.get(JSONLDConstants.ATTRIBUTE_CONTEXT);
+        if (context != null) {
+            orderedJsonMap.remove(JSONLDConstants.ATTRIBUTE_CONTEXT);
+            orderedJsonMap.put(0, JSONLDConstants.ATTRIBUTE_CONTEXT, context);
         }
 
-        return Format.COMPACTED;
-    }
-
-    private String prepareContext(String profile) {
-        profile = StringUtils.substringBeforeLast(profile, "#");
-        return StringUtils.strip(profile, "\"");
+        return orderedJsonMap;
     }
 
     protected String validate(String jsonStr, JsonNode validationSchema) throws ProcessingException, JsonGenerationException, IOException {
@@ -127,6 +121,23 @@ public abstract class AbstractMessageConverter<T> extends AbstractHttpMessageCon
         }
 
         return null;
+    }
+
+    private Format extractFormat(String profile) {
+        String format = StringUtils.substringAfterLast(profile, "#");
+        format = StringUtils.strip(format, "\"");
+
+        if (StringUtils.isNotBlank(format)) {
+            format = StringUtils.capitalize(format);
+            return Format.valueOf(format);
+        }
+
+        return Format.COMPACTED;
+    }
+
+    private String prepareContext(String profile) {
+        profile = StringUtils.substringBeforeLast(profile, "#");
+        return StringUtils.strip(profile, "\"");
     }
 
     @Override
@@ -153,7 +164,7 @@ public abstract class AbstractMessageConverter<T> extends AbstractHttpMessageCon
     }
 
     private void stream(String str, HttpOutputMessage outputMessage) throws IOException {
-        InputStream inputStream = new ByteArrayInputStream(str.getBytes());
+        InputStream inputStream = new ByteArrayInputStream(str.getBytes("UTF-8"));
         OutputStream messageOutputStream = outputMessage.getBody();
         IOUtils.copy(inputStream, messageOutputStream);
     }
