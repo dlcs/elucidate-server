@@ -19,6 +19,14 @@ public class IRIBuilderServiceImpl implements IRIBuilderService {
 
     public static final String SERVICE_NAME = "iriBuilderServiceImpl";
 
+    @SuppressWarnings("serial")
+    private static final Map<String, Integer> DEFAULT_PORTS = new HashMap<String, Integer>() {
+        {
+            put("http", 80);
+            put("https", 443);
+        }
+    };
+
     private String baseUrl;
 
     @Autowired
@@ -30,7 +38,11 @@ public class IRIBuilderServiceImpl implements IRIBuilderService {
         URIBuilder builder = new URIBuilder();
         builder.setScheme(baseScheme);
         builder.setHost(baseHost);
-        builder.setPort(basePort);
+
+        if (!DEFAULT_PORTS.containsKey(baseScheme.toLowerCase()) || DEFAULT_PORTS.get(baseScheme) != basePort) {
+            builder.setPort(basePort);
+        }
+
         builder.setPath(basePath);
         return builder.toString();
     }
