@@ -35,15 +35,15 @@ public abstract class AbstractAnnotationCollectionServiceImpl<A extends Abstract
 
     private AbstractAnnotationPageService<A, P, C> annotationPageService;
     private AnnotationStoreRepository annotationStoreRepository;
-    private AnnotationCollectionStoreRepository annotationCollectionRepository;
+    private AnnotationCollectionStoreRepository annotationCollectionStoreRepository;
     private AnnotationSearchRepository annotationSearchRepository;
     private IDGenerator idGenerator;
     private int pageSize;
 
-    public AbstractAnnotationCollectionServiceImpl(AbstractAnnotationPageService<A, P, C> annotationPageService, AnnotationStoreRepository annotationStoreRepository, AnnotationCollectionStoreRepository annotationCollectionRepository, AnnotationSearchRepository annotationSearchRepository, IDGenerator idGenerator, int pageSize) {
+    public AbstractAnnotationCollectionServiceImpl(AbstractAnnotationPageService<A, P, C> annotationPageService, AnnotationStoreRepository annotationStoreRepository, AnnotationCollectionStoreRepository annotationCollectionStoreRepository, AnnotationSearchRepository annotationSearchRepository, IDGenerator idGenerator, int pageSize) {
         this.annotationPageService = annotationPageService;
         this.annotationStoreRepository = annotationStoreRepository;
-        this.annotationCollectionRepository = annotationCollectionRepository;
+        this.annotationCollectionStoreRepository = annotationCollectionStoreRepository;
         this.annotationSearchRepository = annotationSearchRepository;
         this.idGenerator = idGenerator;
         this.pageSize = pageSize;
@@ -66,7 +66,7 @@ public abstract class AbstractAnnotationCollectionServiceImpl<A extends Abstract
     @Transactional(readOnly = true)
     public ServiceResponse<C> getAnnotationCollection(String collectionId, ClientPreference clientPref) {
 
-        W3CAnnotationCollection w3cAnnotationCollection = annotationCollectionRepository.getAnnotationCollectionById(collectionId);
+        W3CAnnotationCollection w3cAnnotationCollection = annotationCollectionStoreRepository.getAnnotationCollectionById(collectionId);
         if (w3cAnnotationCollection == null) {
             return new ServiceResponse<C>(Status.NOT_FOUND, null);
         }
@@ -177,7 +177,7 @@ public abstract class AbstractAnnotationCollectionServiceImpl<A extends Abstract
             return new ServiceResponse<C>(Status.NON_CONFORMANT, null);
         }
 
-        annotationCollectionRepository.createAnnotationCollection(collectionId, w3cAnnotationCollectionJson);
+        annotationCollectionStoreRepository.createAnnotationCollection(collectionId, w3cAnnotationCollectionJson);
         return getAnnotationCollection(collectionId, ClientPreference.CONTAINED_DESCRIPTIONS);
     }
 

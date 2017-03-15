@@ -24,8 +24,8 @@ public class W3CAnnotationCollectionServiceImpl extends AbstractAnnotationCollec
     private IRIBuilderService iriBuilderService;
 
     @Autowired
-    public W3CAnnotationCollectionServiceImpl(IRIBuilderService iriBuilderService, W3CAnnotationPageService w3cAnnotationPageService, AnnotationStoreRepository annotationRepository, AnnotationCollectionStoreRepository annotationCollectionRepository, AnnotationSearchRepository annotationSearchRepository, @Qualifier("collectionIdGenerator") IDGenerator idGenerator, @Value("${annotation.page.size}") int pageSize) {
-        super(w3cAnnotationPageService, annotationRepository, annotationCollectionRepository, annotationSearchRepository, idGenerator, pageSize);
+    public W3CAnnotationCollectionServiceImpl(IRIBuilderService iriBuilderService, W3CAnnotationPageService w3cAnnotationPageService, AnnotationStoreRepository annotationStoreRepository, AnnotationCollectionStoreRepository annotationCollectionStoreRepository, AnnotationSearchRepository annotationSearchRepository, @Qualifier("collectionIdGenerator") IDGenerator idGenerator, @Value("${annotation.page.size}") int pageSize) {
+        super(w3cAnnotationPageService, annotationStoreRepository, annotationCollectionStoreRepository, annotationSearchRepository, idGenerator, pageSize);
         this.iriBuilderService = iriBuilderService;
     }
 

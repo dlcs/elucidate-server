@@ -14,7 +14,7 @@ import com.digirati.elucidate.web.controller.AbstractAnnotationReadController;
 public class W3CAnnotationReadController extends AbstractAnnotationReadController<W3CAnnotation, W3CAnnotationCollection> {
 
     public static final String CONTROLLER_NAME = "w3cAnnotationReadController";
-    
+
     @Autowired
     public W3CAnnotationReadController(W3CAnnotationService w3cAnnotationService) {
         super(w3cAnnotationService);

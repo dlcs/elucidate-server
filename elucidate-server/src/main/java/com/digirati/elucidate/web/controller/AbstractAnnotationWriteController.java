@@ -19,8 +19,8 @@ import com.digirati.elucidate.common.model.annotation.AbstractAnnotation;
 import com.digirati.elucidate.common.model.annotation.AbstractAnnotationCollection;
 import com.digirati.elucidate.infrastructure.exception.InvalidAnnotationException;
 import com.digirati.elucidate.model.ServiceResponse;
-import com.digirati.elucidate.model.ValidationError;
 import com.digirati.elucidate.model.ServiceResponse.Status;
+import com.digirati.elucidate.model.ValidationError;
 import com.digirati.elucidate.service.AbstractAnnotationService;
 
 public abstract class AbstractAnnotationWriteController<A extends AbstractAnnotation, C extends AbstractAnnotationCollection> {
