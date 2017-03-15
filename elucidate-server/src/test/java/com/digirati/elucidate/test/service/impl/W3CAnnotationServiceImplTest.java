@@ -11,6 +11,7 @@ import com.digirati.elucidate.common.model.annotation.w3c.W3CAnnotation;
 import com.digirati.elucidate.common.model.annotation.w3c.W3CAnnotationCollection;
 import com.digirati.elucidate.common.service.IRIBuilderService;
 import com.digirati.elucidate.infrastructure.generator.IDGenerator;
+import com.digirati.elucidate.repository.AnnotationSearchRepository;
 import com.digirati.elucidate.repository.AnnotationStoreRepository;
 import com.digirati.elucidate.service.AbstractAnnotationService;
 import com.digirati.elucidate.service.impl.W3CAnnotationServiceImpl;
@@ -19,8 +20,8 @@ import com.digirati.elucidate.service.impl.W3CAnnotationServiceImpl;
 public class W3CAnnotationServiceImplTest extends AbstractAnnotationServiceImplTest<W3CAnnotation, W3CAnnotationCollection> {
 
     @Override
-    protected AbstractAnnotationService<W3CAnnotation, W3CAnnotationCollection> createAnnotationService(IRIBuilderService iriBuilderService, AnnotationStoreRepository annotationStoreRepository) {
-        return new W3CAnnotationServiceImpl(iriBuilderService, annotationStoreRepository, new StaticIDGenerator());
+    protected AbstractAnnotationService<W3CAnnotation, W3CAnnotationCollection> createAnnotationService(IRIBuilderService iriBuilderService, AnnotationStoreRepository annotationStoreRepository, AnnotationSearchRepository annotationSearchRepository) {
+        return new W3CAnnotationServiceImpl(iriBuilderService, annotationStoreRepository, annotationSearchRepository, new StaticIDGenerator());
     }
 
     @Override
@@ -34,7 +35,7 @@ public class W3CAnnotationServiceImplTest extends AbstractAnnotationServiceImplT
         w3cAnnotation.setJsonMap(generateRandomJsonMap());
         return w3cAnnotation;
     }
-    
+
     private static class StaticIDGenerator implements IDGenerator {
 
         @Override
