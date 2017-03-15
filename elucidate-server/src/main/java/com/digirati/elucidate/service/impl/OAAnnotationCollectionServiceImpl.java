@@ -15,6 +15,9 @@ import com.digirati.elucidate.common.service.IRIBuilderService;
 import com.digirati.elucidate.converter.OAToW3CAnnotationCollectionConverter;
 import com.digirati.elucidate.converter.W3CToOAAnnotationCollectionConverter;
 import com.digirati.elucidate.infrastructure.generator.IDGenerator;
+import com.digirati.elucidate.model.ServiceResponse;
+import com.digirati.elucidate.model.enumeration.ClientPreference;
+import com.digirati.elucidate.model.enumeration.SearchType;
 import com.digirati.elucidate.repository.AnnotationCollectionStoreRepository;
 import com.digirati.elucidate.repository.AnnotationSearchRepository;
 import com.digirati.elucidate.repository.AnnotationStoreRepository;
@@ -28,11 +31,13 @@ public class OAAnnotationCollectionServiceImpl extends AbstractAnnotationCollect
 
     public static final String SERVICE_NAME = "oaAnnotationCollectionServiceImpl";
 
+    private OAAnnotationPageService oaAnnotationPageService;
     private IRIBuilderService iriBuilderService;
 
     @Autowired
-    public OAAnnotationCollectionServiceImpl(IRIBuilderService iriBuilderService, OAAnnotationPageService oaAnnotationPageService, AnnotationStoreRepository annotationStoreRepository, AnnotationCollectionStoreRepository annotationCollectionStoreRepository, AnnotationSearchRepository annotationSearchRepository, @Qualifier("collectionIdGenerator") IDGenerator idGenerator, @Value("${annotation.page.size}") int pageSize) {
-        super(oaAnnotationPageService, annotationStoreRepository, annotationCollectionStoreRepository, annotationSearchRepository, idGenerator, pageSize);
+    public OAAnnotationCollectionServiceImpl(AnnotationStoreRepository annotationStoreRepository, AnnotationCollectionStoreRepository annotationCollectionStoreRepository, AnnotationSearchRepository annotationSearchRepository, IRIBuilderService iriBuilderService, OAAnnotationPageService oaAnnotationPageService, @Qualifier("collectionIdGenerator") IDGenerator idGenerator, @Value("${annotation.page.size}") int pageSize) {
+        super(annotationStoreRepository, annotationCollectionStoreRepository, annotationSearchRepository, idGenerator, pageSize);
+        this.oaAnnotationPageService = oaAnnotationPageService;
         this.iriBuilderService = iriBuilderService;
     }
 
@@ -77,22 +82,43 @@ public class OAAnnotationCollectionServiceImpl extends AbstractAnnotationCollect
     }
 
     @Override
-    protected String buildCollectionIri(String collectionId) {
-        return iriBuilderService.buildOACollectionIri(collectionId);
+    protected ServiceResponse<OAAnnotationPage> buildFirstAnnotationPage(SearchType searchType, String searchQuery, ClientPreference clientPref) {
+        if (searchType.equals(SearchType.COLLECTION_ID)) {
+            if (clientPref.equals(ClientPreference.CONTAINED_IRIS)) {
+                return oaAnnotationPageService.getAnnotationPage(searchQuery, false, 0);
+            } else {
+                return oaAnnotationPageService.getAnnotationPage(searchQuery, true, 0);
+            }
+        } else if (searchType.equals(SearchType.TARGET_IRI)) {
+            if (clientPref.equals(ClientPreference.CONTAINED_IRIS)) {
+                return oaAnnotationPageService.searchAnnotationPage(searchQuery, false, 0);
+            } else {
+                return oaAnnotationPageService.searchAnnotationPage(searchQuery, true, 0);
+            }
+        } else {
+            throw new IllegalArgumentException(String.format("Unexpected SearchType [%s]", searchType));
+        }
     }
 
     @Override
-    protected String buildCollectionSearchIri(String targetIri) {
-        return iriBuilderService.buildOACollectionSearchIri(targetIri);
+    protected String buildCollectionIri(SearchType searchType, String searchQuery) {
+        if (searchType.equals(SearchType.COLLECTION_ID)) {
+            return iriBuilderService.buildOACollectionIri(searchQuery);
+        } else if (searchType.equals(SearchType.TARGET_IRI)) {
+            return iriBuilderService.buildOACollectionSearchIri(searchQuery);
+        } else {
+            throw new IllegalArgumentException(String.format("Unexpected SearchType [%s]", searchType));
+        }
     }
 
     @Override
-    protected String buildPageIri(String collectionId, int page, boolean embeddedDescriptions) {
-        return iriBuilderService.buildOAPageIri(collectionId, page, embeddedDescriptions);
-    }
-
-    @Override
-    protected String buildPageSearchIri(String targetIri, int page, boolean embeddedDescriptions) {
-        return iriBuilderService.buildOAPageSearchIri(targetIri, page, embeddedDescriptions);
+    protected String buildPageIri(SearchType searchType, String searchQuery, int page, boolean embeddedDescriptions) {
+        if (searchType.equals(SearchType.COLLECTION_ID)) {
+            return iriBuilderService.buildOAPageIri(searchQuery, page, embeddedDescriptions);
+        } else if (searchType.equals(SearchType.TARGET_IRI)) {
+            return iriBuilderService.buildOAPageSearchIri(searchQuery, page, embeddedDescriptions);
+        } else {
+            throw new IllegalArgumentException(String.format("Unexpected SearchType [%s]", searchType));
+        }
     }
 }

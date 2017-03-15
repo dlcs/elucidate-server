@@ -15,6 +15,7 @@ import com.digirati.elucidate.common.model.annotation.AbstractAnnotationCollecti
 import com.digirati.elucidate.common.model.annotation.AbstractAnnotationPage;
 import com.digirati.elucidate.model.ServiceResponse;
 import com.digirati.elucidate.model.ServiceResponse.Status;
+import com.digirati.elucidate.model.enumeration.SearchType;
 import com.digirati.elucidate.service.AbstractAnnotationPageService;
 import com.digirati.elucidate.service.AbstractAnnotationService;
 
@@ -30,27 +31,42 @@ public abstract class AbstractAnnotationPageServiceImpl<A extends AbstractAnnota
 
     protected abstract P convertToAnnotationPage(Map<String, Object> jsonMap);
 
-    protected abstract String buildCollectionIri(String collectionId);
+    protected abstract String buildCollectionIri(SearchType searchType, String searchQuery);;
 
-    protected abstract String buildCollectionSearchIri(String targetIri);
-
-    protected abstract String buildPageIri(String collectionId, int page, boolean embeddedDescriptions);
-
-    protected abstract String buildPageSearchIri(String targetIri, int page, boolean embeddedDescriptions);
+    protected abstract String buildPageIri(SearchType searchType, String searchQuery, int page, boolean embeddedDescriptions);
 
     @Override
-    @SuppressWarnings("serial")
     @Transactional(readOnly = true)
     public ServiceResponse<P> getAnnotationPage(String collectionId, boolean embeddedDescriptions, int page) {
 
         ServiceResponse<List<A>> serviceResponse = annotationService.getAnnotations(collectionId);
         Status status = serviceResponse.getStatus();
 
-        if (status.equals(Status.NOT_FOUND)) {
-            return new ServiceResponse<P>(Status.NOT_FOUND, null);
+        if (!status.equals(Status.OK)) {
+            return new ServiceResponse<P>(status, null);
         }
 
         List<A> annotations = serviceResponse.getObj();
+        return buildAnnotationPage(SearchType.COLLECTION_ID, collectionId, annotations, embeddedDescriptions, page);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public ServiceResponse<P> searchAnnotationPage(String targetIri, boolean embeddedDescriptions, int page) {
+
+        ServiceResponse<List<A>> serviceResponse = annotationService.searchAnnotations(targetIri);
+        Status status = serviceResponse.getStatus();
+
+        if (!status.equals(Status.OK)) {
+            return new ServiceResponse<P>(status, null);
+        }
+
+        List<A> annotations = serviceResponse.getObj();
+        return buildAnnotationPage(SearchType.TARGET_IRI, targetIri, annotations, embeddedDescriptions, page);
+    }
+
+    @SuppressWarnings("serial")
+    private ServiceResponse<P> buildAnnotationPage(SearchType searchType, String searchQuery, List<A> annotations, boolean embeddedDescriptions, int page) {
 
         int totalPages = (int) Math.floor((double) annotations.size() / pageSize);
         int from = Math.min(annotations.size(), Math.max(0, page * pageSize));
@@ -64,7 +80,7 @@ public abstract class AbstractAnnotationPageServiceImpl<A extends AbstractAnnota
             }
         });
 
-        String partOfIri = buildCollectionIri(collectionId);
+        String partOfIri = buildCollectionIri(searchType, searchQuery);
         jsonMap.put(ActivityStreamConstants.URI_PART_OF, new ArrayList<Map<String, Object>>() {
             {
                 add(new HashMap<String, Object>() {
@@ -88,7 +104,7 @@ public abstract class AbstractAnnotationPageServiceImpl<A extends AbstractAnnota
         });
 
         if (page > 0) {
-            String prevIri = buildPageIri(collectionId, page - 1, embeddedDescriptions);
+            String prevIri = buildPageIri(searchType, searchQuery, page - 1, embeddedDescriptions);
             jsonMap.put(ActivityStreamConstants.URI_PREV, new ArrayList<Map<String, Object>>() {
                 {
                     add(new HashMap<String, Object>() {
@@ -101,112 +117,7 @@ public abstract class AbstractAnnotationPageServiceImpl<A extends AbstractAnnota
         }
 
         if (page < totalPages) {
-            String nextIri = buildPageIri(collectionId, page + 1, embeddedDescriptions);
-            jsonMap.put(ActivityStreamConstants.URI_NEXT, new ArrayList<Map<String, Object>>() {
-                {
-                    add(new HashMap<String, Object>() {
-                        {
-                            put(JSONLDConstants.ATTRIBUTE_ID, nextIri);
-                        }
-                    });
-                }
-            });
-        }
-
-        if (embeddedDescriptions) {
-            List<Map<String, Object>> annotationDescriptions = convertToDescriptions(annotations);
-            jsonMap.put(ActivityStreamConstants.URI_ITEMS, new ArrayList<Map<String, Object>>() {
-                {
-                    add(new HashMap<String, Object>() {
-                        {
-                            put(JSONLDConstants.ATTRIBUTE_LIST, new ArrayList<Map<String, Object>>() {
-                                {
-                                    addAll(annotationDescriptions);
-                                }
-                            });
-                        }
-                    });
-
-                }
-            });
-
-        } else {
-            List<Map<String, Object>> annotationIris = convertToIris(annotations);
-            jsonMap.put(ActivityStreamConstants.URI_ITEMS, new ArrayList<Map<String, Object>>() {
-                {
-                    add(new HashMap<String, Object>() {
-                        {
-                            put(JSONLDConstants.ATTRIBUTE_LIST, new ArrayList<Map<String, Object>>() {
-                                {
-                                    addAll(annotationIris);
-                                }
-                            });
-                        }
-                    });
-
-                }
-            });
-        }
-
-        P annotationPage = convertToAnnotationPage(jsonMap);
-        return new ServiceResponse<P>(Status.OK, annotationPage);
-    }
-
-    @Override
-    @SuppressWarnings("serial")
-    @Transactional(readOnly = true)
-    public ServiceResponse<P> searchAnnotationPage(String targetIri, boolean embeddedDescriptions, int page) {
-
-        ServiceResponse<List<A>> serviceResponse = annotationService.searchAnnotations(targetIri);
-
-        List<A> annotations = serviceResponse.getObj();
-
-        int totalPages = (int) Math.floor((double) annotations.size() / pageSize);
-        int from = Math.min(annotations.size(), Math.max(0, page * pageSize));
-        int to = Math.min(annotations.size(), (page + 1) * pageSize);
-        annotations = annotations.subList(from, to);
-
-        Map<String, Object> jsonMap = new HashMap<String, Object>();
-        jsonMap.put(JSONLDConstants.ATTRBUTE_TYPE, ActivityStreamConstants.URI_ORDERED_COLLECTION_PAGE);
-
-        String partOfIri = buildCollectionSearchIri(targetIri);
-        jsonMap.put(ActivityStreamConstants.URI_PART_OF, new ArrayList<Map<String, Object>>() {
-            {
-                add(new HashMap<String, Object>() {
-                    {
-                        put(JSONLDConstants.ATTRIBUTE_ID, partOfIri);
-
-                    }
-                });
-            }
-        });
-
-        jsonMap.put(ActivityStreamConstants.URI_START_INDEX, new ArrayList<Map<String, Object>>() {
-            {
-                add(new HashMap<String, Object>() {
-                    {
-                        put(JSONLDConstants.ATTRBUTE_TYPE, XMLSchemaConstants.URI_NON_NEGATIVE_INTEGER);
-                        put(JSONLDConstants.ATTRIBUTE_VALUE, from);
-                    }
-                });
-            }
-        });
-
-        if (page > 0) {
-            String prevIri = buildPageSearchIri(targetIri, page - 1, embeddedDescriptions);
-            jsonMap.put(ActivityStreamConstants.URI_PREV, new ArrayList<Map<String, Object>>() {
-                {
-                    add(new HashMap<String, Object>() {
-                        {
-                            put(JSONLDConstants.ATTRIBUTE_ID, prevIri);
-                        }
-                    });
-                }
-            });
-        }
-
-        if (page < totalPages) {
-            String nextIri = buildPageSearchIri(targetIri, page + 1, embeddedDescriptions);
+            String nextIri = buildPageIri(searchType, searchQuery, page + 1, embeddedDescriptions);
             jsonMap.put(ActivityStreamConstants.URI_NEXT, new ArrayList<Map<String, Object>>() {
                 {
                     add(new HashMap<String, Object>() {

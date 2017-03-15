@@ -44,6 +44,7 @@ public abstract class AbstractAnnotationServiceImplTest<A extends AbstractAnnota
     public void before() {
         this.iriBuilderService = mock(IRIBuilderService.class);
         this.annotationStoreRepository = mock(AnnotationStoreRepository.class);
+        this.annotationSearchRepository = mock(AnnotationSearchRepository.class);
         this.annotationService = createAnnotationService(iriBuilderService, annotationStoreRepository, annotationSearchRepository);
     }
 

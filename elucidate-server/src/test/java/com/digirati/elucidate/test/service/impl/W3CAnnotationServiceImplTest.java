@@ -21,7 +21,7 @@ public class W3CAnnotationServiceImplTest extends AbstractAnnotationServiceImplT
 
     @Override
     protected AbstractAnnotationService<W3CAnnotation, W3CAnnotationCollection> createAnnotationService(IRIBuilderService iriBuilderService, AnnotationStoreRepository annotationStoreRepository, AnnotationSearchRepository annotationSearchRepository) {
-        return new W3CAnnotationServiceImpl(iriBuilderService, annotationStoreRepository, annotationSearchRepository, new StaticIDGenerator());
+        return new W3CAnnotationServiceImpl(annotationStoreRepository, annotationSearchRepository, iriBuilderService, new StaticIDGenerator());
     }
 
     @Override

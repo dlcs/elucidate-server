@@ -11,6 +11,7 @@ import com.digirati.elucidate.common.model.annotation.oa.OAAnnotationCollection;
 import com.digirati.elucidate.common.model.annotation.oa.OAAnnotationPage;
 import com.digirati.elucidate.common.service.IRIBuilderService;
 import com.digirati.elucidate.converter.OAToW3CAnnotationPageConverter;
+import com.digirati.elucidate.model.enumeration.SearchType;
 import com.digirati.elucidate.service.OAAnnotationPageService;
 import com.digirati.elucidate.service.OAAnnotationService;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -24,7 +25,7 @@ public class OAAnnotationPageServiceImpl extends AbstractAnnotationPageServiceIm
     private IRIBuilderService iriBuilderService;
 
     @Autowired
-    public OAAnnotationPageServiceImpl(OAAnnotationService oaAnnotationService, IRIBuilderService iriBuilderService, @Value("${annotation.page.size}") int pageSize) {
+    public OAAnnotationPageServiceImpl(IRIBuilderService iriBuilderService, OAAnnotationService oaAnnotationService, @Value("${annotation.page.size}") int pageSize) {
         super(oaAnnotationService, pageSize);
         this.iriBuilderService = iriBuilderService;
     }
@@ -44,22 +45,24 @@ public class OAAnnotationPageServiceImpl extends AbstractAnnotationPageServiceIm
     }
 
     @Override
-    protected String buildCollectionIri(String collectionId) {
-        return iriBuilderService.buildOACollectionIri(collectionId);
+    protected String buildCollectionIri(SearchType searchType, String searchQuery) {
+        if (searchType.equals(SearchType.COLLECTION_ID)) {
+            return iriBuilderService.buildOACollectionIri(searchQuery);
+        } else if (searchType.equals(SearchType.TARGET_IRI)) {
+            return iriBuilderService.buildOACollectionSearchIri(searchQuery);
+        } else {
+            throw new IllegalArgumentException(String.format("Unexpected SearchType [%s]", searchType));
+        }
     }
 
     @Override
-    protected String buildCollectionSearchIri(String targetIri) {
-        return iriBuilderService.buildOACollectionSearchIri(targetIri);
-    }
-
-    @Override
-    protected String buildPageIri(String collectionId, int page, boolean embeddedDescriptions) {
-        return iriBuilderService.buildOAPageIri(collectionId, page, embeddedDescriptions);
-    }
-
-    @Override
-    protected String buildPageSearchIri(String targetIri, int page, boolean embeddedDescriptions) {
-        return iriBuilderService.buildOAPageSearchIri(targetIri, page, embeddedDescriptions);
+    protected String buildPageIri(SearchType searchType, String searchQuery, int page, boolean embeddedDescriptions) {
+        if (searchType.equals(SearchType.COLLECTION_ID)) {
+            return iriBuilderService.buildOAPageIri(searchQuery, page, embeddedDescriptions);
+        } else if (searchType.equals(SearchType.TARGET_IRI)) {
+            return iriBuilderService.buildOAPageSearchIri(searchQuery, page, embeddedDescriptions);
+        } else {
+            throw new IllegalArgumentException(String.format("Unexpected SearchType [%s]", searchType));
+        }
     }
 }

@@ -20,7 +20,7 @@ public class W3CAnnotationServiceImpl extends AbstractAnnotationServiceImpl<W3CA
     private IRIBuilderService iriBuilderService;
 
     @Autowired
-    public W3CAnnotationServiceImpl(IRIBuilderService iriBuilderService, AnnotationStoreRepository annotationStoreRepository, AnnotationSearchRepository annotationSearchRepository, @Qualifier("annotationIdGenerator") IDGenerator idGenerator) {
+    public W3CAnnotationServiceImpl(AnnotationStoreRepository annotationStoreRepository, AnnotationSearchRepository annotationSearchRepository, IRIBuilderService iriBuilderService, @Qualifier("annotationIdGenerator") IDGenerator idGenerator) {
         super(annotationStoreRepository, annotationSearchRepository, idGenerator);
         this.iriBuilderService = iriBuilderService;
     }

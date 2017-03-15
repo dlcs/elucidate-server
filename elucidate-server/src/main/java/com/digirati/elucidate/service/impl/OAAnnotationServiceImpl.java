@@ -27,7 +27,7 @@ public class OAAnnotationServiceImpl extends AbstractAnnotationServiceImpl<OAAnn
     private IRIBuilderService iriBuilderService;
 
     @Autowired
-    public OAAnnotationServiceImpl(IRIBuilderService iriBuilderService, AnnotationStoreRepository annotationStoreRepository, AnnotationSearchRepository annotationSearchRepository, @Qualifier("annotationIdGenerator") IDGenerator idGenerator) {
+    public OAAnnotationServiceImpl(AnnotationStoreRepository annotationStoreRepository, AnnotationSearchRepository annotationSearchRepository, IRIBuilderService iriBuilderService, @Qualifier("annotationIdGenerator") IDGenerator idGenerator) {
         super(annotationStoreRepository, annotationSearchRepository, idGenerator);
         this.iriBuilderService = iriBuilderService;
     }
