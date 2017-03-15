@@ -55,11 +55,11 @@ public abstract class AbstractAnnotationCollectionServiceImpl<A extends Abstract
 
     protected abstract String buildCollectionIri(String collectionId);
 
-    protected abstract String buildCollectionSearchIri(String targetId);
+    protected abstract String buildCollectionSearchIri(String targetIri);
 
     protected abstract String buildPageIri(String collectionId, int page, boolean embeddedDescriptions);
 
-    protected abstract String buildPageSearchIri(String targetId, int page, boolean embeddedDescriptions);
+    protected abstract String buildPageSearchIri(String targetIri, int page, boolean embeddedDescriptions);
 
     @Override
     @SuppressWarnings("serial")
@@ -184,12 +184,12 @@ public abstract class AbstractAnnotationCollectionServiceImpl<A extends Abstract
     @Override
     @SuppressWarnings("serial")
     @Transactional(readOnly = true)
-    public ServiceResponse<C> searchAnnotationCollection(String targetId, ClientPreference clientPref) {
+    public ServiceResponse<C> searchAnnotationCollections(String targetIri, ClientPreference clientPref) {
 
         W3CAnnotationCollection w3cAnnotationCollection = new W3CAnnotationCollection();
         w3cAnnotationCollection.setJsonMap(new HashMap<String, Object>());
 
-        List<W3CAnnotation> w3cAnnotations = annotationSearchRepository.getAnnotationsByTargetId(targetId);
+        List<W3CAnnotation> w3cAnnotations = annotationSearchRepository.getAnnotationsByTargetIri(targetIri);
         int totalAnnotations = w3cAnnotations.size();
         int totalPages = (int) Math.floor((double) totalAnnotations / pageSize);
 
@@ -201,7 +201,7 @@ public abstract class AbstractAnnotationCollectionServiceImpl<A extends Abstract
             }
         });
 
-        String iri = buildCollectionSearchIri(targetId);
+        String iri = buildCollectionSearchIri(targetIri);
         jsonMap.put(JSONLDConstants.ATTRIBUTE_ID, iri);
 
         Object firstObject;
@@ -213,7 +213,7 @@ public abstract class AbstractAnnotationCollectionServiceImpl<A extends Abstract
                 {
                     add(new HashMap<String, Object>() {
                         {
-                            put(JSONLDConstants.ATTRIBUTE_ID, buildPageSearchIri(targetId, 0, false));
+                            put(JSONLDConstants.ATTRIBUTE_ID, buildPageSearchIri(targetIri, 0, false));
                         }
                     });
                 }
@@ -223,7 +223,7 @@ public abstract class AbstractAnnotationCollectionServiceImpl<A extends Abstract
                 {
                     add(new HashMap<String, Object>() {
                         {
-                            put(JSONLDConstants.ATTRIBUTE_ID, buildPageSearchIri(targetId, 0, false));
+                            put(JSONLDConstants.ATTRIBUTE_ID, buildPageSearchIri(targetIri, 0, false));
                         }
                     });
                 }
@@ -232,9 +232,9 @@ public abstract class AbstractAnnotationCollectionServiceImpl<A extends Abstract
         } else {
             ServiceResponse<P> serviceResponse;
             if (clientPref.equals(ClientPreference.CONTAINED_IRIS)) {
-                serviceResponse = annotationPageService.searchAnnotationPage(targetId, false, 0);
+                serviceResponse = annotationPageService.searchAnnotationPage(targetIri, false, 0);
             } else {
-                serviceResponse = annotationPageService.searchAnnotationPage(targetId, true, 0);
+                serviceResponse = annotationPageService.searchAnnotationPage(targetIri, true, 0);
             }
 
             Status status = serviceResponse.getStatus();
@@ -248,7 +248,7 @@ public abstract class AbstractAnnotationCollectionServiceImpl<A extends Abstract
                 {
                     add(new HashMap<String, Object>() {
                         {
-                            put(JSONLDConstants.ATTRIBUTE_ID, buildPageSearchIri(targetId, totalPages, true));
+                            put(JSONLDConstants.ATTRIBUTE_ID, buildPageSearchIri(targetIri, totalPages, true));
                         }
                     });
                 }

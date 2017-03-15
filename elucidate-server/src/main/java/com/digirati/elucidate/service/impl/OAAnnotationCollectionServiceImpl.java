@@ -82,8 +82,8 @@ public class OAAnnotationCollectionServiceImpl extends AbstractAnnotationCollect
     }
 
     @Override
-    protected String buildCollectionSearchIri(String targetId) {
-        return iriBuilderService.buildOACollectionSearchIri(targetId);
+    protected String buildCollectionSearchIri(String targetIri) {
+        return iriBuilderService.buildOACollectionSearchIri(targetIri);
     }
 
     @Override
@@ -92,7 +92,7 @@ public class OAAnnotationCollectionServiceImpl extends AbstractAnnotationCollect
     }
 
     @Override
-    protected String buildPageSearchIri(String targetId, int page, boolean embeddedDescriptions) {
-        return iriBuilderService.buildOAPageSearchIri(targetId, page, embeddedDescriptions);
+    protected String buildPageSearchIri(String targetIri, int page, boolean embeddedDescriptions) {
+        return iriBuilderService.buildOAPageSearchIri(targetIri, page, embeddedDescriptions);
     }
 }

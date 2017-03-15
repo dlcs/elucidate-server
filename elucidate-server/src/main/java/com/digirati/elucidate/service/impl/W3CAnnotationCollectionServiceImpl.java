@@ -45,8 +45,8 @@ public class W3CAnnotationCollectionServiceImpl extends AbstractAnnotationCollec
     }
 
     @Override
-    protected String buildCollectionSearchIri(String targetId) {
-        return iriBuilderService.buildW3CCollectionSearchIri(targetId);
+    protected String buildCollectionSearchIri(String targetIri) {
+        return iriBuilderService.buildW3CCollectionSearchIri(targetIri);
     }
 
     @Override
@@ -55,7 +55,7 @@ public class W3CAnnotationCollectionServiceImpl extends AbstractAnnotationCollec
     }
 
     @Override
-    protected String buildPageSearchIri(String targetId, int page, boolean embeddedDescriptions) {
-        return iriBuilderService.buildW3CPageSearchIri(targetId, page, embeddedDescriptions);
+    protected String buildPageSearchIri(String targetIri, int page, boolean embeddedDescriptions) {
+        return iriBuilderService.buildW3CPageSearchIri(targetIri, page, embeddedDescriptions);
     }
 }

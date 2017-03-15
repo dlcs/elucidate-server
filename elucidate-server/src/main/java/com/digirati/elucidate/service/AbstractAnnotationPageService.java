@@ -9,5 +9,5 @@ public abstract interface AbstractAnnotationPageService<A extends AbstractAnnota
 
     public ServiceResponse<P> getAnnotationPage(String collectionId, boolean embeddedDescriptions, int page);
 
-    public ServiceResponse<P> searchAnnotationPage(String targetId, boolean embeddedDescriptions, int page);
+    public ServiceResponse<P> searchAnnotationPage(String targetIri, boolean embeddedDescriptions, int page);
 }

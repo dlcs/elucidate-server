@@ -38,22 +38,22 @@ public abstract class AbstractAnnotationSearchController<A extends AbstractAnnot
     }
 
     @RequestMapping(value = REQUEST_PATH, method = RequestMethod.GET)
-    public ResponseEntity<?> get(@RequestParam(value = URLConstants.PARAM_TARGET, required = true) String targetId, @RequestParam(value = URLConstants.PARAM_PAGE, required = false) Integer page, @RequestParam(value = URLConstants.PARAM_IRIS, required = false, defaultValue = "false") boolean iris, @RequestParam(value = URLConstants.PARAM_DESC, required = false, defaultValue = "false") boolean descriptions, HttpServletRequest request) {
+    public ResponseEntity<?> get(@RequestParam(value = URLConstants.PARAM_TARGET, required = true) String targetIri, @RequestParam(value = URLConstants.PARAM_PAGE, required = false) Integer page, @RequestParam(value = URLConstants.PARAM_IRIS, required = false, defaultValue = "false") boolean iris, @RequestParam(value = URLConstants.PARAM_DESC, required = false, defaultValue = "false") boolean descriptions, HttpServletRequest request) {
         if (page == null) {
-            return processCollectionRequest(targetId, request);
+            return processCollectionRequest(targetIri, request);
         } else {
-            return processPageRequest(targetId, page, iris, descriptions);
+            return processPageRequest(targetIri, page, iris, descriptions);
         }
     }
 
-    private ResponseEntity<?> processCollectionRequest(String targetId, HttpServletRequest request) {
+    private ResponseEntity<?> processCollectionRequest(String targetIri, HttpServletRequest request) {
 
         ClientPreference clientPref = determineClientPreference(request);
         if (clientPref == null) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         }
 
-        ServiceResponse<C> serviceResponse = annotationCollectionService.searchAnnotationCollection(targetId, clientPref);
+        ServiceResponse<C> serviceResponse = annotationCollectionService.searchAnnotationCollections(targetIri, clientPref);
         Status status = serviceResponse.getStatus();
 
         if (status.equals(Status.NOT_FOUND)) {
@@ -63,7 +63,7 @@ public abstract class AbstractAnnotationSearchController<A extends AbstractAnnot
         return ResponseEntity.ok(serviceResponse.getObj());
     }
 
-    private ResponseEntity<?> processPageRequest(String targetId, int page, boolean iris, boolean descs) {
+    private ResponseEntity<?> processPageRequest(String targetIri, int page, boolean iris, boolean descs) {
 
         if (iris && descs) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
@@ -71,9 +71,9 @@ public abstract class AbstractAnnotationSearchController<A extends AbstractAnnot
 
         ServiceResponse<P> serviceResponse;
         if (!iris) {
-            serviceResponse = annotationPageService.searchAnnotationPage(targetId, true, page);
+            serviceResponse = annotationPageService.searchAnnotationPage(targetIri, true, page);
         } else {
-            serviceResponse = annotationPageService.searchAnnotationPage(targetId, false, page);
+            serviceResponse = annotationPageService.searchAnnotationPage(targetIri, false, page);
         }
         Status status = serviceResponse.getStatus();
 

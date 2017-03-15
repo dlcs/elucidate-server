@@ -11,5 +11,5 @@ public abstract interface AbstractAnnotationCollectionService<A extends Abstract
 
     public ServiceResponse<C> createAnnotationCollection(String collectionId, C annotationCollection);
 
-    public ServiceResponse<C> searchAnnotationCollection(String targetId, ClientPreference clientPref);
+    public ServiceResponse<C> searchAnnotationCollections(String targetIri, ClientPreference clientPref);
 }

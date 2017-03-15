@@ -207,9 +207,9 @@ public abstract class AbstractAnnotationServiceImpl<A extends AbstractAnnotation
 
     @Override
     @Transactional(readOnly = true)
-    public ServiceResponse<List<A>> searchAnnotations(String targetId) {
+    public ServiceResponse<List<A>> searchAnnotations(String targetIri) {
 
-        List<W3CAnnotation> w3cAnnotations = annotationSearchRepository.getAnnotationsByTargetId(targetId);
+        List<W3CAnnotation> w3cAnnotations = annotationSearchRepository.getAnnotationsByTargetIri(targetIri);
 
         List<A> annotations = new ArrayList<A>();
         for (W3CAnnotation w3cAnnotation : w3cAnnotations) {

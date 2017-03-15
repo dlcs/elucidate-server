@@ -23,9 +23,9 @@ public class AnnotationSearchRepositoryJDBCImpl extends AbstractRepositoryJDBCIm
     }
 
     @Override
-    public List<W3CAnnotation> getAnnotationsByTargetId(String targetId) {
+    public List<W3CAnnotation> getAnnotationsByTargetIri(String targetIri) {
         String sql = "SELECT * FROM annotation_search_by_target(?)";
-        Object[] params = {targetId};
+        Object[] params = {targetIri};
         int[] sqlTypes = {Types.VARCHAR};
 
         return queryForList(sql, params, sqlTypes, new W3CAnnotationRowMapper());

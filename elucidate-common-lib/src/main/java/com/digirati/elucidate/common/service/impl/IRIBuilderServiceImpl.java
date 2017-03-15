@@ -76,20 +76,20 @@ public class IRIBuilderServiceImpl implements IRIBuilderService {
 
     @Override
     @SuppressWarnings("serial")
-    public String buildW3CCollectionSearchIri(String targetId) {
+    public String buildW3CCollectionSearchIri(String targetIri) {
         return buildIri("w3c/search", new HashMap<String, Object>() {
             {
-                put("target", targetId);
+                put("target", targetIri);
             }
         });
     }
 
     @Override
     @SuppressWarnings("serial")
-    public String buildW3CPageSearchIri(String targetId, int page, boolean embeddedDescriptions) {
+    public String buildW3CPageSearchIri(String targetIri, int page, boolean embeddedDescriptions) {
         return buildIri("w3c/search", new HashMap<String, Object>() {
             {
-                put("target", targetId);
+                put("target", targetIri);
                 put(URLConstants.PARAM_PAGE, page);
                 if (embeddedDescriptions) {
                     put(URLConstants.PARAM_DESC, 1);
@@ -113,10 +113,10 @@ public class IRIBuilderServiceImpl implements IRIBuilderService {
 
     @Override
     @SuppressWarnings("serial")
-    public String buildOACollectionSearchIri(String targetId) {
+    public String buildOACollectionSearchIri(String targetIri) {
         return buildIri("oa/search", new HashMap<String, Object>() {
             {
-                put("target", targetId);
+                put("target", targetIri);
             }
         });
     }
@@ -139,10 +139,10 @@ public class IRIBuilderServiceImpl implements IRIBuilderService {
 
     @Override
     @SuppressWarnings("serial")
-    public String buildOAPageSearchIri(String targetId, int page, boolean embeddedDescriptions) {
+    public String buildOAPageSearchIri(String targetIri, int page, boolean embeddedDescriptions) {
         return buildIri("oa/search", new HashMap<String, Object>() {
             {
-                put("target", targetId);
+                put("target", targetIri);
                 put(URLConstants.PARAM_PAGE, page);
                 if (embeddedDescriptions) {
                     put(URLConstants.PARAM_DESC, 1);

@@ -32,11 +32,11 @@ public abstract class AbstractAnnotationPageServiceImpl<A extends AbstractAnnota
 
     protected abstract String buildCollectionIri(String collectionId);
 
-    protected abstract String buildCollectionSearchIri(String targetId);
+    protected abstract String buildCollectionSearchIri(String targetIri);
 
     protected abstract String buildPageIri(String collectionId, int page, boolean embeddedDescriptions);
 
-    protected abstract String buildPageSearchIri(String targetId, int page, boolean embeddedDescriptions);
+    protected abstract String buildPageSearchIri(String targetIri, int page, boolean embeddedDescriptions);
 
     @Override
     @SuppressWarnings("serial")
@@ -155,9 +155,9 @@ public abstract class AbstractAnnotationPageServiceImpl<A extends AbstractAnnota
     @Override
     @SuppressWarnings("serial")
     @Transactional(readOnly = true)
-    public ServiceResponse<P> searchAnnotationPage(String targetId, boolean embeddedDescriptions, int page) {
+    public ServiceResponse<P> searchAnnotationPage(String targetIri, boolean embeddedDescriptions, int page) {
 
-        ServiceResponse<List<A>> serviceResponse = annotationService.searchAnnotations(targetId);
+        ServiceResponse<List<A>> serviceResponse = annotationService.searchAnnotations(targetIri);
 
         List<A> annotations = serviceResponse.getObj();
 
@@ -169,7 +169,7 @@ public abstract class AbstractAnnotationPageServiceImpl<A extends AbstractAnnota
         Map<String, Object> jsonMap = new HashMap<String, Object>();
         jsonMap.put(JSONLDConstants.ATTRBUTE_TYPE, ActivityStreamConstants.URI_ORDERED_COLLECTION_PAGE);
 
-        String partOfIri = buildCollectionSearchIri(targetId);
+        String partOfIri = buildCollectionSearchIri(targetIri);
         jsonMap.put(ActivityStreamConstants.URI_PART_OF, new ArrayList<Map<String, Object>>() {
             {
                 add(new HashMap<String, Object>() {
@@ -193,7 +193,7 @@ public abstract class AbstractAnnotationPageServiceImpl<A extends AbstractAnnota
         });
 
         if (page > 0) {
-            String prevIri = buildPageSearchIri(targetId, page - 1, embeddedDescriptions);
+            String prevIri = buildPageSearchIri(targetIri, page - 1, embeddedDescriptions);
             jsonMap.put(ActivityStreamConstants.URI_PREV, new ArrayList<Map<String, Object>>() {
                 {
                     add(new HashMap<String, Object>() {
@@ -206,7 +206,7 @@ public abstract class AbstractAnnotationPageServiceImpl<A extends AbstractAnnota
         }
 
         if (page < totalPages) {
-            String nextIri = buildPageSearchIri(targetId, page + 1, embeddedDescriptions);
+            String nextIri = buildPageSearchIri(targetIri, page + 1, embeddedDescriptions);
             jsonMap.put(ActivityStreamConstants.URI_NEXT, new ArrayList<Map<String, Object>>() {
                 {
                     add(new HashMap<String, Object>() {
