@@ -13,6 +13,7 @@ import com.digirati.elucidate.common.service.IRIBuilderService;
 import com.digirati.elucidate.converter.OAToW3CAnnotationConverter;
 import com.digirati.elucidate.converter.W3CToOAAnnotationConverter;
 import com.digirati.elucidate.infrastructure.generator.IDGenerator;
+import com.digirati.elucidate.repository.AnnotationSearchRepository;
 import com.digirati.elucidate.repository.AnnotationStoreRepository;
 import com.digirati.elucidate.service.OAAnnotationService;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -26,8 +27,8 @@ public class OAAnnotationServiceImpl extends AbstractAnnotationServiceImpl<OAAnn
     private IRIBuilderService iriBuilderService;
 
     @Autowired
-    public OAAnnotationServiceImpl(IRIBuilderService iriBuilderService, AnnotationStoreRepository annotationRepository, @Qualifier("annotationIdGenerator") IDGenerator idGenerator) {
-        super(annotationRepository, idGenerator);
+    public OAAnnotationServiceImpl(IRIBuilderService iriBuilderService, AnnotationStoreRepository annotationRepository, AnnotationSearchRepository annotationSearchRepository, @Qualifier("annotationIdGenerator") IDGenerator idGenerator) {
+        super(annotationRepository, annotationSearchRepository, idGenerator);
         this.iriBuilderService = iriBuilderService;
     }
 

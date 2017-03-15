@@ -8,6 +8,7 @@ import com.digirati.elucidate.common.model.annotation.w3c.W3CAnnotation;
 import com.digirati.elucidate.common.model.annotation.w3c.W3CAnnotationCollection;
 import com.digirati.elucidate.common.service.IRIBuilderService;
 import com.digirati.elucidate.infrastructure.generator.IDGenerator;
+import com.digirati.elucidate.repository.AnnotationSearchRepository;
 import com.digirati.elucidate.repository.AnnotationStoreRepository;
 import com.digirati.elucidate.service.W3CAnnotationService;
 
@@ -19,8 +20,8 @@ public class W3CAnnotationServiceImpl extends AbstractAnnotationServiceImpl<W3CA
     private IRIBuilderService iriBuilderService;
 
     @Autowired
-    public W3CAnnotationServiceImpl(IRIBuilderService iriBuilderService, AnnotationStoreRepository annotationRepository, @Qualifier("annotationIdGenerator") IDGenerator idGenerator) {
-        super(annotationRepository, idGenerator);
+    public W3CAnnotationServiceImpl(IRIBuilderService iriBuilderService, AnnotationStoreRepository annotationRepository, AnnotationSearchRepository annotationSearchRepository, @Qualifier("annotationIdGenerator") IDGenerator idGenerator) {
+        super(annotationRepository, annotationSearchRepository, idGenerator);
         this.iriBuilderService = iriBuilderService;
     }
 

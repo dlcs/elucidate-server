@@ -49,7 +49,17 @@ public class OAAnnotationPageServiceImpl extends AbstractAnnotationPageServiceIm
     }
 
     @Override
+    protected String buildCollectionSearchIri(String targetId) {
+        return iriBuilderService.buildOACollectionSearchIri(targetId);
+    }
+
+    @Override
     protected String buildPageIri(String collectionId, int page, boolean embeddedDescriptions) {
         return iriBuilderService.buildOAPageIri(collectionId, page, embeddedDescriptions);
+    }
+
+    @Override
+    protected String buildPageSearchIri(String targetId, int page, boolean embeddedDescriptions) {
+        return iriBuilderService.buildOAPageSearchIri(targetId, page, embeddedDescriptions);
     }
 }

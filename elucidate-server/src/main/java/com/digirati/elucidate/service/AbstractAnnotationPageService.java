@@ -8,4 +8,6 @@ import com.digirati.elucidate.model.ServiceResponse;
 public abstract interface AbstractAnnotationPageService<A extends AbstractAnnotation, P extends AbstractAnnotationPage, C extends AbstractAnnotationCollection> {
 
     public ServiceResponse<P> getAnnotationPage(String collectionId, boolean embeddedDescriptions, int page);
+
+    public ServiceResponse<P> searchAnnotationPage(String targetId, boolean embeddedDescriptions, int page);
 }

@@ -32,7 +32,11 @@ public abstract class AbstractAnnotationPageServiceImpl<A extends AbstractAnnota
 
     protected abstract String buildCollectionIri(String collectionId);
 
+    protected abstract String buildCollectionSearchIri(String targetId);
+
     protected abstract String buildPageIri(String collectionId, int page, boolean embeddedDescriptions);
+
+    protected abstract String buildPageSearchIri(String targetId, int page, boolean embeddedDescriptions);
 
     @Override
     @SuppressWarnings("serial")
@@ -54,7 +58,11 @@ public abstract class AbstractAnnotationPageServiceImpl<A extends AbstractAnnota
         annotations = annotations.subList(from, to);
 
         Map<String, Object> jsonMap = new HashMap<String, Object>();
-        jsonMap.put(JSONLDConstants.ATTRBUTE_TYPE, ActivityStreamConstants.URI_ORDERED_COLLECTION_PAGE);
+        jsonMap.put(JSONLDConstants.ATTRBUTE_TYPE, new ArrayList<String>() {
+            {
+                add(ActivityStreamConstants.URI_ORDERED_COLLECTION_PAGE);
+            }
+        });
 
         String partOfIri = buildCollectionIri(collectionId);
         jsonMap.put(ActivityStreamConstants.URI_PART_OF, new ArrayList<Map<String, Object>>() {
@@ -94,6 +102,111 @@ public abstract class AbstractAnnotationPageServiceImpl<A extends AbstractAnnota
 
         if (page < totalPages) {
             String nextIri = buildPageIri(collectionId, page + 1, embeddedDescriptions);
+            jsonMap.put(ActivityStreamConstants.URI_NEXT, new ArrayList<Map<String, Object>>() {
+                {
+                    add(new HashMap<String, Object>() {
+                        {
+                            put(JSONLDConstants.ATTRIBUTE_ID, nextIri);
+                        }
+                    });
+                }
+            });
+        }
+
+        if (embeddedDescriptions) {
+            List<Map<String, Object>> annotationDescriptions = convertToDescriptions(annotations);
+            jsonMap.put(ActivityStreamConstants.URI_ITEMS, new ArrayList<Map<String, Object>>() {
+                {
+                    add(new HashMap<String, Object>() {
+                        {
+                            put(JSONLDConstants.ATTRIBUTE_LIST, new ArrayList<Map<String, Object>>() {
+                                {
+                                    addAll(annotationDescriptions);
+                                }
+                            });
+                        }
+                    });
+
+                }
+            });
+
+        } else {
+            List<Map<String, Object>> annotationIris = convertToIris(annotations);
+            jsonMap.put(ActivityStreamConstants.URI_ITEMS, new ArrayList<Map<String, Object>>() {
+                {
+                    add(new HashMap<String, Object>() {
+                        {
+                            put(JSONLDConstants.ATTRIBUTE_LIST, new ArrayList<Map<String, Object>>() {
+                                {
+                                    addAll(annotationIris);
+                                }
+                            });
+                        }
+                    });
+
+                }
+            });
+        }
+
+        P annotationPage = convertToAnnotationPage(jsonMap);
+        return new ServiceResponse<P>(Status.OK, annotationPage);
+    }
+
+    @Override
+    @SuppressWarnings("serial")
+    @Transactional(readOnly = true)
+    public ServiceResponse<P> searchAnnotationPage(String targetId, boolean embeddedDescriptions, int page) {
+
+        ServiceResponse<List<A>> serviceResponse = annotationService.searchAnnotations(targetId);
+
+        List<A> annotations = serviceResponse.getObj();
+
+        int totalPages = (int) Math.floor((double) annotations.size() / pageSize);
+        int from = Math.min(annotations.size(), Math.max(0, page * pageSize));
+        int to = Math.min(annotations.size(), (page + 1) * pageSize);
+        annotations = annotations.subList(from, to);
+
+        Map<String, Object> jsonMap = new HashMap<String, Object>();
+        jsonMap.put(JSONLDConstants.ATTRBUTE_TYPE, ActivityStreamConstants.URI_ORDERED_COLLECTION_PAGE);
+
+        String partOfIri = buildCollectionSearchIri(targetId);
+        jsonMap.put(ActivityStreamConstants.URI_PART_OF, new ArrayList<Map<String, Object>>() {
+            {
+                add(new HashMap<String, Object>() {
+                    {
+                        put(JSONLDConstants.ATTRIBUTE_ID, partOfIri);
+
+                    }
+                });
+            }
+        });
+
+        jsonMap.put(ActivityStreamConstants.URI_START_INDEX, new ArrayList<Map<String, Object>>() {
+            {
+                add(new HashMap<String, Object>() {
+                    {
+                        put(JSONLDConstants.ATTRBUTE_TYPE, XMLSchemaConstants.URI_NON_NEGATIVE_INTEGER);
+                        put(JSONLDConstants.ATTRIBUTE_VALUE, from);
+                    }
+                });
+            }
+        });
+
+        if (page > 0) {
+            String prevIri = buildPageSearchIri(targetId, page - 1, embeddedDescriptions);
+            jsonMap.put(ActivityStreamConstants.URI_PREV, new ArrayList<Map<String, Object>>() {
+                {
+                    add(new HashMap<String, Object>() {
+                        {
+                            put(JSONLDConstants.ATTRIBUTE_ID, prevIri);
+                        }
+                    });
+                }
+            });
+        }
+
+        if (page < totalPages) {
+            String nextIri = buildPageSearchIri(targetId, page + 1, embeddedDescriptions);
             jsonMap.put(ActivityStreamConstants.URI_NEXT, new ArrayList<Map<String, Object>>() {
                 {
                     add(new HashMap<String, Object>() {

@@ -23,6 +23,7 @@ import com.digirati.elucidate.model.ServiceResponse;
 import com.digirati.elucidate.model.ServiceResponse.Status;
 import com.digirati.elucidate.model.enumeration.ClientPreference;
 import com.digirati.elucidate.repository.AnnotationCollectionStoreRepository;
+import com.digirati.elucidate.repository.AnnotationSearchRepository;
 import com.digirati.elucidate.repository.AnnotationStoreRepository;
 import com.digirati.elucidate.service.AbstractAnnotationCollectionService;
 import com.digirati.elucidate.service.AbstractAnnotationPageService;
@@ -35,13 +36,15 @@ public abstract class AbstractAnnotationCollectionServiceImpl<A extends Abstract
     private AbstractAnnotationPageService<A, P, C> annotationPageService;
     private AnnotationStoreRepository annotationStoreRepository;
     private AnnotationCollectionStoreRepository annotationCollectionRepository;
+    private AnnotationSearchRepository annotationSearchRepository;
     private IDGenerator idGenerator;
     private int pageSize;
 
-    public AbstractAnnotationCollectionServiceImpl(AbstractAnnotationPageService<A, P, C> annotationPageService, AnnotationStoreRepository annotationStoreRepository, AnnotationCollectionStoreRepository annotationCollectionRepository, IDGenerator idGenerator, int pageSize) {
+    public AbstractAnnotationCollectionServiceImpl(AbstractAnnotationPageService<A, P, C> annotationPageService, AnnotationStoreRepository annotationStoreRepository, AnnotationCollectionStoreRepository annotationCollectionRepository, AnnotationSearchRepository annotationSearchRepository, IDGenerator idGenerator, int pageSize) {
         this.annotationPageService = annotationPageService;
         this.annotationStoreRepository = annotationStoreRepository;
         this.annotationCollectionRepository = annotationCollectionRepository;
+        this.annotationSearchRepository = annotationSearchRepository;
         this.idGenerator = idGenerator;
         this.pageSize = pageSize;
     }
@@ -52,7 +55,11 @@ public abstract class AbstractAnnotationCollectionServiceImpl<A extends Abstract
 
     protected abstract String buildCollectionIri(String collectionId);
 
+    protected abstract String buildCollectionSearchIri(String targetId);
+
     protected abstract String buildPageIri(String collectionId, int page, boolean embeddedDescriptions);
+
+    protected abstract String buildPageSearchIri(String targetId, int page, boolean embeddedDescriptions);
 
     @Override
     @SuppressWarnings("serial")
@@ -172,6 +179,96 @@ public abstract class AbstractAnnotationCollectionServiceImpl<A extends Abstract
 
         annotationCollectionRepository.createAnnotationCollection(collectionId, w3cAnnotationCollectionJson);
         return getAnnotationCollection(collectionId, ClientPreference.CONTAINED_DESCRIPTIONS);
+    }
+
+    @Override
+    @SuppressWarnings("serial")
+    @Transactional(readOnly = true)
+    public ServiceResponse<C> searchAnnotationCollection(String targetId, ClientPreference clientPref) {
+
+        W3CAnnotationCollection w3cAnnotationCollection = new W3CAnnotationCollection();
+        w3cAnnotationCollection.setJsonMap(new HashMap<String, Object>());
+
+        List<W3CAnnotation> w3cAnnotations = annotationSearchRepository.getAnnotationsByTargetId(targetId);
+        int totalAnnotations = w3cAnnotations.size();
+        int totalPages = (int) Math.floor((double) totalAnnotations / pageSize);
+
+        C annotationCollection = convertToAnnotationCollection(w3cAnnotationCollection);
+        Map<String, Object> jsonMap = annotationCollection.getJsonMap();
+        jsonMap.put(JSONLDConstants.ATTRBUTE_TYPE, new ArrayList<String>() {
+            {
+                add(ActivityStreamConstants.URI_ORDERED_COLLECTION);
+            }
+        });
+
+        String iri = buildCollectionSearchIri(targetId);
+        jsonMap.put(JSONLDConstants.ATTRIBUTE_ID, iri);
+
+        Object firstObject;
+        Object lastObject;
+
+        if (clientPref.equals(ClientPreference.MINIMAL_CONTAINER)) {
+
+            firstObject = new ArrayList<Map<String, Object>>() {
+                {
+                    add(new HashMap<String, Object>() {
+                        {
+                            put(JSONLDConstants.ATTRIBUTE_ID, buildPageSearchIri(targetId, 0, false));
+                        }
+                    });
+                }
+            };
+
+            lastObject = new ArrayList<Map<String, Object>>() {
+                {
+                    add(new HashMap<String, Object>() {
+                        {
+                            put(JSONLDConstants.ATTRIBUTE_ID, buildPageSearchIri(targetId, 0, false));
+                        }
+                    });
+                }
+            };
+
+        } else {
+            ServiceResponse<P> serviceResponse;
+            if (clientPref.equals(ClientPreference.CONTAINED_IRIS)) {
+                serviceResponse = annotationPageService.searchAnnotationPage(targetId, false, 0);
+            } else {
+                serviceResponse = annotationPageService.searchAnnotationPage(targetId, true, 0);
+            }
+
+            Status status = serviceResponse.getStatus();
+            if (!status.equals(Status.OK)) {
+                return new ServiceResponse<C>(status, null);
+            }
+
+            firstObject = serviceResponse.getObj().getJsonMap();
+
+            lastObject = new ArrayList<Map<String, Object>>() {
+                {
+                    add(new HashMap<String, Object>() {
+                        {
+                            put(JSONLDConstants.ATTRIBUTE_ID, buildPageSearchIri(targetId, totalPages, true));
+                        }
+                    });
+                }
+            };
+        }
+
+        jsonMap.put(ActivityStreamConstants.URI_FIRST, firstObject);
+        jsonMap.put(ActivityStreamConstants.URI_LAST, lastObject);
+        jsonMap.put(ActivityStreamConstants.URI_TOTAL_ITEMS, new ArrayList<Map<String, Object>>() {
+            {
+                add(new HashMap<String, Object>() {
+                    {
+                        put(JSONLDConstants.ATTRBUTE_TYPE, XMLSchemaConstants.URI_NON_NEGATIVE_INTEGER);
+                        put(JSONLDConstants.ATTRIBUTE_VALUE, totalAnnotations);
+                    }
+                });
+            }
+        });
+
+        return new ServiceResponse<C>(Status.OK, annotationCollection);
     }
 
     private boolean validateCollectionId(String collectionId) {

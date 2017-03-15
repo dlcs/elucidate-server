@@ -38,7 +38,17 @@ public class W3CAnnotationPageServiceImpl extends AbstractAnnotationPageServiceI
     }
 
     @Override
+    protected String buildCollectionSearchIri(String targetId) {
+        return iriBuilderService.buildW3CCollectionSearchIri(targetId);
+    }
+
+    @Override
     protected String buildPageIri(String collectionId, int page, boolean embeddedDescriptions) {
         return iriBuilderService.buildW3CPageIri(collectionId, page, embeddedDescriptions);
+    }
+
+    @Override
+    protected String buildPageSearchIri(String targetId, int page, boolean embeddedDescriptions) {
+        return iriBuilderService.buildW3CPageSearchIri(targetId, page, embeddedDescriptions);
     }
 }

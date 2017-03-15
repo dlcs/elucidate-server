@@ -17,4 +17,6 @@ public abstract interface AbstractAnnotationService<A extends AbstractAnnotation
     public ServiceResponse<A> updateAnnotation(String collectionId, String annotationId, A annotation, String cacheKey);
 
     public ServiceResponse<Void> deleteAnnotation(String collectionId, String annotationId, String cacheKey);
+
+    public ServiceResponse<List<A>> searchAnnotations(String targetId);
 }

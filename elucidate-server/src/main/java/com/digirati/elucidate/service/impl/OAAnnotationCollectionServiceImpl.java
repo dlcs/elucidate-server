@@ -16,6 +16,7 @@ import com.digirati.elucidate.converter.OAToW3CAnnotationCollectionConverter;
 import com.digirati.elucidate.converter.W3CToOAAnnotationCollectionConverter;
 import com.digirati.elucidate.infrastructure.generator.IDGenerator;
 import com.digirati.elucidate.repository.AnnotationCollectionStoreRepository;
+import com.digirati.elucidate.repository.AnnotationSearchRepository;
 import com.digirati.elucidate.repository.AnnotationStoreRepository;
 import com.digirati.elucidate.service.OAAnnotationCollectionService;
 import com.digirati.elucidate.service.OAAnnotationPageService;
@@ -30,8 +31,8 @@ public class OAAnnotationCollectionServiceImpl extends AbstractAnnotationCollect
     private IRIBuilderService iriBuilderService;
 
     @Autowired
-    public OAAnnotationCollectionServiceImpl(IRIBuilderService iriBuilderService, OAAnnotationPageService oaAnnotationPageService, AnnotationStoreRepository annotationRepository, AnnotationCollectionStoreRepository annotationCollectionRepository, @Qualifier("collectionIdGenerator") IDGenerator idGenerator, @Value("${annotation.page.size}") int pageSize) {
-        super(oaAnnotationPageService, annotationRepository, annotationCollectionRepository, idGenerator, pageSize);
+    public OAAnnotationCollectionServiceImpl(IRIBuilderService iriBuilderService, OAAnnotationPageService oaAnnotationPageService, AnnotationStoreRepository annotationRepository, AnnotationCollectionStoreRepository annotationCollectionRepository, AnnotationSearchRepository annotationSearchRepository, @Qualifier("collectionIdGenerator") IDGenerator idGenerator, @Value("${annotation.page.size}") int pageSize) {
+        super(oaAnnotationPageService, annotationRepository, annotationCollectionRepository, annotationSearchRepository, idGenerator, pageSize);
         this.iriBuilderService = iriBuilderService;
     }
 
@@ -81,7 +82,17 @@ public class OAAnnotationCollectionServiceImpl extends AbstractAnnotationCollect
     }
 
     @Override
+    protected String buildCollectionSearchIri(String targetId) {
+        return iriBuilderService.buildOACollectionSearchIri(targetId);
+    }
+
+    @Override
     protected String buildPageIri(String collectionId, int page, boolean embeddedDescriptions) {
         return iriBuilderService.buildOAPageIri(collectionId, page, embeddedDescriptions);
+    }
+
+    @Override
+    protected String buildPageSearchIri(String targetId, int page, boolean embeddedDescriptions) {
+        return iriBuilderService.buildOAPageSearchIri(targetId, page, embeddedDescriptions);
     }
 }

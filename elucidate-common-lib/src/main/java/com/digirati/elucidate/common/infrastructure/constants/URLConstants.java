@@ -6,5 +6,7 @@ public class URLConstants {
     public static final String PARAM_IRIS = "iris";
     public static final String PARAM_DESC = "desc";
 
+    public static final String PARAM_TARGET = "target";
+    
     private URLConstants() {}
 }

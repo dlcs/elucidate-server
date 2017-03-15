@@ -75,6 +75,32 @@ public class IRIBuilderServiceImpl implements IRIBuilderService {
     }
 
     @Override
+    @SuppressWarnings("serial")
+    public String buildW3CCollectionSearchIri(String targetId) {
+        return buildIri("w3c/search", new HashMap<String, Object>() {
+            {
+                put("target", targetId);
+            }
+        });
+    }
+
+    @Override
+    @SuppressWarnings("serial")
+    public String buildW3CPageSearchIri(String targetId, int page, boolean embeddedDescriptions) {
+        return buildIri("w3c/search", new HashMap<String, Object>() {
+            {
+                put("target", targetId);
+                put(URLConstants.PARAM_PAGE, page);
+                if (embeddedDescriptions) {
+                    put(URLConstants.PARAM_DESC, 1);
+                } else {
+                    put(URLConstants.PARAM_IRIS, 1);
+                }
+            }
+        });
+    }
+
+    @Override
     public String buildOAAnnotationIri(String collectionId, String annotationId) {
         return buildIri(String.format("oa/%s/%s", collectionId, annotationId), null);
     }
@@ -87,10 +113,36 @@ public class IRIBuilderServiceImpl implements IRIBuilderService {
 
     @Override
     @SuppressWarnings("serial")
+    public String buildOACollectionSearchIri(String targetId) {
+        return buildIri("oa/search", new HashMap<String, Object>() {
+            {
+                put("target", targetId);
+            }
+        });
+    }
+
+    @Override
+    @SuppressWarnings("serial")
     public String buildOAPageIri(String collectionId, int page, boolean embeddedDescriptions) {
         collectionId = String.format("oa/%s/", collectionId);
         return buildIri(collectionId, new HashMap<String, Object>() {
             {
+                put(URLConstants.PARAM_PAGE, page);
+                if (embeddedDescriptions) {
+                    put(URLConstants.PARAM_DESC, 1);
+                } else {
+                    put(URLConstants.PARAM_IRIS, 1);
+                }
+            }
+        });
+    }
+
+    @Override
+    @SuppressWarnings("serial")
+    public String buildOAPageSearchIri(String targetId, int page, boolean embeddedDescriptions) {
+        return buildIri("oa/search", new HashMap<String, Object>() {
+            {
+                put("target", targetId);
                 put(URLConstants.PARAM_PAGE, page);
                 if (embeddedDescriptions) {
                     put(URLConstants.PARAM_DESC, 1);
