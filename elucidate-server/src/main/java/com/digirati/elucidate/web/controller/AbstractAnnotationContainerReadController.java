@@ -19,8 +19,8 @@ import com.digirati.elucidate.common.model.annotation.AbstractAnnotationPage;
 import com.digirati.elucidate.model.ServiceResponse;
 import com.digirati.elucidate.model.ServiceResponse.Status;
 import com.digirati.elucidate.model.enumeration.ClientPreference;
-import com.digirati.elucidate.service.AbstractAnnotationCollectionService;
-import com.digirati.elucidate.service.AbstractAnnotationPageService;
+import com.digirati.elucidate.service.query.AbstractAnnotationCollectionService;
+import com.digirati.elucidate.service.query.AbstractAnnotationPageService;
 
 public abstract class AbstractAnnotationContainerReadController<A extends AbstractAnnotation, P extends AbstractAnnotationPage, C extends AbstractAnnotationCollection> {
 
@@ -30,11 +30,11 @@ public abstract class AbstractAnnotationContainerReadController<A extends Abstra
     private static final String PREFER_CONTAINED_IRIS = "http://www.w3.org/ns/oa#prefercontainediris";
     private static final String PREFER_CONTAINED_DESCRIPTIONS = "http://www.w3.org/ns/oa#prefercontaineddescriptions";
 
-    private AbstractAnnotationCollectionService<A, C> annotationCollectionService;
-    private AbstractAnnotationPageService<A, P, C> annotationPageService;
+    private AbstractAnnotationCollectionService<C> annotationCollectionService;
+    private AbstractAnnotationPageService<P> annotationPageService;
 
     @Autowired
-    public AbstractAnnotationContainerReadController(AbstractAnnotationCollectionService<A, C> annotationCollectionService, AbstractAnnotationPageService<A, P, C> annotationPageService) {
+    public AbstractAnnotationContainerReadController(AbstractAnnotationCollectionService<C> annotationCollectionService, AbstractAnnotationPageService<P> annotationPageService) {
         this.annotationCollectionService = annotationCollectionService;
         this.annotationPageService = annotationPageService;
     }
@@ -73,9 +73,9 @@ public abstract class AbstractAnnotationContainerReadController<A extends Abstra
 
         ServiceResponse<P> serviceResponse;
         if (!iris) {
-            serviceResponse = annotationPageService.getAnnotationPage(collectionId, true, page);
+            serviceResponse = annotationPageService.getAnnotationPage(collectionId, page, true);
         } else {
-            serviceResponse = annotationPageService.getAnnotationPage(collectionId, false, page);
+            serviceResponse = annotationPageService.getAnnotationPage(collectionId, page, false);
         }
         Status status = serviceResponse.getStatus();
 

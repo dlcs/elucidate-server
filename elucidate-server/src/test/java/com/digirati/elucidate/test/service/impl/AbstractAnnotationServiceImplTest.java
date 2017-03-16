@@ -23,18 +23,16 @@ import com.digirati.elucidate.common.service.IRIBuilderService;
 import com.digirati.elucidate.common.test.AbstractTest;
 import com.digirati.elucidate.model.ServiceResponse;
 import com.digirati.elucidate.model.ServiceResponse.Status;
-import com.digirati.elucidate.repository.AnnotationSearchRepository;
 import com.digirati.elucidate.repository.AnnotationStoreRepository;
-import com.digirati.elucidate.service.AbstractAnnotationService;
+import com.digirati.elucidate.service.query.AbstractAnnotationService;
 
 public abstract class AbstractAnnotationServiceImplTest<A extends AbstractAnnotation, C extends AbstractAnnotationCollection> extends AbstractTest {
 
     private IRIBuilderService iriBuilderService;
     private AnnotationStoreRepository annotationStoreRepository;
-    private AnnotationSearchRepository annotationSearchRepository;
-    private AbstractAnnotationService<A, C> annotationService;
+    private AbstractAnnotationService<A> annotationService;
 
-    protected abstract AbstractAnnotationService<A, C> createAnnotationService(IRIBuilderService iriBuilderService, AnnotationStoreRepository annotationStoreRepository, AnnotationSearchRepository annotationSearchRepository);
+    protected abstract AbstractAnnotationService<A> createAnnotationService(IRIBuilderService iriBuilderService, AnnotationStoreRepository annotationStoreRepository);
 
     protected abstract void validateConversionToAnnotation(W3CAnnotation w3cAnnotation, A targetAnnotation);
 
@@ -44,8 +42,7 @@ public abstract class AbstractAnnotationServiceImplTest<A extends AbstractAnnota
     public void before() {
         this.iriBuilderService = mock(IRIBuilderService.class);
         this.annotationStoreRepository = mock(AnnotationStoreRepository.class);
-        this.annotationSearchRepository = mock(AnnotationSearchRepository.class);
-        this.annotationService = createAnnotationService(iriBuilderService, annotationStoreRepository, annotationSearchRepository);
+        this.annotationService = createAnnotationService(iriBuilderService, annotationStoreRepository);
     }
 
     @Test

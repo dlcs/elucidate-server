@@ -11,17 +11,16 @@ import com.digirati.elucidate.common.model.annotation.w3c.W3CAnnotation;
 import com.digirati.elucidate.common.model.annotation.w3c.W3CAnnotationCollection;
 import com.digirati.elucidate.common.service.IRIBuilderService;
 import com.digirati.elucidate.infrastructure.generator.IDGenerator;
-import com.digirati.elucidate.repository.AnnotationSearchRepository;
 import com.digirati.elucidate.repository.AnnotationStoreRepository;
-import com.digirati.elucidate.service.AbstractAnnotationService;
-import com.digirati.elucidate.service.impl.W3CAnnotationServiceImpl;
+import com.digirati.elucidate.service.query.AbstractAnnotationService;
+import com.digirati.elucidate.service.query.impl.W3CAnnotationServiceImpl;
 
 @RunWith(PowerMockRunner.class)
 public class W3CAnnotationServiceImplTest extends AbstractAnnotationServiceImplTest<W3CAnnotation, W3CAnnotationCollection> {
 
     @Override
-    protected AbstractAnnotationService<W3CAnnotation, W3CAnnotationCollection> createAnnotationService(IRIBuilderService iriBuilderService, AnnotationStoreRepository annotationStoreRepository, AnnotationSearchRepository annotationSearchRepository) {
-        return new W3CAnnotationServiceImpl(annotationStoreRepository, annotationSearchRepository, iriBuilderService, new StaticIDGenerator());
+    protected AbstractAnnotationService<W3CAnnotation> createAnnotationService(IRIBuilderService iriBuilderService, AnnotationStoreRepository annotationStoreRepository) {
+        return new W3CAnnotationServiceImpl(annotationStoreRepository, iriBuilderService, new StaticIDGenerator());
     }
 
     @Override

@@ -6,7 +6,7 @@ CREATE SEQUENCE public.annotation_collection_id_seq
   INCREMENT 1
   MINVALUE 1
   MAXVALUE 9223372036854775807
-  START 1
+  START 16688
   CACHE 1;
 ALTER TABLE public.annotation_collection_id_seq
   OWNER TO postgres;

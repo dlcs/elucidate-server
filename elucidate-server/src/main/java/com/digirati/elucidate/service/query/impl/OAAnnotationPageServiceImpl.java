@@ -1,4 +1,4 @@
-package com.digirati.elucidate.service.impl;
+package com.digirati.elucidate.service.query.impl;
 
 import java.util.Map;
 
@@ -7,18 +7,16 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.digirati.elucidate.common.model.annotation.oa.OAAnnotation;
-import com.digirati.elucidate.common.model.annotation.oa.OAAnnotationCollection;
 import com.digirati.elucidate.common.model.annotation.oa.OAAnnotationPage;
 import com.digirati.elucidate.common.service.IRIBuilderService;
 import com.digirati.elucidate.converter.OAToW3CAnnotationPageConverter;
-import com.digirati.elucidate.model.enumeration.SearchType;
-import com.digirati.elucidate.service.OAAnnotationPageService;
-import com.digirati.elucidate.service.OAAnnotationService;
+import com.digirati.elucidate.service.query.OAAnnotationPageService;
+import com.digirati.elucidate.service.query.OAAnnotationService;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Service(OAAnnotationPageServiceImpl.SERVICE_NAME)
-public class OAAnnotationPageServiceImpl extends AbstractAnnotationPageServiceImpl<OAAnnotation, OAAnnotationPage, OAAnnotationCollection> implements OAAnnotationPageService {
+public class OAAnnotationPageServiceImpl extends AbstractAnnotationPageServiceImpl<OAAnnotation, OAAnnotationPage> implements OAAnnotationPageService {
 
     public static final String SERVICE_NAME = "oaAnnotationPageServiceImpl";
 
@@ -45,24 +43,13 @@ public class OAAnnotationPageServiceImpl extends AbstractAnnotationPageServiceIm
     }
 
     @Override
-    protected String buildCollectionIri(SearchType searchType, String searchQuery) {
-        if (searchType.equals(SearchType.COLLECTION_ID)) {
-            return iriBuilderService.buildOACollectionIri(searchQuery);
-        } else if (searchType.equals(SearchType.TARGET_IRI)) {
-            return iriBuilderService.buildOACollectionSearchIri(searchQuery);
-        } else {
-            throw new IllegalArgumentException(String.format("Unexpected SearchType [%s]", searchType));
-        }
+    protected String buildCollectionIri(String searchQuery) {
+        return iriBuilderService.buildOACollectionIri(searchQuery);
+
     }
 
     @Override
-    protected String buildPageIri(SearchType searchType, String searchQuery, int page, boolean embeddedDescriptions) {
-        if (searchType.equals(SearchType.COLLECTION_ID)) {
-            return iriBuilderService.buildOAPageIri(searchQuery, page, embeddedDescriptions);
-        } else if (searchType.equals(SearchType.TARGET_IRI)) {
-            return iriBuilderService.buildOAPageSearchIri(searchQuery, page, embeddedDescriptions);
-        } else {
-            throw new IllegalArgumentException(String.format("Unexpected SearchType [%s]", searchType));
-        }
+    protected String buildPageIri(String searchQuery, int page, boolean embeddedDescriptions) {
+        return iriBuilderService.buildOAPageIri(searchQuery, page, embeddedDescriptions);
     }
 }

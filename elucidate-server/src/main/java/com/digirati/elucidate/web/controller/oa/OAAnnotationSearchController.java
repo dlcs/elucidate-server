@@ -6,8 +6,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com.digirati.elucidate.common.model.annotation.oa.OAAnnotation;
 import com.digirati.elucidate.common.model.annotation.oa.OAAnnotationCollection;
 import com.digirati.elucidate.common.model.annotation.oa.OAAnnotationPage;
-import com.digirati.elucidate.service.OAAnnotationCollectionService;
-import com.digirati.elucidate.service.OAAnnotationPageService;
+import com.digirati.elucidate.service.search.OAAnnotationCollectionSearchService;
+import com.digirati.elucidate.service.search.OAAnnotationPageSearchService;
 import com.digirati.elucidate.web.controller.AbstractAnnotationSearchController;
 
 @Controller(OAAnnotationSearchController.CONTROLLER_NAME)
@@ -16,7 +16,7 @@ public class OAAnnotationSearchController extends AbstractAnnotationSearchContro
 
     public static final String CONTROLLER_NAME = "oaAnnotationSearchController";
 
-    public OAAnnotationSearchController(OAAnnotationCollectionService oaAnnotationCollectionService, OAAnnotationPageService oaAnnotationPageService) {
-        super(oaAnnotationCollectionService, oaAnnotationPageService);
+    public OAAnnotationSearchController(OAAnnotationCollectionSearchService oaAnnotationCollectionSearchService, OAAnnotationPageSearchService oaAnnotationPageSearchService) {
+        super(oaAnnotationCollectionSearchService, oaAnnotationPageSearchService);
     }
 }

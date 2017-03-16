@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.digirati.elucidate.common.model.annotation.w3c.W3CAnnotation;
 import com.digirati.elucidate.common.model.annotation.w3c.W3CAnnotationCollection;
-import com.digirati.elucidate.service.W3CAnnotationService;
+import com.digirati.elucidate.service.query.W3CAnnotationService;
 import com.digirati.elucidate.web.controller.AbstractAnnotationWriteController;
 
 @RestController(W3CAnnotationWriteController.CONTROLLER_NAME)

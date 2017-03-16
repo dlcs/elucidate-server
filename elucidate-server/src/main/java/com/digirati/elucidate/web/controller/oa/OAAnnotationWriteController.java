@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.digirati.elucidate.common.model.annotation.oa.OAAnnotation;
 import com.digirati.elucidate.common.model.annotation.oa.OAAnnotationCollection;
-import com.digirati.elucidate.service.OAAnnotationService;
+import com.digirati.elucidate.service.query.OAAnnotationService;
 import com.digirati.elucidate.web.controller.AbstractAnnotationWriteController;
 
 @RestController(OAAnnotationWriteController.CONTROLLER_NAME)

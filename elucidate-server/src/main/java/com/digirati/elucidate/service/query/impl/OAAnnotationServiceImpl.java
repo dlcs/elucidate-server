@@ -1,4 +1,4 @@
-package com.digirati.elucidate.service.impl;
+package com.digirati.elucidate.service.query.impl;
 
 import java.util.Map;
 
@@ -7,28 +7,26 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import com.digirati.elucidate.common.model.annotation.oa.OAAnnotation;
-import com.digirati.elucidate.common.model.annotation.oa.OAAnnotationCollection;
 import com.digirati.elucidate.common.model.annotation.w3c.W3CAnnotation;
 import com.digirati.elucidate.common.service.IRIBuilderService;
 import com.digirati.elucidate.converter.OAToW3CAnnotationConverter;
 import com.digirati.elucidate.converter.W3CToOAAnnotationConverter;
 import com.digirati.elucidate.infrastructure.generator.IDGenerator;
-import com.digirati.elucidate.repository.AnnotationSearchRepository;
 import com.digirati.elucidate.repository.AnnotationStoreRepository;
-import com.digirati.elucidate.service.OAAnnotationService;
+import com.digirati.elucidate.service.query.OAAnnotationService;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Service(OAAnnotationServiceImpl.SERVICE_NAME)
-public class OAAnnotationServiceImpl extends AbstractAnnotationServiceImpl<OAAnnotation, OAAnnotationCollection> implements OAAnnotationService {
+public class OAAnnotationServiceImpl extends AbstractAnnotationServiceImpl<OAAnnotation> implements OAAnnotationService {
 
     public static final String SERVICE_NAME = "oaAnnotationServiceImpl";
 
     private IRIBuilderService iriBuilderService;
 
     @Autowired
-    public OAAnnotationServiceImpl(AnnotationStoreRepository annotationStoreRepository, AnnotationSearchRepository annotationSearchRepository, IRIBuilderService iriBuilderService, @Qualifier("annotationIdGenerator") IDGenerator idGenerator) {
-        super(annotationStoreRepository, annotationSearchRepository, idGenerator);
+    public OAAnnotationServiceImpl(AnnotationStoreRepository annotationStoreRepository, IRIBuilderService iriBuilderService, @Qualifier("annotationIdGenerator") IDGenerator idGenerator) {
+        super(annotationStoreRepository, idGenerator);
         this.iriBuilderService = iriBuilderService;
     }
 

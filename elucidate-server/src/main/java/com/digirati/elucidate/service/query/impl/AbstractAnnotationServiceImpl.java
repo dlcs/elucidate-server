@@ -1,4 +1,4 @@
-package com.digirati.elucidate.service.impl;
+package com.digirati.elucidate.service.query.impl;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -13,27 +13,23 @@ import org.springframework.transaction.annotation.Transactional;
 import com.digirati.elucidate.common.infrastructure.constants.JSONLDConstants;
 import com.digirati.elucidate.common.infrastructure.constants.OAConstants;
 import com.digirati.elucidate.common.model.annotation.AbstractAnnotation;
-import com.digirati.elucidate.common.model.annotation.AbstractAnnotationCollection;
 import com.digirati.elucidate.common.model.annotation.w3c.W3CAnnotation;
 import com.digirati.elucidate.infrastructure.generator.IDGenerator;
 import com.digirati.elucidate.model.ServiceResponse;
 import com.digirati.elucidate.model.ServiceResponse.Status;
-import com.digirati.elucidate.repository.AnnotationSearchRepository;
 import com.digirati.elucidate.repository.AnnotationStoreRepository;
-import com.digirati.elucidate.service.AbstractAnnotationService;
+import com.digirati.elucidate.service.query.AbstractAnnotationService;
 import com.github.jsonldjava.utils.JsonUtils;
 
-public abstract class AbstractAnnotationServiceImpl<A extends AbstractAnnotation, C extends AbstractAnnotationCollection> implements AbstractAnnotationService<A, C> {
+public abstract class AbstractAnnotationServiceImpl<A extends AbstractAnnotation> implements AbstractAnnotationService<A> {
 
     protected final Logger LOGGER = Logger.getLogger(getClass());
 
     private AnnotationStoreRepository annotationStoreRepository;
-    private AnnotationSearchRepository annotationSearchRepository;
     private IDGenerator idGenerator;
 
-    public AbstractAnnotationServiceImpl(AnnotationStoreRepository annotationStoreRepository, AnnotationSearchRepository annotationSearchRepository, IDGenerator idGenerator) {
+    public AbstractAnnotationServiceImpl(AnnotationStoreRepository annotationStoreRepository, IDGenerator idGenerator) {
         this.annotationStoreRepository = annotationStoreRepository;
-        this.annotationSearchRepository = annotationSearchRepository;
         this.idGenerator = idGenerator;
     }
 
@@ -203,22 +199,6 @@ public abstract class AbstractAnnotationServiceImpl<A extends AbstractAnnotation
 
         annotationStoreRepository.deleteAnnotation(collectionId, annotationId);
         return new ServiceResponse<Void>(Status.OK, null);
-    }
-
-    @Override
-    @Transactional(readOnly = true)
-    public ServiceResponse<List<A>> searchAnnotations(String targetIri) {
-
-        List<W3CAnnotation> w3cAnnotations = annotationSearchRepository.getAnnotationsByTargetIri(targetIri);
-
-        List<A> annotations = new ArrayList<A>();
-        for (W3CAnnotation w3cAnnotation : w3cAnnotations) {
-            A annotation = convertToAnnotation(w3cAnnotation);
-            annotation.getJsonMap().put(JSONLDConstants.ATTRIBUTE_ID, buildAnnotationIri(w3cAnnotation.getCollectionId(), annotation.getAnnotationId()));
-            annotations.add(annotation);
-        }
-
-        return new ServiceResponse<List<A>>(Status.OK, annotations);
     }
 
     private boolean validateAnnotationId(String annotationId) {

@@ -1,4 +1,4 @@
-package com.digirati.elucidate.service.impl;
+package com.digirati.elucidate.service.query.impl;
 
 import java.util.Map;
 
@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import com.digirati.elucidate.common.model.annotation.oa.OAAnnotation;
 import com.digirati.elucidate.common.model.annotation.oa.OAAnnotationCollection;
 import com.digirati.elucidate.common.model.annotation.oa.OAAnnotationPage;
 import com.digirati.elucidate.common.model.annotation.w3c.W3CAnnotationCollection;
@@ -17,28 +16,27 @@ import com.digirati.elucidate.converter.W3CToOAAnnotationCollectionConverter;
 import com.digirati.elucidate.infrastructure.generator.IDGenerator;
 import com.digirati.elucidate.model.ServiceResponse;
 import com.digirati.elucidate.model.enumeration.ClientPreference;
-import com.digirati.elucidate.model.enumeration.SearchType;
 import com.digirati.elucidate.repository.AnnotationCollectionStoreRepository;
 import com.digirati.elucidate.repository.AnnotationSearchRepository;
 import com.digirati.elucidate.repository.AnnotationStoreRepository;
-import com.digirati.elucidate.service.OAAnnotationCollectionService;
-import com.digirati.elucidate.service.OAAnnotationPageService;
+import com.digirati.elucidate.service.query.OAAnnotationCollectionService;
+import com.digirati.elucidate.service.query.OAAnnotationPageService;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Service(OAAnnotationCollectionServiceImpl.SERVICE_NAME)
-public class OAAnnotationCollectionServiceImpl extends AbstractAnnotationCollectionServiceImpl<OAAnnotation, OAAnnotationPage, OAAnnotationCollection> implements OAAnnotationCollectionService {
+public class OAAnnotationCollectionServiceImpl extends AbstractAnnotationCollectionServiceImpl<OAAnnotationPage, OAAnnotationCollection> implements OAAnnotationCollectionService {
 
     public static final String SERVICE_NAME = "oaAnnotationCollectionServiceImpl";
 
-    private OAAnnotationPageService oaAnnotationPageService;
     private IRIBuilderService iriBuilderService;
+    private OAAnnotationPageService oaAnnotationPageService;
 
     @Autowired
     public OAAnnotationCollectionServiceImpl(AnnotationStoreRepository annotationStoreRepository, AnnotationCollectionStoreRepository annotationCollectionStoreRepository, AnnotationSearchRepository annotationSearchRepository, IRIBuilderService iriBuilderService, OAAnnotationPageService oaAnnotationPageService, @Qualifier("collectionIdGenerator") IDGenerator idGenerator, @Value("${annotation.page.size}") int pageSize) {
-        super(annotationStoreRepository, annotationCollectionStoreRepository, annotationSearchRepository, idGenerator, pageSize);
-        this.oaAnnotationPageService = oaAnnotationPageService;
+        super(annotationStoreRepository, annotationCollectionStoreRepository, idGenerator, pageSize);
         this.iriBuilderService = iriBuilderService;
+        this.oaAnnotationPageService = oaAnnotationPageService;
     }
 
     @Override
@@ -82,43 +80,21 @@ public class OAAnnotationCollectionServiceImpl extends AbstractAnnotationCollect
     }
 
     @Override
-    protected ServiceResponse<OAAnnotationPage> buildFirstAnnotationPage(SearchType searchType, String searchQuery, ClientPreference clientPref) {
-        if (searchType.equals(SearchType.COLLECTION_ID)) {
-            if (clientPref.equals(ClientPreference.CONTAINED_IRIS)) {
-                return oaAnnotationPageService.getAnnotationPage(searchQuery, false, 0);
-            } else {
-                return oaAnnotationPageService.getAnnotationPage(searchQuery, true, 0);
-            }
-        } else if (searchType.equals(SearchType.TARGET_IRI)) {
-            if (clientPref.equals(ClientPreference.CONTAINED_IRIS)) {
-                return oaAnnotationPageService.searchAnnotationPage(searchQuery, false, 0);
-            } else {
-                return oaAnnotationPageService.searchAnnotationPage(searchQuery, true, 0);
-            }
+    protected ServiceResponse<OAAnnotationPage> buildFirstAnnotationPage(String collectionId, ClientPreference clientPref) {
+        if (clientPref.equals(ClientPreference.CONTAINED_IRIS)) {
+            return oaAnnotationPageService.getAnnotationPage(collectionId, 0, false);
         } else {
-            throw new IllegalArgumentException(String.format("Unexpected SearchType [%s]", searchType));
+            return oaAnnotationPageService.getAnnotationPage(collectionId, 0, true);
         }
     }
 
     @Override
-    protected String buildCollectionIri(SearchType searchType, String searchQuery) {
-        if (searchType.equals(SearchType.COLLECTION_ID)) {
-            return iriBuilderService.buildOACollectionIri(searchQuery);
-        } else if (searchType.equals(SearchType.TARGET_IRI)) {
-            return iriBuilderService.buildOACollectionSearchIri(searchQuery);
-        } else {
-            throw new IllegalArgumentException(String.format("Unexpected SearchType [%s]", searchType));
-        }
+    protected String buildCollectionIri(String searchQuery) {
+        return iriBuilderService.buildOACollectionIri(searchQuery);
     }
 
     @Override
-    protected String buildPageIri(SearchType searchType, String searchQuery, int page, boolean embeddedDescriptions) {
-        if (searchType.equals(SearchType.COLLECTION_ID)) {
-            return iriBuilderService.buildOAPageIri(searchQuery, page, embeddedDescriptions);
-        } else if (searchType.equals(SearchType.TARGET_IRI)) {
-            return iriBuilderService.buildOAPageSearchIri(searchQuery, page, embeddedDescriptions);
-        } else {
-            throw new IllegalArgumentException(String.format("Unexpected SearchType [%s]", searchType));
-        }
+    protected String buildPageIri(String searchQuery, int page, boolean embeddedDescriptions) {
+        return iriBuilderService.buildOAPageIri(searchQuery, page, embeddedDescriptions);
     }
 }

@@ -18,8 +18,8 @@ import com.digirati.elucidate.common.model.annotation.AbstractAnnotationPage;
 import com.digirati.elucidate.model.ServiceResponse;
 import com.digirati.elucidate.model.ServiceResponse.Status;
 import com.digirati.elucidate.model.enumeration.ClientPreference;
-import com.digirati.elucidate.service.AbstractAnnotationCollectionService;
-import com.digirati.elucidate.service.AbstractAnnotationPageService;
+import com.digirati.elucidate.service.search.AbstractAnnotationCollectionSearchService;
+import com.digirati.elucidate.service.search.AbstractAnnotationPageSearchService;
 
 public abstract class AbstractAnnotationSearchController<A extends AbstractAnnotation, P extends AbstractAnnotationPage, C extends AbstractAnnotationCollection> {
 
@@ -28,32 +28,32 @@ public abstract class AbstractAnnotationSearchController<A extends AbstractAnnot
     private static final String PREFER_CONTAINED_IRIS = "http://www.w3.org/ns/oa#prefercontainediris";
     private static final String PREFER_CONTAINED_DESCRIPTIONS = "http://www.w3.org/ns/oa#prefercontaineddescriptions";
 
-    private AbstractAnnotationCollectionService<A, C> annotationCollectionService;
-    private AbstractAnnotationPageService<A, P, C> annotationPageService;
+    private AbstractAnnotationCollectionSearchService<C> annotationCollectionSearchService;
+    private AbstractAnnotationPageSearchService<P> annotationPageSearchService;
 
     @Autowired
-    public AbstractAnnotationSearchController(AbstractAnnotationCollectionService<A, C> annotationCollectionService, AbstractAnnotationPageService<A, P, C> annotationPageService) {
-        this.annotationCollectionService = annotationCollectionService;
-        this.annotationPageService = annotationPageService;
+    public AbstractAnnotationSearchController(AbstractAnnotationCollectionSearchService<C> annotationCollectionSearchService, AbstractAnnotationPageSearchService<P> annotationPageSearchService) {
+        this.annotationCollectionSearchService = annotationCollectionSearchService;
+        this.annotationPageSearchService = annotationPageSearchService;
     }
 
     @RequestMapping(value = REQUEST_PATH, method = RequestMethod.GET)
-    public ResponseEntity<?> get(@RequestParam(value = URLConstants.PARAM_TARGET, required = true) String targetIri, @RequestParam(value = URLConstants.PARAM_PAGE, required = false) Integer page, @RequestParam(value = URLConstants.PARAM_IRIS, required = false, defaultValue = "false") boolean iris, @RequestParam(value = URLConstants.PARAM_DESC, required = false, defaultValue = "false") boolean descriptions, HttpServletRequest request) {
+    public ResponseEntity<?> get(@RequestParam(value = URLConstants.PARAM_TARGET, required = true) String targetIri, @RequestParam(value = URLConstants.PARAM_STRICT, required = false, defaultValue = "false") boolean strict, @RequestParam(value = URLConstants.PARAM_PAGE, required = false) Integer page, @RequestParam(value = URLConstants.PARAM_IRIS, required = false, defaultValue = "false") boolean iris, @RequestParam(value = URLConstants.PARAM_DESC, required = false, defaultValue = "false") boolean descriptions, HttpServletRequest request) {
         if (page == null) {
-            return processCollectionRequest(targetIri, request);
+            return processCollectionRequest(targetIri, strict, request);
         } else {
-            return processPageRequest(targetIri, page, iris, descriptions);
+            return processPageRequest(targetIri, strict, page, iris, descriptions);
         }
     }
 
-    private ResponseEntity<?> processCollectionRequest(String targetIri, HttpServletRequest request) {
+    private ResponseEntity<?> processCollectionRequest(String targetIri, boolean strict, HttpServletRequest request) {
 
         ClientPreference clientPref = determineClientPreference(request);
         if (clientPref == null) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         }
 
-        ServiceResponse<C> serviceResponse = annotationCollectionService.searchAnnotationCollections(targetIri, clientPref);
+        ServiceResponse<C> serviceResponse = annotationCollectionSearchService.searchAnnotationCollection(targetIri, strict, clientPref);
         Status status = serviceResponse.getStatus();
 
         if (status.equals(Status.NOT_FOUND)) {
@@ -63,7 +63,7 @@ public abstract class AbstractAnnotationSearchController<A extends AbstractAnnot
         return ResponseEntity.ok(serviceResponse.getObj());
     }
 
-    private ResponseEntity<?> processPageRequest(String targetIri, int page, boolean iris, boolean descs) {
+    private ResponseEntity<?> processPageRequest(String targetIri, boolean strict, int page, boolean iris, boolean descs) {
 
         if (iris && descs) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
@@ -71,9 +71,9 @@ public abstract class AbstractAnnotationSearchController<A extends AbstractAnnot
 
         ServiceResponse<P> serviceResponse;
         if (!iris) {
-            serviceResponse = annotationPageService.searchAnnotationPage(targetIri, true, page);
+            serviceResponse = annotationPageSearchService.searchAnnotationPage(targetIri, strict, page, true);
         } else {
-            serviceResponse = annotationPageService.searchAnnotationPage(targetIri, false, page);
+            serviceResponse = annotationPageSearchService.searchAnnotationPage(targetIri, strict, page, false);
         }
         Status status = serviceResponse.getStatus();
 
