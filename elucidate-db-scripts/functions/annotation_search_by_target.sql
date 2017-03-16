@@ -42,3 +42,6 @@ END;$BODY$
   ROWS 1000;
 ALTER FUNCTION public.annotation_search_by_target(character varying, boolean)
   OWNER TO postgres;
+GRANT EXECUTE ON FUNCTION public.annotation_search_by_target(character varying, boolean) TO postgres;
+GRANT EXECUTE ON FUNCTION public.annotation_search_by_target(character varying, boolean) TO annotations_role;
+REVOKE ALL ON FUNCTION public.annotation_search_by_target(character varying, boolean) FROM public;
