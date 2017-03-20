@@ -34,12 +34,12 @@ public class W3CAnnotationPageSearchServiceImpl extends AbstractAnnotationPageSe
     }
 
     @Override
-    protected String buildCollectionIri(String targetIri, boolean strict) {
-        return iriBuilderService.buildW3CCollectionSearchIri(targetIri, strict);
+    protected String buildCollectionIri(String targetIri, boolean strict, String box) {
+        return iriBuilderService.buildW3CCollectionSearchIri(targetIri, strict, box);
     }
 
     @Override
-    protected String buildPageIri(String targetIri, boolean strict, int page, boolean embeddedDescriptions) {
-        return iriBuilderService.buildW3CPageSearchIri(targetIri, strict, page, embeddedDescriptions);
+    protected String buildPageIri(String targetIri, boolean strict, String box, int page, boolean embeddedDescriptions) {
+        return iriBuilderService.buildW3CPageSearchIri(targetIri, strict, box, page, embeddedDescriptions);
     }
 }

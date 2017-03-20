@@ -7,6 +7,7 @@ public class URLConstants {
     public static final String PARAM_DESC = "desc";
     public static final String PARAM_TARGET = "target";
     public static final String PARAM_STRICT = "strict";
+    public static final String PARAM_BOX = "box";
 
     private URLConstants() {}
 }

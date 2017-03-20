@@ -5,5 +5,5 @@ import com.digirati.elucidate.model.ServiceResponse;
 
 public interface AbstractAnnotationPageSearchService<P extends AbstractAnnotationPage> {
 
-    public ServiceResponse<P> searchAnnotationPage(String targetIri, boolean strict, int page, boolean embeddedDescriptions);
+    public ServiceResponse<P> searchAnnotationPage(String targetIri, boolean strict, String box, int page, boolean embeddedDescriptions);
 }

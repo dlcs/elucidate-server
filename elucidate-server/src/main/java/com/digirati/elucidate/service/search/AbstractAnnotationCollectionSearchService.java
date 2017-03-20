@@ -6,5 +6,5 @@ import com.digirati.elucidate.model.enumeration.ClientPreference;
 
 public interface AbstractAnnotationCollectionSearchService<C extends AbstractAnnotationCollection> {
 
-    public ServiceResponse<C> searchAnnotationCollection(String targetIri, boolean strict, ClientPreference clientPref);
+    public ServiceResponse<C> searchAnnotationCollection(String targetIri, boolean strict, String box, ClientPreference clientPref);
 }

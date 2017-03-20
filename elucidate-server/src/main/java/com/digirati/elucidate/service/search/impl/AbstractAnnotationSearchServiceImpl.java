@@ -29,10 +29,10 @@ public abstract class AbstractAnnotationSearchServiceImpl<A extends AbstractAnno
     protected abstract String buildAnnotationIri(String collectionId, String annotationId);
 
     @Override
-    @Transactional(readOnly = true)
-    public ServiceResponse<List<A>> searchAnnotations(String targetIri, boolean strict) {
+    @Transactional(readOnly = false)
+    public ServiceResponse<List<A>> searchAnnotations(String targetIri, boolean strict, String box) {
 
-        List<W3CAnnotation> w3cAnnotations = annotationSearchRepository.getAnnotationsByTargetIri(targetIri, strict);
+        List<W3CAnnotation> w3cAnnotations = annotationSearchRepository.getAnnotationsByTargetIri(targetIri, strict, box);
 
         List<A> annotations = new ArrayList<A>();
         for (W3CAnnotation w3cAnnotation : w3cAnnotations) {

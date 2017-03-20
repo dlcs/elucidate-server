@@ -55,21 +55,21 @@ public class OAAnnotationCollectionSearchServiceImpl extends AbstractAnnotationC
     }
 
     @Override
-    protected ServiceResponse<OAAnnotationPage> buildFirstAnnotationPage(String targetIri, boolean strict, ClientPreference clientPref) {
+    protected ServiceResponse<OAAnnotationPage> buildFirstAnnotationPage(String targetIri, boolean strict, String box, ClientPreference clientPref) {
         if (clientPref.equals(ClientPreference.CONTAINED_IRIS)) {
-            return oaAnnotationPageSearchService.searchAnnotationPage(targetIri, strict, 0, false);
+            return oaAnnotationPageSearchService.searchAnnotationPage(targetIri, strict, box, 0, false);
         } else {
-            return oaAnnotationPageSearchService.searchAnnotationPage(targetIri, strict, 0, true);
+            return oaAnnotationPageSearchService.searchAnnotationPage(targetIri, strict, box, 0, true);
         }
     }
 
     @Override
-    protected String buildCollectionIri(String targetIri, boolean strict) {
-        return iriBuilderService.buildOACollectionSearchIri(targetIri, strict);
+    protected String buildCollectionIri(String targetIri, boolean strict, String box) {
+        return iriBuilderService.buildOACollectionSearchIri(targetIri, strict, box);
     }
 
     @Override
-    protected String buildPageIri(String targetIri, boolean strict, int page, boolean embeddedDescriptions) {
-        return iriBuilderService.buildOAPageSearchIri(targetIri, strict, page, embeddedDescriptions);
+    protected String buildPageIri(String targetIri, boolean strict, String box, int page, boolean embeddedDescriptions) {
+        return iriBuilderService.buildOAPageSearchIri(targetIri, strict, box, page, embeddedDescriptions);
     }
 }

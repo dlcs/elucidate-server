@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.http.client.utils.URIBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -76,22 +77,28 @@ public class IRIBuilderServiceImpl implements IRIBuilderService {
 
     @Override
     @SuppressWarnings("serial")
-    public String buildW3CCollectionSearchIri(String targetIri, boolean strict) {
+    public String buildW3CCollectionSearchIri(String targetIri, boolean strict, String box) {
         return buildIri("w3c/search", new HashMap<String, Object>() {
             {
                 put(URLConstants.PARAM_TARGET, targetIri);
                 put(URLConstants.PARAM_STRICT, strict);
+                if (StringUtils.isNotBlank(box)) {
+                    put(URLConstants.PARAM_BOX, box);
+                }
             }
         });
     }
 
     @Override
     @SuppressWarnings("serial")
-    public String buildW3CPageSearchIri(String targetIri, boolean strict, int page, boolean embeddedDescriptions) {
+    public String buildW3CPageSearchIri(String targetIri, boolean strict, String box, int page, boolean embeddedDescriptions) {
         return buildIri("w3c/search", new HashMap<String, Object>() {
             {
                 put(URLConstants.PARAM_TARGET, targetIri);
                 put(URLConstants.PARAM_STRICT, strict);
+                if (StringUtils.isNotBlank(box)) {
+                    put(URLConstants.PARAM_BOX, box);
+                }
                 put(URLConstants.PARAM_PAGE, page);
                 if (embeddedDescriptions) {
                     put(URLConstants.PARAM_DESC, 1);
@@ -115,11 +122,14 @@ public class IRIBuilderServiceImpl implements IRIBuilderService {
 
     @Override
     @SuppressWarnings("serial")
-    public String buildOACollectionSearchIri(String targetIri, boolean strict) {
+    public String buildOACollectionSearchIri(String targetIri, boolean strict, String box) {
         return buildIri("oa/search", new HashMap<String, Object>() {
             {
                 put(URLConstants.PARAM_TARGET, targetIri);
                 put(URLConstants.PARAM_STRICT, strict);
+                if (StringUtils.isNotBlank(box)) {
+                    put(URLConstants.PARAM_BOX, box);
+                }
             }
         });
     }
@@ -142,11 +152,14 @@ public class IRIBuilderServiceImpl implements IRIBuilderService {
 
     @Override
     @SuppressWarnings("serial")
-    public String buildOAPageSearchIri(String targetIri, boolean strict, int page, boolean embeddedDescriptions) {
+    public String buildOAPageSearchIri(String targetIri, boolean strict, String box, int page, boolean embeddedDescriptions) {
         return buildIri("oa/search", new HashMap<String, Object>() {
             {
                 put(URLConstants.PARAM_TARGET, targetIri);
                 put(URLConstants.PARAM_STRICT, strict);
+                if (StringUtils.isNotBlank(box)) {
+                    put(URLConstants.PARAM_BOX, box);
+                }
                 put(URLConstants.PARAM_PAGE, page);
                 if (embeddedDescriptions) {
                     put(URLConstants.PARAM_DESC, 1);

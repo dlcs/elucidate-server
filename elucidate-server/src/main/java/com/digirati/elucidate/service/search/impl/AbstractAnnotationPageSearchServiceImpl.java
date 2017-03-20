@@ -31,15 +31,15 @@ public abstract class AbstractAnnotationPageSearchServiceImpl<A extends Abstract
 
     protected abstract P convertToAnnotationPage(Map<String, Object> jsonMap);
 
-    protected abstract String buildCollectionIri(String targetIri, boolean strict);
+    protected abstract String buildCollectionIri(String targetIri, boolean strict, String box);
 
-    protected abstract String buildPageIri(String targetIri, boolean strict, int page, boolean embeddedDescriptions);
+    protected abstract String buildPageIri(String targetIri, boolean strict, String box, int page, boolean embeddedDescriptions);
 
     @Override
     @Transactional(readOnly = true)
-    public ServiceResponse<P> searchAnnotationPage(String targetIri, boolean strict, int page, boolean embeddedDescription) {
+    public ServiceResponse<P> searchAnnotationPage(String targetIri, boolean strict, String box, int page, boolean embeddedDescription) {
 
-        ServiceResponse<List<A>> serviceResponse = annotationSearchService.searchAnnotations(targetIri, strict);
+        ServiceResponse<List<A>> serviceResponse = annotationSearchService.searchAnnotations(targetIri, strict, box);
         Status status = serviceResponse.getStatus();
 
         if (!status.equals(Status.OK)) {
@@ -53,11 +53,11 @@ public abstract class AbstractAnnotationPageSearchServiceImpl<A extends Abstract
         };
 
         AnnotationCollectionIRIBuilder annotationCollectionIriBuilder = () -> {
-            return buildCollectionIri(targetIri, strict);
+            return buildCollectionIri(targetIri, strict, box);
         };
 
         AnnotationPageIRIBuilder annotationPageIriBuilder = (int _page, boolean _embeddedDescriptions) -> {
-            return buildPageIri(targetIri, strict, _page, _embeddedDescriptions);
+            return buildPageIri(targetIri, strict, box, _page, _embeddedDescriptions);
         };
 
         return new AnnotationPageBuilder<A, P>(annotationPageConverter, annotationCollectionIriBuilder, annotationPageIriBuilder).buildAnnotationPage(annotations, page, embeddedDescription, pageSize);

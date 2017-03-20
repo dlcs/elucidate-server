@@ -43,12 +43,12 @@ public class OAAnnotationPageSearchServiceImpl extends AbstractAnnotationPageSea
     }
 
     @Override
-    protected String buildCollectionIri(String targetIri, boolean strict) {
-        return iriBuilderService.buildOACollectionSearchIri(targetIri, strict);
+    protected String buildCollectionIri(String targetIri, boolean strict, String box) {
+        return iriBuilderService.buildOACollectionSearchIri(targetIri, strict, box);
     }
 
     @Override
-    protected String buildPageIri(String targetIri, boolean strict, int page, boolean embeddedDescriptions) {
-        return iriBuilderService.buildOAPageSearchIri(targetIri, strict, page, embeddedDescriptions);
+    protected String buildPageIri(String targetIri, boolean strict, String box, int page, boolean embeddedDescriptions) {
+        return iriBuilderService.buildOAPageSearchIri(targetIri, strict, box, page, embeddedDescriptions);
     }
 }

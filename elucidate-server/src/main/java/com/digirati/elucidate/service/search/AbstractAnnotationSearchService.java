@@ -7,5 +7,5 @@ import com.digirati.elucidate.model.ServiceResponse;
 
 public interface AbstractAnnotationSearchService<A extends AbstractAnnotation> {
 
-    public ServiceResponse<List<A>> searchAnnotations(String targetIri, boolean strict);
+    public ServiceResponse<List<A>> searchAnnotations(String targetIri, boolean strict, String box);
 }

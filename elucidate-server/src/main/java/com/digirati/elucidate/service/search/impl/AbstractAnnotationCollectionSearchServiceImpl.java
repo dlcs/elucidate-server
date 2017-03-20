@@ -33,35 +33,35 @@ public abstract class AbstractAnnotationCollectionSearchServiceImpl<P extends Ab
 
     protected abstract C convertToAnnotationCollection(W3CAnnotationCollection w3cAnnotationCollection);
 
-    protected abstract ServiceResponse<P> buildFirstAnnotationPage(String targetIri, boolean strict, ClientPreference clientPref);
+    protected abstract ServiceResponse<P> buildFirstAnnotationPage(String targetIri, boolean strict, String box, ClientPreference clientPref);
 
-    protected abstract String buildCollectionIri(String targetIri, boolean strict);
+    protected abstract String buildCollectionIri(String targetIri, boolean strict, String box);
 
-    protected abstract String buildPageIri(String targetIri, boolean strict, int page, boolean embeddedDescriptions);
+    protected abstract String buildPageIri(String targetIri, boolean strict, String box, int page, boolean embeddedDescriptions);
 
     @Override
-    @Transactional(readOnly = true)
-    public ServiceResponse<C> searchAnnotationCollection(String targetIri, boolean strict, ClientPreference clientPref) {
+    @Transactional(readOnly = false)
+    public ServiceResponse<C> searchAnnotationCollection(String targetIri, boolean strict, String box, ClientPreference clientPref) {
 
         W3CAnnotationCollection w3cAnnotationCollection = new W3CAnnotationCollection();
         w3cAnnotationCollection.setJsonMap(new HashMap<String, Object>());
 
-        List<W3CAnnotation> w3cAnnotations = annotationSearchRepository.getAnnotationsByTargetIri(targetIri, strict);
+        List<W3CAnnotation> w3cAnnotations = annotationSearchRepository.getAnnotationsByTargetIri(targetIri, strict, box);
 
         AnnotationCollectionConverter<C> annotationCollectionConverter = () -> {
             return convertToAnnotationCollection(w3cAnnotationCollection);
         };
 
         AnnotationCollectionIRIBuilder annotationCollectionIriBuilder = () -> {
-            return buildCollectionIri(targetIri, strict);
+            return buildCollectionIri(targetIri, strict, box);
         };
 
         AnnotationPageIRIBuilder annotationPageIriBuilder = (int _page, boolean _embeddedDescriptions) -> {
-            return buildPageIri(targetIri, strict, _page, _embeddedDescriptions);
+            return buildPageIri(targetIri, strict, box, _page, _embeddedDescriptions);
         };
 
         FirstAnnotationPageBuilder<P> firstAnnotationPageBuilder = () -> {
-            return buildFirstAnnotationPage(targetIri, strict, clientPref);
+            return buildFirstAnnotationPage(targetIri, strict, box, clientPref);
         };
 
         return new AnnotationCollectionBuilder<P, C>(annotationCollectionConverter, annotationCollectionIriBuilder, annotationPageIriBuilder, firstAnnotationPageBuilder).buildAnnotationCollection(w3cAnnotationCollection, w3cAnnotations, pageSize, clientPref);

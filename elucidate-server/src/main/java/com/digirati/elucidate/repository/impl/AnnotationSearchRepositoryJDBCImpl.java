@@ -23,10 +23,10 @@ public class AnnotationSearchRepositoryJDBCImpl extends AbstractRepositoryJDBCIm
     }
 
     @Override
-    public List<W3CAnnotation> getAnnotationsByTargetIri(String targetIri, boolean strict) {
-        String sql = "SELECT * FROM annotation_search_by_target(?, ?)";
-        Object[] params = {targetIri, strict};
-        int[] sqlTypes = {Types.VARCHAR, Types.BOOLEAN};
+    public List<W3CAnnotation> getAnnotationsByTargetIri(String targetIri, boolean strict, String box) {
+        String sql = "SELECT * FROM annotation_search(?, ?, ?)";
+        Object[] params = {targetIri, strict, box};
+        int[] sqlTypes = {Types.VARCHAR, Types.BOOLEAN, Types.VARCHAR};
 
         return queryForList(sql, params, sqlTypes, new W3CAnnotationRowMapper());
     }

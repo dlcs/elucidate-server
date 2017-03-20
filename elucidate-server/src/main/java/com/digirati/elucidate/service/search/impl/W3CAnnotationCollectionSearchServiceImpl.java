@@ -34,21 +34,21 @@ public class W3CAnnotationCollectionSearchServiceImpl extends AbstractAnnotation
     }
 
     @Override
-    protected ServiceResponse<W3CAnnotationPage> buildFirstAnnotationPage(String targetIri, boolean strict, ClientPreference clientPref) {
+    protected ServiceResponse<W3CAnnotationPage> buildFirstAnnotationPage(String targetIri, boolean strict, String box, ClientPreference clientPref) {
         if (clientPref.equals(ClientPreference.CONTAINED_IRIS)) {
-            return w3cAnnotationPageSearchService.searchAnnotationPage(targetIri, strict, 0, false);
+            return w3cAnnotationPageSearchService.searchAnnotationPage(targetIri, strict, box, 0, false);
         } else {
-            return w3cAnnotationPageSearchService.searchAnnotationPage(targetIri, strict, 0, true);
+            return w3cAnnotationPageSearchService.searchAnnotationPage(targetIri, strict, box, 0, true);
         }
     }
 
     @Override
-    protected String buildCollectionIri(String targetIri, boolean strict) {
-        return iriBuilderService.buildW3CCollectionSearchIri(targetIri, strict);
+    protected String buildCollectionIri(String targetIri, boolean strict, String box) {
+        return iriBuilderService.buildW3CCollectionSearchIri(targetIri, strict, box);
     }
 
     @Override
-    protected String buildPageIri(String targetIri, boolean strict, int page, boolean embeddedDescriptions) {
-        return iriBuilderService.buildW3CPageSearchIri(targetIri, strict, page, embeddedDescriptions);
+    protected String buildPageIri(String targetIri, boolean strict, String box, int page, boolean embeddedDescriptions) {
+        return iriBuilderService.buildW3CPageSearchIri(targetIri, strict, box, page, embeddedDescriptions);
     }
 }
