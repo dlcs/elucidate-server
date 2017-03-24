@@ -45,7 +45,7 @@ public class ServicesConfig {
     @Bean(name = "listenerTaskExecutor", initMethod = "initialize", destroyMethod = "shutdown")
     public TaskExecutor listenerTaskExecutor() {
         ThreadPoolTaskExecutor threadPoolTaskExecutor = new ThreadPoolTaskExecutor();
-        threadPoolTaskExecutor.setCorePoolSize(environment.getRequiredProperty("aws.sqs.poolSize", Integer.class));
+        threadPoolTaskExecutor.setCorePoolSize(environment.getRequiredProperty("listener.poolSize", Integer.class));
         return threadPoolTaskExecutor;
     }
     
