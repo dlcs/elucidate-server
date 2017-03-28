@@ -6,5 +6,7 @@ import com.digirati.elucidate.common.model.annotation.w3c.W3CAnnotation;
 
 public interface AnnotationSearchRepository {
 
-    public List<W3CAnnotation> getAnnotationsByTargetIri(String targetIri, boolean strict, String box);
+    public List<W3CAnnotation> getAnnotationsByBody(boolean searchIds, boolean searchSources, String value, boolean strict);
+
+    public List<W3CAnnotation> getAnnotationsByTarget(boolean searchIds, boolean searchSources, String value, boolean strict);
 }

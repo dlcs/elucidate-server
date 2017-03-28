@@ -23,10 +23,19 @@ public class AnnotationSearchRepositoryJDBCImpl extends AbstractRepositoryJDBCIm
     }
 
     @Override
-    public List<W3CAnnotation> getAnnotationsByTargetIri(String targetIri, boolean strict, String box) {
-        String sql = "SELECT * FROM annotation_search(?, ?, ?)";
-        Object[] params = {targetIri, strict, box};
-        int[] sqlTypes = {Types.VARCHAR, Types.BOOLEAN, Types.VARCHAR};
+    public List<W3CAnnotation> getAnnotationsByBody(boolean searchIds, boolean searchSources, String value, boolean strict) {
+        String sql = "SELECT * FROM annotation_search_by_body(?, ?, ?, ?)";
+        Object[] params = {searchIds, searchSources, value, strict};
+        int[] sqlTypes = {Types.BOOLEAN, Types.BOOLEAN, Types.VARCHAR, Types.BOOLEAN};
+
+        return queryForList(sql, params, sqlTypes, new W3CAnnotationRowMapper());
+    }
+
+    @Override
+    public List<W3CAnnotation> getAnnotationsByTarget(boolean searchIds, boolean searchSources, String value, boolean strict) {
+        String sql = "SELECT * FROM annotation_search_by_target(?, ?, ?, ?)";
+        Object[] params = {searchIds, searchSources, value, strict};
+        int[] sqlTypes = {Types.BOOLEAN, Types.BOOLEAN, Types.VARCHAR, Types.BOOLEAN};
 
         return queryForList(sql, params, sqlTypes, new W3CAnnotationRowMapper());
     }

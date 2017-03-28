@@ -1,5 +1,6 @@
 package com.digirati.elucidate.service.search.impl;
 
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.digirati.elucidate.common.model.annotation.oa.OAAnnotationCollection;
 import com.digirati.elucidate.common.model.annotation.oa.OAAnnotationPage;
 import com.digirati.elucidate.common.model.annotation.w3c.W3CAnnotationCollection;
+import com.digirati.elucidate.common.model.enumeration.SearchType;
 import com.digirati.elucidate.common.service.IRIBuilderService;
 import com.digirati.elucidate.converter.W3CToOAAnnotationCollectionConverter;
 import com.digirati.elucidate.model.ServiceResponse;
@@ -55,21 +57,31 @@ public class OAAnnotationCollectionSearchServiceImpl extends AbstractAnnotationC
     }
 
     @Override
-    protected ServiceResponse<OAAnnotationPage> buildFirstAnnotationPage(String targetIri, boolean strict, String box, ClientPreference clientPref) {
-        if (clientPref.equals(ClientPreference.CONTAINED_IRIS)) {
-            return oaAnnotationPageSearchService.searchAnnotationPage(targetIri, strict, box, 0, false);
+    protected ServiceResponse<OAAnnotationPage> buildFirstAnnotationPage(SearchType searchType, List<String> fields, String value, boolean strict, String xywh, String t, ClientPreference clientPref) {
+        if (searchType.equals(SearchType.BODY)) {
+            if (clientPref.equals(ClientPreference.CONTAINED_IRIS)) {
+                return oaAnnotationPageSearchService.searchAnnotationPageByBody(fields, value, strict, 0, false);
+            } else {
+                return oaAnnotationPageSearchService.searchAnnotationPageByBody(fields, value, strict, 0, true);
+            }
+        } else if (searchType.equals(SearchType.TARGET)) {
+            if (clientPref.equals(ClientPreference.CONTAINED_IRIS)) {
+                return oaAnnotationPageSearchService.searchAnnotationPageByTarget(fields, value, strict, xywh, t, 0, false);
+            } else {
+                return oaAnnotationPageSearchService.searchAnnotationPageByTarget(fields, value, strict, xywh, t, 0, true);
+            }
         } else {
-            return oaAnnotationPageSearchService.searchAnnotationPage(targetIri, strict, box, 0, true);
+            throw new IllegalArgumentException(String.format("Unexpected search type [%s]", searchType));
         }
     }
 
     @Override
-    protected String buildCollectionIri(String targetIri, boolean strict, String box) {
-        return iriBuilderService.buildOACollectionSearchIri(targetIri, strict, box);
+    protected String buildCollectionIri(SearchType searchType, List<String> fields, String value, boolean strict, String xywh, String t) {
+        return iriBuilderService.buildOACollectionSearchIri(searchType, fields, value, strict, xywh, t);
     }
 
     @Override
-    protected String buildPageIri(String targetIri, boolean strict, String box, int page, boolean embeddedDescriptions) {
-        return iriBuilderService.buildOAPageSearchIri(targetIri, strict, box, page, embeddedDescriptions);
+    protected String buildPageIri(SearchType searchType, List<String> fields, String value, boolean strict, String xywh, String t, int page, boolean embeddedDescriptions) {
+        return iriBuilderService.buildOAPageSearchIri(searchType, fields, value, strict, xywh, t, page, embeddedDescriptions);
     }
 }

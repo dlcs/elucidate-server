@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.digirati.elucidate.common.model.annotation.AbstractAnnotation;
 import com.digirati.elucidate.common.model.annotation.AbstractAnnotationPage;
+import com.digirati.elucidate.common.model.enumeration.SearchType;
 import com.digirati.elucidate.infrastructure.builder.AnnotationPageBuilder;
 import com.digirati.elucidate.infrastructure.builder.function.AnnotationCollectionIRIBuilder;
 import com.digirati.elucidate.infrastructure.builder.function.AnnotationPageConverter;
@@ -31,15 +32,15 @@ public abstract class AbstractAnnotationPageSearchServiceImpl<A extends Abstract
 
     protected abstract P convertToAnnotationPage(Map<String, Object> jsonMap);
 
-    protected abstract String buildCollectionIri(String targetIri, boolean strict, String box);
+    protected abstract String buildCollectionIri(SearchType searchType, List<String> fields, String value, boolean strict, String xywh, String t);
 
-    protected abstract String buildPageIri(String targetIri, boolean strict, String box, int page, boolean embeddedDescriptions);
+    protected abstract String buildPageIri(SearchType searchType, List<String> fields, String value, boolean strict, String xywh, String t, int page, boolean embeddedDescriptions);
 
     @Override
-    @Transactional(readOnly = true)
-    public ServiceResponse<P> searchAnnotationPage(String targetIri, boolean strict, String box, int page, boolean embeddedDescription) {
+    @Transactional(readOnly = false)
+    public ServiceResponse<P> searchAnnotationPageByBody(List<String> fields, String value, boolean strict, int page, boolean embeddedDescriptions) {
 
-        ServiceResponse<List<A>> serviceResponse = annotationSearchService.searchAnnotations(targetIri, strict, box);
+        ServiceResponse<List<A>> serviceResponse = annotationSearchService.searchAnnotationsByBody(fields, value, strict);
         Status status = serviceResponse.getStatus();
 
         if (!status.equals(Status.OK)) {
@@ -53,13 +54,41 @@ public abstract class AbstractAnnotationPageSearchServiceImpl<A extends Abstract
         };
 
         AnnotationCollectionIRIBuilder annotationCollectionIriBuilder = () -> {
-            return buildCollectionIri(targetIri, strict, box);
+            return buildCollectionIri(SearchType.BODY, fields, value, strict, null, null);
         };
 
         AnnotationPageIRIBuilder annotationPageIriBuilder = (int _page, boolean _embeddedDescriptions) -> {
-            return buildPageIri(targetIri, strict, box, _page, _embeddedDescriptions);
+            return buildPageIri(SearchType.BODY, fields, value, strict, null, null, _page, _embeddedDescriptions);
         };
 
-        return new AnnotationPageBuilder<A, P>(annotationPageConverter, annotationCollectionIriBuilder, annotationPageIriBuilder).buildAnnotationPage(annotations, page, embeddedDescription, pageSize);
+        return new AnnotationPageBuilder<A, P>(annotationPageConverter, annotationCollectionIriBuilder, annotationPageIriBuilder).buildAnnotationPage(annotations, page, embeddedDescriptions, pageSize);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public ServiceResponse<P> searchAnnotationPageByTarget(List<String> fields, String value, boolean strict, String xywh, String t, int page, boolean embeddedDescriptions) {
+
+        ServiceResponse<List<A>> serviceResponse = annotationSearchService.searchAnnotationsByTarget(fields, value, strict, xywh, t);
+        Status status = serviceResponse.getStatus();
+
+        if (!status.equals(Status.OK)) {
+            return new ServiceResponse<P>(status, null);
+        }
+
+        List<A> annotations = serviceResponse.getObj();
+
+        AnnotationPageConverter<P> annotationPageConverter = (Map<String, Object> _jsonMap) -> {
+            return convertToAnnotationPage(_jsonMap);
+        };
+
+        AnnotationCollectionIRIBuilder annotationCollectionIriBuilder = () -> {
+            return buildCollectionIri(SearchType.TARGET, fields, value, strict, xywh, t);
+        };
+
+        AnnotationPageIRIBuilder annotationPageIriBuilder = (int _page, boolean _embeddedDescriptions) -> {
+            return buildPageIri(SearchType.TARGET, fields, value, strict, xywh, t, _page, _embeddedDescriptions);
+        };
+
+        return new AnnotationPageBuilder<A, P>(annotationPageConverter, annotationCollectionIriBuilder, annotationPageIriBuilder).buildAnnotationPage(annotations, page, embeddedDescriptions, pageSize);
     }
 }

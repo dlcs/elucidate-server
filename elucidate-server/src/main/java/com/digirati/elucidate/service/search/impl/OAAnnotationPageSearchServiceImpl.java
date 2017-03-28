@@ -1,5 +1,6 @@
 package com.digirati.elucidate.service.search.impl;
 
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.digirati.elucidate.common.model.annotation.oa.OAAnnotation;
 import com.digirati.elucidate.common.model.annotation.oa.OAAnnotationPage;
+import com.digirati.elucidate.common.model.enumeration.SearchType;
 import com.digirati.elucidate.common.service.IRIBuilderService;
 import com.digirati.elucidate.converter.OAToW3CAnnotationPageConverter;
 import com.digirati.elucidate.service.search.OAAnnotationPageSearchService;
@@ -43,12 +45,12 @@ public class OAAnnotationPageSearchServiceImpl extends AbstractAnnotationPageSea
     }
 
     @Override
-    protected String buildCollectionIri(String targetIri, boolean strict, String box) {
-        return iriBuilderService.buildOACollectionSearchIri(targetIri, strict, box);
+    protected String buildCollectionIri(SearchType searchType, List<String> fields, String value, boolean strict, String xywh, String t) {
+        return iriBuilderService.buildOACollectionSearchIri(searchType, fields, value, strict, xywh, t);
     }
 
     @Override
-    protected String buildPageIri(String targetIri, boolean strict, String box, int page, boolean embeddedDescriptions) {
-        return iriBuilderService.buildOAPageSearchIri(targetIri, strict, box, page, embeddedDescriptions);
+    protected String buildPageIri(SearchType searchType, List<String> fields, String value, boolean strict, String xywh, String t, int page, boolean embeddedDescriptions) {
+        return iriBuilderService.buildOAPageSearchIri(searchType, fields, value, strict, xywh, t, page, embeddedDescriptions);
     }
 }
