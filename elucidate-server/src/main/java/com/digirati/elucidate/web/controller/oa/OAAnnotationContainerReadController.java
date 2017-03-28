@@ -7,8 +7,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com.digirati.elucidate.common.model.annotation.oa.OAAnnotation;
 import com.digirati.elucidate.common.model.annotation.oa.OAAnnotationCollection;
 import com.digirati.elucidate.common.model.annotation.oa.OAAnnotationPage;
-import com.digirati.elucidate.service.OAAnnotationCollectionService;
-import com.digirati.elucidate.service.OAAnnotationPageService;
+import com.digirati.elucidate.service.query.OAAnnotationCollectionService;
+import com.digirati.elucidate.service.query.OAAnnotationPageService;
 import com.digirati.elucidate.web.controller.AbstractAnnotationContainerReadController;
 
 @Controller(OAAnnotationContainerReadController.CONTROLLER_NAME)

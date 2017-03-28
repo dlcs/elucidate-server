@@ -62,7 +62,7 @@ public class MVCConfig extends WebMvcConfigurerAdapter {
     private TurtleOAAnnotationPageMessageConverter turtleOAAnnotationPageMessageConverter;
     @Autowired
     private JSONLDValidationErrorMessageConverter jsonLdValidationErrorMessageConverter;
-    
+
     @Override
     public void configurePathMatch(PathMatchConfigurer configurer) {
         configurer.setUseTrailingSlashMatch(false);

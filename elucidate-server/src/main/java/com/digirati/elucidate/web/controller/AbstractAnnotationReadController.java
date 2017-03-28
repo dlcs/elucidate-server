@@ -12,7 +12,7 @@ import com.digirati.elucidate.common.model.annotation.AbstractAnnotationCollecti
 import com.digirati.elucidate.infrastructure.exception.InvalidServiceResponseException;
 import com.digirati.elucidate.model.ServiceResponse;
 import com.digirati.elucidate.model.ServiceResponse.Status;
-import com.digirati.elucidate.service.AbstractAnnotationService;
+import com.digirati.elucidate.service.query.AbstractAnnotationService;
 
 public abstract class AbstractAnnotationReadController<A extends AbstractAnnotation, C extends AbstractAnnotationCollection> {
 
@@ -20,10 +20,10 @@ public abstract class AbstractAnnotationReadController<A extends AbstractAnnotat
     private static final String VARIABLE_ANNOTATION_ID = "annotationId";
     private static final String REQUEST_PATH = "/{" + VARIABLE_COLLECTION_ID + "}/{" + VARIABLE_ANNOTATION_ID + "}";
 
-    private AbstractAnnotationService<A, C> annotationService;
+    private AbstractAnnotationService<A> annotationService;
 
     @Autowired
-    public AbstractAnnotationReadController(AbstractAnnotationService<A, C> annotationService) {
+    public AbstractAnnotationReadController(AbstractAnnotationService<A> annotationService) {
         this.annotationService = annotationService;
     }
 

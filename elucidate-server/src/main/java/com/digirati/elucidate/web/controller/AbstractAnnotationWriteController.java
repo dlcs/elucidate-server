@@ -19,9 +19,9 @@ import com.digirati.elucidate.common.model.annotation.AbstractAnnotation;
 import com.digirati.elucidate.common.model.annotation.AbstractAnnotationCollection;
 import com.digirati.elucidate.infrastructure.exception.InvalidAnnotationException;
 import com.digirati.elucidate.model.ServiceResponse;
-import com.digirati.elucidate.model.ValidationError;
 import com.digirati.elucidate.model.ServiceResponse.Status;
-import com.digirati.elucidate.service.AbstractAnnotationService;
+import com.digirati.elucidate.model.ValidationError;
+import com.digirati.elucidate.service.query.AbstractAnnotationService;
 
 public abstract class AbstractAnnotationWriteController<A extends AbstractAnnotation, C extends AbstractAnnotationCollection> {
 
@@ -30,10 +30,10 @@ public abstract class AbstractAnnotationWriteController<A extends AbstractAnnota
     private static final String CREATE_REQUEST_PATH = "/{" + VARIABLE_COLLECTION_ID + "}/";
     private static final String UPDATE_REQUEST_PATH = "/{" + VARIABLE_COLLECTION_ID + "}/{" + VARIABLE_ANNOTATION_ID + "}";
 
-    private AbstractAnnotationService<A, C> annotationService;
+    private AbstractAnnotationService<A> annotationService;
 
     @Autowired
-    public AbstractAnnotationWriteController(AbstractAnnotationService<A, C> annotationService) {
+    public AbstractAnnotationWriteController(AbstractAnnotationService<A> annotationService) {
         this.annotationService = annotationService;
     }
 

@@ -18,18 +18,18 @@ import com.digirati.elucidate.common.model.annotation.AbstractAnnotation;
 import com.digirati.elucidate.common.model.annotation.AbstractAnnotationCollection;
 import com.digirati.elucidate.infrastructure.exception.InvalidAnnotationCollectionException;
 import com.digirati.elucidate.model.ServiceResponse;
-import com.digirati.elucidate.model.ValidationError;
 import com.digirati.elucidate.model.ServiceResponse.Status;
-import com.digirati.elucidate.service.AbstractAnnotationCollectionService;
+import com.digirati.elucidate.model.ValidationError;
+import com.digirati.elucidate.service.query.AbstractAnnotationCollectionService;
 
 public abstract class AbstractAnnotationContainerWriteController<A extends AbstractAnnotation, C extends AbstractAnnotationCollection> {
 
     private static final String CREATE_REQUEST_PATH = "/";
 
-    private AbstractAnnotationCollectionService<A, C> annotationCollectionService;
+    private AbstractAnnotationCollectionService<C> annotationCollectionService;
 
     @Autowired
-    public AbstractAnnotationContainerWriteController(AbstractAnnotationCollectionService<A, C> annotationCollectionService) {
+    public AbstractAnnotationContainerWriteController(AbstractAnnotationCollectionService<C> annotationCollectionService) {
         this.annotationCollectionService = annotationCollectionService;
     }
 
