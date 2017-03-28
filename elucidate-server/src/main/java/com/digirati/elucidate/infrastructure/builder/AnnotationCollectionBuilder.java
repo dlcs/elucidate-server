@@ -8,9 +8,9 @@ import java.util.Map;
 import com.digirati.elucidate.common.infrastructure.constants.ActivityStreamConstants;
 import com.digirati.elucidate.common.infrastructure.constants.JSONLDConstants;
 import com.digirati.elucidate.common.infrastructure.constants.XMLSchemaConstants;
+import com.digirati.elucidate.common.model.annotation.AbstractAnnotation;
 import com.digirati.elucidate.common.model.annotation.AbstractAnnotationCollection;
 import com.digirati.elucidate.common.model.annotation.AbstractAnnotationPage;
-import com.digirati.elucidate.common.model.annotation.w3c.W3CAnnotation;
 import com.digirati.elucidate.common.model.annotation.w3c.W3CAnnotationCollection;
 import com.digirati.elucidate.infrastructure.builder.function.AnnotationCollectionConverter;
 import com.digirati.elucidate.infrastructure.builder.function.AnnotationCollectionIRIBuilder;
@@ -20,7 +20,7 @@ import com.digirati.elucidate.model.ServiceResponse;
 import com.digirati.elucidate.model.ServiceResponse.Status;
 import com.digirati.elucidate.model.enumeration.ClientPreference;
 
-public class AnnotationCollectionBuilder<P extends AbstractAnnotationPage, C extends AbstractAnnotationCollection> {
+public class AnnotationCollectionBuilder<A extends AbstractAnnotation, P extends AbstractAnnotationPage, C extends AbstractAnnotationCollection> {
 
     private AnnotationCollectionConverter<C> annotationCollectionConverter;
     private AnnotationCollectionIRIBuilder annotationCollectionIriBuilder;
@@ -35,9 +35,9 @@ public class AnnotationCollectionBuilder<P extends AbstractAnnotationPage, C ext
     }
 
     @SuppressWarnings("serial")
-    public ServiceResponse<C> buildAnnotationCollection(W3CAnnotationCollection w3cAnnotationCollection, List<W3CAnnotation> w3cAnnotations, int pageSize, ClientPreference clientPref) {
+    public ServiceResponse<C> buildAnnotationCollection(W3CAnnotationCollection w3cAnnotationCollection, List<A> annotations, int pageSize, ClientPreference clientPref) {
 
-        int totalAnnotations = w3cAnnotations.size();
+        int totalAnnotations = annotations.size();
         int totalPages = (int) Math.floor((double) totalAnnotations / pageSize);
 
         C annotationCollection = annotationCollectionConverter.convertToAnnotationCollection();

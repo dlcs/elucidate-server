@@ -1,5 +1,7 @@
 package com.digirati.elucidate.web.controller;
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang3.ArrayUtils;
@@ -21,6 +23,7 @@ import com.digirati.elucidate.model.ServiceResponse.Status;
 import com.digirati.elucidate.model.enumeration.ClientPreference;
 import com.digirati.elucidate.service.query.AbstractAnnotationCollectionService;
 import com.digirati.elucidate.service.query.AbstractAnnotationPageService;
+import com.digirati.elucidate.service.query.AbstractAnnotationService;
 
 public abstract class AbstractAnnotationContainerReadController<A extends AbstractAnnotation, P extends AbstractAnnotationPage, C extends AbstractAnnotationCollection> {
 
@@ -30,13 +33,15 @@ public abstract class AbstractAnnotationContainerReadController<A extends Abstra
     private static final String PREFER_CONTAINED_IRIS = "http://www.w3.org/ns/oa#prefercontainediris";
     private static final String PREFER_CONTAINED_DESCRIPTIONS = "http://www.w3.org/ns/oa#prefercontaineddescriptions";
 
+    private AbstractAnnotationService<A> annotationService;
+    private AbstractAnnotationPageService<A, P> annotationPageService;
     private AbstractAnnotationCollectionService<C> annotationCollectionService;
-    private AbstractAnnotationPageService<P> annotationPageService;
 
     @Autowired
-    public AbstractAnnotationContainerReadController(AbstractAnnotationCollectionService<C> annotationCollectionService, AbstractAnnotationPageService<P> annotationPageService) {
-        this.annotationCollectionService = annotationCollectionService;
+    public AbstractAnnotationContainerReadController(AbstractAnnotationService<A> annotationService, AbstractAnnotationPageService<A, P> annotationPageService, AbstractAnnotationCollectionService<C> annotationCollectionService) {
+        this.annotationService = annotationService;
         this.annotationPageService = annotationPageService;
+        this.annotationCollectionService = annotationCollectionService;
     }
 
     @RequestMapping(value = REQUEST_PATH, method = {RequestMethod.GET, RequestMethod.HEAD})
@@ -71,19 +76,28 @@ public abstract class AbstractAnnotationContainerReadController<A extends Abstra
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         }
 
-        ServiceResponse<P> serviceResponse;
-        if (!iris) {
-            serviceResponse = annotationPageService.getAnnotationPage(collectionId, page, true);
-        } else {
-            serviceResponse = annotationPageService.getAnnotationPage(collectionId, page, false);
+        ServiceResponse<List<A>> annotationsServiceResponse = annotationService.getAnnotations(collectionId);
+        Status status = annotationsServiceResponse.getStatus();
+
+        if (!status.equals(Status.OK)) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         }
-        Status status = serviceResponse.getStatus();
+
+        List<A> annotations = annotationsServiceResponse.getObj();
+
+        ServiceResponse<P> annotationPageServiceResponse;
+        if (!iris) {
+            annotationPageServiceResponse = annotationPageService.buildAnnotationPage(annotations, collectionId, page, true);
+        } else {
+            annotationPageServiceResponse = annotationPageService.buildAnnotationPage(annotations, collectionId, page, false);
+        }
+        status = annotationPageServiceResponse.getStatus();
 
         if (status.equals(Status.NOT_FOUND)) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
 
-        return ResponseEntity.ok(serviceResponse.getObj());
+        return ResponseEntity.ok(annotationPageServiceResponse.getObj());
     }
 
     private ClientPreference determineClientPreference(HttpServletRequest request) {

@@ -7,51 +7,29 @@ CREATE OR REPLACE FUNCTION public.annotation_search_by_target(
     _searchsources boolean,
     _value character varying,
     _strict boolean)
-RETURNS SETOF annotation_get AS
+  RETURNS SETOF annotation_get AS
 $BODY$
     BEGIN
         RETURN QUERY
             SELECT
                 a.annotationid,
                 a.cachekey,
-                a.collectionid,
+                ac.collectionid,
                 a.createddatetime,
                 a.deleted,
                 a.json,
                 a.modifieddatetime
             FROM
-                (
-                    SELECT
-                        DISTINCT(a.id),
-                        a.annotationid,
-                        a.cachekey,
-                        ac.collectionid,
-                        a.createddatetime,
-                        a.deleted,
-                        a.json,
-                        a.modifieddatetime
-                    FROM
-                        (
-                            SELECT
-                                a.id,
-                                a.annotationid,
-                                a.cachekey,
-                                a.collectionid,
-                                a.createddatetime,
-                                a.deleted,
-                                a.json,
-                                a.modifieddatetime,
-                                jsonb_array_elements(json -> 'http://www.w3.org/ns/oa#hasTarget') ->> '@id' AS targetid,
-                                jsonb_array_elements(jsonb_array_elements(json -> 'http://www.w3.org/ns/oa#hasTarget') -> 'http://www.w3.org/ns/oa#hasSource') ->> '@id' AS targetsource
-                            FROM
-                                annotation a
-                        ) AS a
-                            LEFT JOIN annotation_collection ac ON a.collectionid = ac.id
-                    WHERE
-                        CASE _searchids WHEN true THEN (CASE _strict WHEN true THEN a.targetid = _value ELSE a.targetid LIKE (_value || '%') END) ELSE (false) END
-                        OR CASE _searchsources WHEN true THEN (CASE _strict WHEN true THEN a.targetsource = _value ELSE a.targetsource LIKE (_value || '%') END) ELSE (false) END
-                        AND a.deleted = false
-                ) AS a;
+                annotation AS a
+                    LEFT JOIN annotation_collection AS ac ON a.collectionid = ac.id
+                    LEFT JOIN LATERAL (SELECT jsonb_array_elements(a.json -> 'http://www.w3.org/ns/oa#hasTarget') AS target) AS sq1 ON true
+                    LEFT JOIN LATERAL (SELECT jsonb_array_elements(sq1.target -> 'http://www.w3.org/ns/oa#hasSource') AS targetsource) AS sq2 ON true
+            WHERE
+                CASE _searchids WHEN true THEN (CASE _strict WHEN true THEN (sq1.target ->> '@id') = _value ELSE (sq1.target ->> '@id') LIKE (_value || '%') END) ELSE (false) END
+                OR CASE _searchsources WHEN true THEN (CASE _strict WHEN true THEN (targetsource ->> '@id') = _value ELSE (targetsource ->> '@id') LIKE (_value || '%') END) ELSE (false) END
+                AND a.deleted = false
+            ORDER BY
+                COALESCE(a.modifieddatetime, a.createddatetime);
     END;
 $BODY$
 LANGUAGE plpgsql VOLATILE COST 100 ROWS 1000;

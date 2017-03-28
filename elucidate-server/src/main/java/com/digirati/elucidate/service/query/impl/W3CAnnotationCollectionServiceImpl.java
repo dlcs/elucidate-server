@@ -1,10 +1,13 @@
 package com.digirati.elucidate.service.query.impl;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import com.digirati.elucidate.common.model.annotation.w3c.W3CAnnotation;
 import com.digirati.elucidate.common.model.annotation.w3c.W3CAnnotationCollection;
 import com.digirati.elucidate.common.model.annotation.w3c.W3CAnnotationPage;
 import com.digirati.elucidate.common.service.IRIBuilderService;
@@ -13,12 +16,12 @@ import com.digirati.elucidate.model.ServiceResponse;
 import com.digirati.elucidate.model.enumeration.ClientPreference;
 import com.digirati.elucidate.repository.AnnotationCollectionStoreRepository;
 import com.digirati.elucidate.repository.AnnotationSearchRepository;
-import com.digirati.elucidate.repository.AnnotationStoreRepository;
 import com.digirati.elucidate.service.query.W3CAnnotationCollectionService;
 import com.digirati.elucidate.service.query.W3CAnnotationPageService;
+import com.digirati.elucidate.service.query.W3CAnnotationService;
 
 @Service(W3CAnnotationCollectionServiceImpl.SERVICE_NAME)
-public class W3CAnnotationCollectionServiceImpl extends AbstractAnnotationCollectionServiceImpl<W3CAnnotationPage, W3CAnnotationCollection> implements W3CAnnotationCollectionService {
+public class W3CAnnotationCollectionServiceImpl extends AbstractAnnotationCollectionServiceImpl<W3CAnnotation, W3CAnnotationPage, W3CAnnotationCollection> implements W3CAnnotationCollectionService {
 
     public static final String SERVICE_NAME = "w3cAnnotationCollectionServiceImpl";
 
@@ -26,8 +29,8 @@ public class W3CAnnotationCollectionServiceImpl extends AbstractAnnotationCollec
     private W3CAnnotationPageService w3cAnnotationPageService;
 
     @Autowired
-    public W3CAnnotationCollectionServiceImpl(AnnotationStoreRepository annotationStoreRepository, AnnotationCollectionStoreRepository annotationCollectionStoreRepository, AnnotationSearchRepository annotationSearchRepository, IRIBuilderService iriBuilderService, W3CAnnotationPageService w3cAnnotationPageService, @Qualifier("collectionIdGenerator") IDGenerator idGenerator, @Value("${annotation.page.size}") int pageSize) {
-        super(annotationStoreRepository, annotationCollectionStoreRepository, idGenerator, pageSize);
+    public W3CAnnotationCollectionServiceImpl(AnnotationCollectionStoreRepository annotationCollectionStoreRepository, AnnotationSearchRepository annotationSearchRepository, IRIBuilderService iriBuilderService, W3CAnnotationService w3cAnnotationService, W3CAnnotationPageService w3cAnnotationPageService, @Qualifier("collectionIdGenerator") IDGenerator idGenerator, @Value("${annotation.page.size}") int pageSize) {
+        super(annotationCollectionStoreRepository, w3cAnnotationService, idGenerator, pageSize);
         this.iriBuilderService = iriBuilderService;
         this.w3cAnnotationPageService = w3cAnnotationPageService;
     }
@@ -43,11 +46,11 @@ public class W3CAnnotationCollectionServiceImpl extends AbstractAnnotationCollec
     }
 
     @Override
-    protected ServiceResponse<W3CAnnotationPage> buildFirstAnnotationPage(String collectionId, ClientPreference clientPref) {
+    protected ServiceResponse<W3CAnnotationPage> buildFirstAnnotationPage(List<W3CAnnotation> w3cAnnotations, String collectionId, ClientPreference clientPref) {
         if (clientPref.equals(ClientPreference.CONTAINED_IRIS)) {
-            return w3cAnnotationPageService.getAnnotationPage(collectionId, 0, false);
+            return w3cAnnotationPageService.buildAnnotationPage(w3cAnnotations, collectionId, 0, false);
         } else {
-            return w3cAnnotationPageService.getAnnotationPage(collectionId, 0, true);
+            return w3cAnnotationPageService.buildAnnotationPage(w3cAnnotations, collectionId, 0, true);
         }
     }
 

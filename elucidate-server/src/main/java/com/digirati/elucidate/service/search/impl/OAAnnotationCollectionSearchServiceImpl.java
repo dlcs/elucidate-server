@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import com.digirati.elucidate.common.model.annotation.oa.OAAnnotation;
 import com.digirati.elucidate.common.model.annotation.oa.OAAnnotationCollection;
 import com.digirati.elucidate.common.model.annotation.oa.OAAnnotationPage;
 import com.digirati.elucidate.common.model.annotation.w3c.W3CAnnotationCollection;
@@ -15,14 +16,14 @@ import com.digirati.elucidate.common.service.IRIBuilderService;
 import com.digirati.elucidate.converter.W3CToOAAnnotationCollectionConverter;
 import com.digirati.elucidate.model.ServiceResponse;
 import com.digirati.elucidate.model.enumeration.ClientPreference;
-import com.digirati.elucidate.repository.AnnotationSearchRepository;
 import com.digirati.elucidate.service.search.OAAnnotationCollectionSearchService;
 import com.digirati.elucidate.service.search.OAAnnotationPageSearchService;
+import com.digirati.elucidate.service.search.OAAnnotationSearchService;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Service(OAAnnotationCollectionSearchServiceImpl.SERVICE_NAME)
-public class OAAnnotationCollectionSearchServiceImpl extends AbstractAnnotationCollectionSearchServiceImpl<OAAnnotationPage, OAAnnotationCollection> implements OAAnnotationCollectionSearchService {
+public class OAAnnotationCollectionSearchServiceImpl extends AbstractAnnotationCollectionSearchServiceImpl<OAAnnotation, OAAnnotationPage, OAAnnotationCollection> implements OAAnnotationCollectionSearchService {
 
     public static final String SERVICE_NAME = "oaAnnotationCollectionSearchServiceImpl";
 
@@ -30,8 +31,8 @@ public class OAAnnotationCollectionSearchServiceImpl extends AbstractAnnotationC
     private OAAnnotationPageSearchService oaAnnotationPageSearchService;
 
     @Autowired
-    public OAAnnotationCollectionSearchServiceImpl(AnnotationSearchRepository annotationSearchRepository, IRIBuilderService iriBuilderService, OAAnnotationPageSearchService oaAnnotationPageSearchService, @Value("${annotation.page.size}") int pageSize) {
-        super(annotationSearchRepository, pageSize);
+    public OAAnnotationCollectionSearchServiceImpl(IRIBuilderService iriBuilderService, OAAnnotationSearchService oaAnnotationSearchService, OAAnnotationPageSearchService oaAnnotationPageSearchService, @Value("${annotation.page.size}") int pageSize) {
+        super(oaAnnotationSearchService, pageSize);
         this.iriBuilderService = iriBuilderService;
         this.oaAnnotationPageSearchService = oaAnnotationPageSearchService;
     }
@@ -57,18 +58,18 @@ public class OAAnnotationCollectionSearchServiceImpl extends AbstractAnnotationC
     }
 
     @Override
-    protected ServiceResponse<OAAnnotationPage> buildFirstAnnotationPage(SearchType searchType, List<String> fields, String value, boolean strict, String xywh, String t, ClientPreference clientPref) {
+    protected ServiceResponse<OAAnnotationPage> buildFirstAnnotationPage(SearchType searchType, List<OAAnnotation> oaAnnotations, List<String> fields, String value, boolean strict, String xywh, String t, ClientPreference clientPref) {
         if (searchType.equals(SearchType.BODY)) {
             if (clientPref.equals(ClientPreference.CONTAINED_IRIS)) {
-                return oaAnnotationPageSearchService.searchAnnotationPageByBody(fields, value, strict, 0, false);
+                return oaAnnotationPageSearchService.buildAnnotationPageByBody(oaAnnotations, fields, value, strict, 0, false);
             } else {
-                return oaAnnotationPageSearchService.searchAnnotationPageByBody(fields, value, strict, 0, true);
+                return oaAnnotationPageSearchService.buildAnnotationPageByBody(oaAnnotations, fields, value, strict, 0, true);
             }
         } else if (searchType.equals(SearchType.TARGET)) {
             if (clientPref.equals(ClientPreference.CONTAINED_IRIS)) {
-                return oaAnnotationPageSearchService.searchAnnotationPageByTarget(fields, value, strict, xywh, t, 0, false);
+                return oaAnnotationPageSearchService.buildAnnotationPageByTarget(oaAnnotations, fields, value, strict, xywh, t, 0, false);
             } else {
-                return oaAnnotationPageSearchService.searchAnnotationPageByTarget(fields, value, strict, xywh, t, 0, true);
+                return oaAnnotationPageSearchService.buildAnnotationPageByTarget(oaAnnotations, fields, value, strict, xywh, t, 0, true);
             }
         } else {
             throw new IllegalArgumentException(String.format("Unexpected search type [%s]", searchType));

@@ -8,6 +8,7 @@ import com.digirati.elucidate.common.model.annotation.oa.OAAnnotationCollection;
 import com.digirati.elucidate.common.model.annotation.oa.OAAnnotationPage;
 import com.digirati.elucidate.service.search.OAAnnotationCollectionSearchService;
 import com.digirati.elucidate.service.search.OAAnnotationPageSearchService;
+import com.digirati.elucidate.service.search.OAAnnotationSearchService;
 import com.digirati.elucidate.web.controller.AbstractAnnotationSearchController;
 
 @Controller(OAAnnotationSearchController.CONTROLLER_NAME)
@@ -16,7 +17,7 @@ public class OAAnnotationSearchController extends AbstractAnnotationSearchContro
 
     public static final String CONTROLLER_NAME = "oaAnnotationSearchController";
 
-    public OAAnnotationSearchController(OAAnnotationCollectionSearchService oaAnnotationCollectionSearchService, OAAnnotationPageSearchService oaAnnotationPageSearchService) {
-        super(oaAnnotationCollectionSearchService, oaAnnotationPageSearchService);
+    public OAAnnotationSearchController(OAAnnotationSearchService oaAnnotationSearchService, OAAnnotationPageSearchService oaAnnotationPageSearchService, OAAnnotationCollectionSearchService oaAnnotationCollectionSearchService) {
+        super(oaAnnotationSearchService, oaAnnotationPageSearchService, oaAnnotationCollectionSearchService);
     }
 }

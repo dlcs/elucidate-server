@@ -12,7 +12,6 @@ import com.digirati.elucidate.common.model.annotation.w3c.W3CAnnotationPage;
 import com.digirati.elucidate.common.model.enumeration.SearchType;
 import com.digirati.elucidate.common.service.IRIBuilderService;
 import com.digirati.elucidate.service.search.W3CAnnotationPageSearchService;
-import com.digirati.elucidate.service.search.W3CAnnotationSearchService;
 
 @Service(W3CAnnotationPageSearchServiceImpl.SERVICE_NAME)
 public class W3CAnnotationPageSearchServiceImpl extends AbstractAnnotationPageSearchServiceImpl<W3CAnnotation, W3CAnnotationPage> implements W3CAnnotationPageSearchService {
@@ -22,8 +21,8 @@ public class W3CAnnotationPageSearchServiceImpl extends AbstractAnnotationPageSe
     private IRIBuilderService iriBuilderService;
 
     @Autowired
-    public W3CAnnotationPageSearchServiceImpl(IRIBuilderService iriBuilderService, W3CAnnotationSearchService w3cAnnotationSearchService, @Value("${annotation.page.size}") int pageSize) {
-        super(w3cAnnotationSearchService, pageSize);
+    public W3CAnnotationPageSearchServiceImpl(IRIBuilderService iriBuilderService, @Value("${annotation.page.size}") int pageSize) {
+        super(pageSize);
         this.iriBuilderService = iriBuilderService;
     }
 
