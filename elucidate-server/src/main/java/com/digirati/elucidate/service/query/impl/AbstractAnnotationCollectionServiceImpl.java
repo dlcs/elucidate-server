@@ -8,9 +8,9 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.digirati.elucidate.common.model.annotation.AbstractAnnotation;
 import com.digirati.elucidate.common.model.annotation.AbstractAnnotationCollection;
 import com.digirati.elucidate.common.model.annotation.AbstractAnnotationPage;
-import com.digirati.elucidate.common.model.annotation.w3c.W3CAnnotation;
 import com.digirati.elucidate.common.model.annotation.w3c.W3CAnnotationCollection;
 import com.digirati.elucidate.infrastructure.builder.AnnotationCollectionBuilder;
 import com.digirati.elucidate.infrastructure.builder.function.AnnotationCollectionConverter;
@@ -22,22 +22,22 @@ import com.digirati.elucidate.model.ServiceResponse;
 import com.digirati.elucidate.model.ServiceResponse.Status;
 import com.digirati.elucidate.model.enumeration.ClientPreference;
 import com.digirati.elucidate.repository.AnnotationCollectionStoreRepository;
-import com.digirati.elucidate.repository.AnnotationStoreRepository;
 import com.digirati.elucidate.service.query.AbstractAnnotationCollectionService;
+import com.digirati.elucidate.service.query.AbstractAnnotationService;
 import com.github.jsonldjava.utils.JsonUtils;
 
-public abstract class AbstractAnnotationCollectionServiceImpl<P extends AbstractAnnotationPage, C extends AbstractAnnotationCollection> implements AbstractAnnotationCollectionService<C> {
+public abstract class AbstractAnnotationCollectionServiceImpl<A extends AbstractAnnotation, P extends AbstractAnnotationPage, C extends AbstractAnnotationCollection> implements AbstractAnnotationCollectionService<C> {
 
     protected final Logger LOGGER = Logger.getLogger(getClass());
 
-    private AnnotationStoreRepository annotationStoreRepository;
+    private AbstractAnnotationService<A> annotationService;
     private AnnotationCollectionStoreRepository annotationCollectionStoreRepository;
     private IDGenerator idGenerator;
     private int pageSize;
 
-    public AbstractAnnotationCollectionServiceImpl(AnnotationStoreRepository annotationStoreRepository, AnnotationCollectionStoreRepository annotationCollectionStoreRepository, IDGenerator idGenerator, int pageSize) {
-        this.annotationStoreRepository = annotationStoreRepository;
+    public AbstractAnnotationCollectionServiceImpl(AnnotationCollectionStoreRepository annotationCollectionStoreRepository, AbstractAnnotationService<A> annotationService, IDGenerator idGenerator, int pageSize) {
         this.annotationCollectionStoreRepository = annotationCollectionStoreRepository;
+        this.annotationService = annotationService;
         this.idGenerator = idGenerator;
         this.pageSize = pageSize;
     }
@@ -46,7 +46,7 @@ public abstract class AbstractAnnotationCollectionServiceImpl<P extends Abstract
 
     protected abstract W3CAnnotationCollection convertFromAnnotationCollection(C annotationCollection);
 
-    protected abstract ServiceResponse<P> buildFirstAnnotationPage(String collectionId, ClientPreference clientPref);
+    protected abstract ServiceResponse<P> buildFirstAnnotationPage(List<A> annotations, String collectionId, ClientPreference clientPref);
 
     protected abstract String buildCollectionIri(String collectionId);
 
@@ -61,7 +61,14 @@ public abstract class AbstractAnnotationCollectionServiceImpl<P extends Abstract
             return new ServiceResponse<C>(Status.NOT_FOUND, null);
         }
 
-        List<W3CAnnotation> w3cAnnotations = annotationStoreRepository.getAnnotationsByCollectionId(collectionId);
+        ServiceResponse<List<A>> serviceResponse = annotationService.getAnnotations(collectionId);
+
+        Status status = serviceResponse.getStatus();
+        if (!status.equals(Status.OK)) {
+            return new ServiceResponse<C>(status, null);
+        }
+
+        List<A> annotations = serviceResponse.getObj();
 
         AnnotationCollectionConverter<C> annotationCollectionConverter = () -> {
             return convertToAnnotationCollection(w3cAnnotationCollection);
@@ -76,10 +83,10 @@ public abstract class AbstractAnnotationCollectionServiceImpl<P extends Abstract
         };
 
         FirstAnnotationPageBuilder<P> firstAnnotationPageBuilder = () -> {
-            return buildFirstAnnotationPage(collectionId, clientPref);
+            return buildFirstAnnotationPage(annotations, collectionId, clientPref);
         };
 
-        return new AnnotationCollectionBuilder<P, C>(annotationCollectionConverter, annotationCollectionIriBuilder, annotationPageIriBuilder, firstAnnotationPageBuilder).buildAnnotationCollection(w3cAnnotationCollection, w3cAnnotations, pageSize, clientPref);
+        return new AnnotationCollectionBuilder<A, P, C>(annotationCollectionConverter, annotationCollectionIriBuilder, annotationPageIriBuilder, firstAnnotationPageBuilder).buildAnnotationCollection(w3cAnnotationCollection, annotations, pageSize, clientPref);
     }
 
     @Override

@@ -9,7 +9,6 @@ import com.digirati.elucidate.common.model.annotation.w3c.W3CAnnotation;
 import com.digirati.elucidate.common.model.annotation.w3c.W3CAnnotationPage;
 import com.digirati.elucidate.common.service.IRIBuilderService;
 import com.digirati.elucidate.service.query.W3CAnnotationPageService;
-import com.digirati.elucidate.service.query.W3CAnnotationService;
 
 @Service(W3CAnnotationPageServiceImpl.SERVICE_NAME)
 public class W3CAnnotationPageServiceImpl extends AbstractAnnotationPageServiceImpl<W3CAnnotation, W3CAnnotationPage> implements W3CAnnotationPageService {
@@ -18,8 +17,8 @@ public class W3CAnnotationPageServiceImpl extends AbstractAnnotationPageServiceI
 
     private IRIBuilderService iriBuilderService;
 
-    public W3CAnnotationPageServiceImpl(IRIBuilderService iriBuilderService, W3CAnnotationService w3cAnnotationService, @Value("${annotation.page.size}") int pageSize) {
-        super(w3cAnnotationService, pageSize);
+    public W3CAnnotationPageServiceImpl(IRIBuilderService iriBuilderService, @Value("${annotation.page.size}") int pageSize) {
+        super(pageSize);
         this.iriBuilderService = iriBuilderService;
     }
 

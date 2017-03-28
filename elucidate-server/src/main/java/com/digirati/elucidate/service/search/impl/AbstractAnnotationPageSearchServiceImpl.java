@@ -14,19 +14,15 @@ import com.digirati.elucidate.infrastructure.builder.function.AnnotationCollecti
 import com.digirati.elucidate.infrastructure.builder.function.AnnotationPageConverter;
 import com.digirati.elucidate.infrastructure.builder.function.AnnotationPageIRIBuilder;
 import com.digirati.elucidate.model.ServiceResponse;
-import com.digirati.elucidate.model.ServiceResponse.Status;
 import com.digirati.elucidate.service.search.AbstractAnnotationPageSearchService;
-import com.digirati.elucidate.service.search.AbstractAnnotationSearchService;
 
-public abstract class AbstractAnnotationPageSearchServiceImpl<A extends AbstractAnnotation, P extends AbstractAnnotationPage> implements AbstractAnnotationPageSearchService<P> {
+public abstract class AbstractAnnotationPageSearchServiceImpl<A extends AbstractAnnotation, P extends AbstractAnnotationPage> implements AbstractAnnotationPageSearchService<A, P> {
 
     protected final Logger LOGGER = Logger.getLogger(getClass());
 
-    private AbstractAnnotationSearchService<A> annotationSearchService;
     private int pageSize;
 
-    public AbstractAnnotationPageSearchServiceImpl(AbstractAnnotationSearchService<A> annotationSearchService, int pageSize) {
-        this.annotationSearchService = annotationSearchService;
+    public AbstractAnnotationPageSearchServiceImpl(int pageSize) {
         this.pageSize = pageSize;
     }
 
@@ -38,16 +34,7 @@ public abstract class AbstractAnnotationPageSearchServiceImpl<A extends Abstract
 
     @Override
     @Transactional(readOnly = false)
-    public ServiceResponse<P> searchAnnotationPageByBody(List<String> fields, String value, boolean strict, int page, boolean embeddedDescriptions) {
-
-        ServiceResponse<List<A>> serviceResponse = annotationSearchService.searchAnnotationsByBody(fields, value, strict);
-        Status status = serviceResponse.getStatus();
-
-        if (!status.equals(Status.OK)) {
-            return new ServiceResponse<P>(status, null);
-        }
-
-        List<A> annotations = serviceResponse.getObj();
+    public ServiceResponse<P> buildAnnotationPageByBody(List<A> annotations, List<String> fields, String value, boolean strict, int page, boolean embeddedDescriptions) {
 
         AnnotationPageConverter<P> annotationPageConverter = (Map<String, Object> _jsonMap) -> {
             return convertToAnnotationPage(_jsonMap);
@@ -66,16 +53,7 @@ public abstract class AbstractAnnotationPageSearchServiceImpl<A extends Abstract
 
     @Override
     @Transactional(readOnly = true)
-    public ServiceResponse<P> searchAnnotationPageByTarget(List<String> fields, String value, boolean strict, String xywh, String t, int page, boolean embeddedDescriptions) {
-
-        ServiceResponse<List<A>> serviceResponse = annotationSearchService.searchAnnotationsByTarget(fields, value, strict, xywh, t);
-        Status status = serviceResponse.getStatus();
-
-        if (!status.equals(Status.OK)) {
-            return new ServiceResponse<P>(status, null);
-        }
-
-        List<A> annotations = serviceResponse.getObj();
+    public ServiceResponse<P> buildAnnotationPageByTarget(List<A> annotations, List<String> fields, String value, boolean strict, String xywh, String t, int page, boolean embeddedDescriptions) {
 
         AnnotationPageConverter<P> annotationPageConverter = (Map<String, Object> _jsonMap) -> {
             return convertToAnnotationPage(_jsonMap);

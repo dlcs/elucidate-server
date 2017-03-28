@@ -1,5 +1,6 @@
 package com.digirati.elucidate.service.query.impl;
 
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,6 +8,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import com.digirati.elucidate.common.model.annotation.oa.OAAnnotation;
 import com.digirati.elucidate.common.model.annotation.oa.OAAnnotationCollection;
 import com.digirati.elucidate.common.model.annotation.oa.OAAnnotationPage;
 import com.digirati.elucidate.common.model.annotation.w3c.W3CAnnotationCollection;
@@ -18,14 +20,14 @@ import com.digirati.elucidate.model.ServiceResponse;
 import com.digirati.elucidate.model.enumeration.ClientPreference;
 import com.digirati.elucidate.repository.AnnotationCollectionStoreRepository;
 import com.digirati.elucidate.repository.AnnotationSearchRepository;
-import com.digirati.elucidate.repository.AnnotationStoreRepository;
 import com.digirati.elucidate.service.query.OAAnnotationCollectionService;
 import com.digirati.elucidate.service.query.OAAnnotationPageService;
+import com.digirati.elucidate.service.query.OAAnnotationService;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Service(OAAnnotationCollectionServiceImpl.SERVICE_NAME)
-public class OAAnnotationCollectionServiceImpl extends AbstractAnnotationCollectionServiceImpl<OAAnnotationPage, OAAnnotationCollection> implements OAAnnotationCollectionService {
+public class OAAnnotationCollectionServiceImpl extends AbstractAnnotationCollectionServiceImpl<OAAnnotation, OAAnnotationPage, OAAnnotationCollection> implements OAAnnotationCollectionService {
 
     public static final String SERVICE_NAME = "oaAnnotationCollectionServiceImpl";
 
@@ -33,8 +35,8 @@ public class OAAnnotationCollectionServiceImpl extends AbstractAnnotationCollect
     private OAAnnotationPageService oaAnnotationPageService;
 
     @Autowired
-    public OAAnnotationCollectionServiceImpl(AnnotationStoreRepository annotationStoreRepository, AnnotationCollectionStoreRepository annotationCollectionStoreRepository, AnnotationSearchRepository annotationSearchRepository, IRIBuilderService iriBuilderService, OAAnnotationPageService oaAnnotationPageService, @Qualifier("collectionIdGenerator") IDGenerator idGenerator, @Value("${annotation.page.size}") int pageSize) {
-        super(annotationStoreRepository, annotationCollectionStoreRepository, idGenerator, pageSize);
+    public OAAnnotationCollectionServiceImpl(AnnotationCollectionStoreRepository annotationCollectionStoreRepository, AnnotationSearchRepository annotationSearchRepository, IRIBuilderService iriBuilderService, OAAnnotationService oaAnnotationService, OAAnnotationPageService oaAnnotationPageService, @Qualifier("collectionIdGenerator") IDGenerator idGenerator, @Value("${annotation.page.size}") int pageSize) {
+        super(annotationCollectionStoreRepository, oaAnnotationService, idGenerator, pageSize);
         this.iriBuilderService = iriBuilderService;
         this.oaAnnotationPageService = oaAnnotationPageService;
     }
@@ -80,11 +82,11 @@ public class OAAnnotationCollectionServiceImpl extends AbstractAnnotationCollect
     }
 
     @Override
-    protected ServiceResponse<OAAnnotationPage> buildFirstAnnotationPage(String collectionId, ClientPreference clientPref) {
+    protected ServiceResponse<OAAnnotationPage> buildFirstAnnotationPage(List<OAAnnotation> oaAnnotations, String collectionId, ClientPreference clientPref) {
         if (clientPref.equals(ClientPreference.CONTAINED_IRIS)) {
-            return oaAnnotationPageService.getAnnotationPage(collectionId, 0, false);
+            return oaAnnotationPageService.buildAnnotationPage(oaAnnotations, collectionId, 0, false);
         } else {
-            return oaAnnotationPageService.getAnnotationPage(collectionId, 0, true);
+            return oaAnnotationPageService.buildAnnotationPage(oaAnnotations, collectionId, 0, true);
         }
     }
 

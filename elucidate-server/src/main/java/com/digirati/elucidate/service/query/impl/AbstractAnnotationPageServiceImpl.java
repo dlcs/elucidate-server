@@ -13,19 +13,15 @@ import com.digirati.elucidate.infrastructure.builder.function.AnnotationCollecti
 import com.digirati.elucidate.infrastructure.builder.function.AnnotationPageConverter;
 import com.digirati.elucidate.infrastructure.builder.function.AnnotationPageIRIBuilder;
 import com.digirati.elucidate.model.ServiceResponse;
-import com.digirati.elucidate.model.ServiceResponse.Status;
 import com.digirati.elucidate.service.query.AbstractAnnotationPageService;
-import com.digirati.elucidate.service.query.AbstractAnnotationService;
 
-public abstract class AbstractAnnotationPageServiceImpl<A extends AbstractAnnotation, P extends AbstractAnnotationPage> implements AbstractAnnotationPageService<P> {
+public abstract class AbstractAnnotationPageServiceImpl<A extends AbstractAnnotation, P extends AbstractAnnotationPage> implements AbstractAnnotationPageService<A, P> {
 
     protected final Logger LOGGER = Logger.getLogger(getClass());
 
-    private AbstractAnnotationService<A> annotationService;
     private int pageSize;
 
-    public AbstractAnnotationPageServiceImpl(AbstractAnnotationService<A> annotationService, int pageSize) {
-        this.annotationService = annotationService;
+    public AbstractAnnotationPageServiceImpl(int pageSize) {
         this.pageSize = pageSize;
     }
 
@@ -37,16 +33,7 @@ public abstract class AbstractAnnotationPageServiceImpl<A extends AbstractAnnota
 
     @Override
     @Transactional(readOnly = true)
-    public ServiceResponse<P> getAnnotationPage(String collectionId, int page, boolean embeddedDescriptions) {
-
-        ServiceResponse<List<A>> serviceResponse = annotationService.getAnnotations(collectionId);
-        Status status = serviceResponse.getStatus();
-
-        if (!status.equals(Status.OK)) {
-            return new ServiceResponse<P>(status, null);
-        }
-
-        List<A> annotations = serviceResponse.getObj();
+    public ServiceResponse<P> buildAnnotationPage(List<A> annotations, String collectionId, int page, boolean embeddedDescriptions) {
 
         AnnotationPageConverter<P> annotationPageConverter = (Map<String, Object> _jsonMap) -> {
             return convertToAnnotationPage(_jsonMap);

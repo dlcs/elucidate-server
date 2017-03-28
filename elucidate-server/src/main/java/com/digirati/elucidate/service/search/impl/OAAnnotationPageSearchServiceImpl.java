@@ -13,7 +13,6 @@ import com.digirati.elucidate.common.model.enumeration.SearchType;
 import com.digirati.elucidate.common.service.IRIBuilderService;
 import com.digirati.elucidate.converter.OAToW3CAnnotationPageConverter;
 import com.digirati.elucidate.service.search.OAAnnotationPageSearchService;
-import com.digirati.elucidate.service.search.OAAnnotationSearchService;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -25,8 +24,8 @@ public class OAAnnotationPageSearchServiceImpl extends AbstractAnnotationPageSea
     private IRIBuilderService iriBuilderService;
 
     @Autowired
-    public OAAnnotationPageSearchServiceImpl(IRIBuilderService iriBuilderService, OAAnnotationSearchService oaAnnotationSearchService, @Value("${annotation.page.size}") int pageSize) {
-        super(oaAnnotationSearchService, pageSize);
+    public OAAnnotationPageSearchServiceImpl(IRIBuilderService iriBuilderService, @Value("${annotation.page.size}") int pageSize) {
+        super(pageSize);
         this.iriBuilderService = iriBuilderService;
     }
 

@@ -106,7 +106,6 @@ public abstract class AbstractAnnotationSearchServiceImpl<A extends AbstractAnno
 
                             List<Map<String, Object>> selectorJsonMaps = (List<Map<String, Object>>) targetJsonMap.get(OAConstants.URI_HAS_SELECTOR);
                             if (selectorJsonMaps == null || selectorJsonMaps.isEmpty()) {
-                                iterator.remove();
                                 break;
                             }
 
@@ -135,7 +134,7 @@ public abstract class AbstractAnnotationSearchServiceImpl<A extends AbstractAnno
                                 }
                             }
 
-                            if (!hasSelector || (hasSelector && isFiltered)) {
+                            if (hasSelector && isFiltered) {
                                 iterator.remove();
                                 break;
                             }

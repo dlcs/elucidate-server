@@ -6,10 +6,9 @@ import java.util.List;
 import org.apache.log4j.Logger;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.digirati.elucidate.common.infrastructure.constants.SearchConstants;
+import com.digirati.elucidate.common.model.annotation.AbstractAnnotation;
 import com.digirati.elucidate.common.model.annotation.AbstractAnnotationCollection;
 import com.digirati.elucidate.common.model.annotation.AbstractAnnotationPage;
-import com.digirati.elucidate.common.model.annotation.w3c.W3CAnnotation;
 import com.digirati.elucidate.common.model.annotation.w3c.W3CAnnotationCollection;
 import com.digirati.elucidate.common.model.enumeration.SearchType;
 import com.digirati.elucidate.infrastructure.builder.AnnotationCollectionBuilder;
@@ -18,25 +17,26 @@ import com.digirati.elucidate.infrastructure.builder.function.AnnotationCollecti
 import com.digirati.elucidate.infrastructure.builder.function.AnnotationPageIRIBuilder;
 import com.digirati.elucidate.infrastructure.builder.function.FirstAnnotationPageBuilder;
 import com.digirati.elucidate.model.ServiceResponse;
+import com.digirati.elucidate.model.ServiceResponse.Status;
 import com.digirati.elucidate.model.enumeration.ClientPreference;
-import com.digirati.elucidate.repository.AnnotationSearchRepository;
 import com.digirati.elucidate.service.search.AbstractAnnotationCollectionSearchService;
+import com.digirati.elucidate.service.search.AbstractAnnotationSearchService;
 
-public abstract class AbstractAnnotationCollectionSearchServiceImpl<P extends AbstractAnnotationPage, C extends AbstractAnnotationCollection> implements AbstractAnnotationCollectionSearchService<C> {
+public abstract class AbstractAnnotationCollectionSearchServiceImpl<A extends AbstractAnnotation, P extends AbstractAnnotationPage, C extends AbstractAnnotationCollection> implements AbstractAnnotationCollectionSearchService<C> {
 
     protected final Logger LOGGER = Logger.getLogger(getClass());
 
-    private AnnotationSearchRepository annotationSearchRepository;
+    private AbstractAnnotationSearchService<A> annotationSearchService;
     private int pageSize;
 
-    public AbstractAnnotationCollectionSearchServiceImpl(AnnotationSearchRepository annotationSearchRepository, int pageSize) {
-        this.annotationSearchRepository = annotationSearchRepository;
+    public AbstractAnnotationCollectionSearchServiceImpl(AbstractAnnotationSearchService<A> annotationSearchService, int pageSize) {
+        this.annotationSearchService = annotationSearchService;
         this.pageSize = pageSize;
     }
 
     protected abstract C convertToAnnotationCollection(W3CAnnotationCollection w3cAnnotationCollection);
 
-    protected abstract ServiceResponse<P> buildFirstAnnotationPage(SearchType searchType, List<String> fields, String value, boolean strict, String xywh, String t, ClientPreference clientPref);
+    protected abstract ServiceResponse<P> buildFirstAnnotationPage(SearchType searchType, List<A> annotations, List<String> fields, String value, boolean strict, String xywh, String t, ClientPreference clientPref);
 
     protected abstract String buildCollectionIri(SearchType searchType, List<String> fields, String value, boolean strict, String xywh, String t);
 
@@ -49,9 +49,14 @@ public abstract class AbstractAnnotationCollectionSearchServiceImpl<P extends Ab
         W3CAnnotationCollection w3cAnnotationCollection = new W3CAnnotationCollection();
         w3cAnnotationCollection.setJsonMap(new HashMap<String, Object>());
 
-        boolean searchIds = fields.contains(SearchConstants.FIELD_ID);
-        boolean searchSources = fields.contains(SearchConstants.FIELD_SOURCE);
-        List<W3CAnnotation> w3cAnnotations = annotationSearchRepository.getAnnotationsByBody(searchIds, searchSources, value, strict);
+        ServiceResponse<List<A>> serviceResponse = annotationSearchService.searchAnnotationsByBody(fields, value, strict);
+        Status status = serviceResponse.getStatus();
+
+        if (!status.equals(Status.OK)) {
+            return new ServiceResponse<C>(status, null);
+        }
+
+        List<A> annotations = serviceResponse.getObj();
 
         AnnotationCollectionConverter<C> annotationCollectionConverter = () -> {
             return convertToAnnotationCollection(w3cAnnotationCollection);
@@ -66,10 +71,10 @@ public abstract class AbstractAnnotationCollectionSearchServiceImpl<P extends Ab
         };
 
         FirstAnnotationPageBuilder<P> firstAnnotationPageBuilder = () -> {
-            return buildFirstAnnotationPage(SearchType.BODY, fields, value, strict, null, null, clientPref);
+            return buildFirstAnnotationPage(SearchType.BODY, annotations, fields, value, strict, null, null, clientPref);
         };
 
-        return new AnnotationCollectionBuilder<P, C>(annotationCollectionConverter, annotationCollectionIriBuilder, annotationPageIriBuilder, firstAnnotationPageBuilder).buildAnnotationCollection(w3cAnnotationCollection, w3cAnnotations, pageSize, clientPref);
+        return new AnnotationCollectionBuilder<A, P, C>(annotationCollectionConverter, annotationCollectionIriBuilder, annotationPageIriBuilder, firstAnnotationPageBuilder).buildAnnotationCollection(w3cAnnotationCollection, annotations, pageSize, clientPref);
     }
 
     @Override
@@ -79,9 +84,14 @@ public abstract class AbstractAnnotationCollectionSearchServiceImpl<P extends Ab
         W3CAnnotationCollection w3cAnnotationCollection = new W3CAnnotationCollection();
         w3cAnnotationCollection.setJsonMap(new HashMap<String, Object>());
 
-        boolean searchIds = fields.contains(SearchConstants.FIELD_ID);
-        boolean searchSources = fields.contains(SearchConstants.FIELD_SOURCE);
-        List<W3CAnnotation> w3cAnnotations = annotationSearchRepository.getAnnotationsByTarget(searchIds, searchSources, value, strict);
+        ServiceResponse<List<A>> serviceResponse = annotationSearchService.searchAnnotationsByTarget(fields, value, strict, xywh, t);
+        Status status = serviceResponse.getStatus();
+
+        if (!status.equals(Status.OK)) {
+            return new ServiceResponse<C>(status, null);
+        }
+
+        List<A> annotations = serviceResponse.getObj();
 
         AnnotationCollectionConverter<C> annotationCollectionConverter = () -> {
             return convertToAnnotationCollection(w3cAnnotationCollection);
@@ -96,9 +106,9 @@ public abstract class AbstractAnnotationCollectionSearchServiceImpl<P extends Ab
         };
 
         FirstAnnotationPageBuilder<P> firstAnnotationPageBuilder = () -> {
-            return buildFirstAnnotationPage(SearchType.TARGET, fields, value, strict, xywh, t, clientPref);
+            return buildFirstAnnotationPage(SearchType.TARGET, annotations, fields, value, strict, xywh, t, clientPref);
         };
 
-        return new AnnotationCollectionBuilder<P, C>(annotationCollectionConverter, annotationCollectionIriBuilder, annotationPageIriBuilder, firstAnnotationPageBuilder).buildAnnotationCollection(w3cAnnotationCollection, w3cAnnotations, pageSize, clientPref);
+        return new AnnotationCollectionBuilder<A, P, C>(annotationCollectionConverter, annotationCollectionIriBuilder, annotationPageIriBuilder, firstAnnotationPageBuilder).buildAnnotationCollection(w3cAnnotationCollection, annotations, pageSize, clientPref);
     }
 }

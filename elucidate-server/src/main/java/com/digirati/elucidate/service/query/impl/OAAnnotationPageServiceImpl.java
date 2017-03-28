@@ -11,7 +11,6 @@ import com.digirati.elucidate.common.model.annotation.oa.OAAnnotationPage;
 import com.digirati.elucidate.common.service.IRIBuilderService;
 import com.digirati.elucidate.converter.OAToW3CAnnotationPageConverter;
 import com.digirati.elucidate.service.query.OAAnnotationPageService;
-import com.digirati.elucidate.service.query.OAAnnotationService;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -23,8 +22,8 @@ public class OAAnnotationPageServiceImpl extends AbstractAnnotationPageServiceIm
     private IRIBuilderService iriBuilderService;
 
     @Autowired
-    public OAAnnotationPageServiceImpl(IRIBuilderService iriBuilderService, OAAnnotationService oaAnnotationService, @Value("${annotation.page.size}") int pageSize) {
-        super(oaAnnotationService, pageSize);
+    public OAAnnotationPageServiceImpl(IRIBuilderService iriBuilderService, @Value("${annotation.page.size}") int pageSize) {
+        super(pageSize);
         this.iriBuilderService = iriBuilderService;
     }
 
