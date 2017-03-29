@@ -35,10 +35,10 @@ public abstract class AbstractAnnotationContainerReadController<A extends Abstra
 
     private AbstractAnnotationService<A> annotationService;
     private AbstractAnnotationPageService<A, P> annotationPageService;
-    private AbstractAnnotationCollectionService<C> annotationCollectionService;
+    private AbstractAnnotationCollectionService<A, C> annotationCollectionService;
 
     @Autowired
-    public AbstractAnnotationContainerReadController(AbstractAnnotationService<A> annotationService, AbstractAnnotationPageService<A, P> annotationPageService, AbstractAnnotationCollectionService<C> annotationCollectionService) {
+    public AbstractAnnotationContainerReadController(AbstractAnnotationService<A> annotationService, AbstractAnnotationPageService<A, P> annotationPageService, AbstractAnnotationCollectionService<A, C> annotationCollectionService) {
         this.annotationService = annotationService;
         this.annotationPageService = annotationPageService;
         this.annotationCollectionService = annotationCollectionService;
@@ -60,7 +60,11 @@ public abstract class AbstractAnnotationContainerReadController<A extends Abstra
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         }
 
-        ServiceResponse<C> serviceResponse = annotationCollectionService.getAnnotationCollection(collectionId, clientPref);
+        ServiceResponse<List<A>> annotationsServiceResponse = annotationService.getAnnotations(collectionId);
+
+        List<A> annotations = annotationsServiceResponse.getObj();
+
+        ServiceResponse<C> serviceResponse = annotationCollectionService.getAnnotationCollection(collectionId, annotations, clientPref);
         Status status = serviceResponse.getStatus();
 
         if (status.equals(Status.NOT_FOUND)) {

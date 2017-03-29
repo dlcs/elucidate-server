@@ -26,10 +26,10 @@ public abstract class AbstractAnnotationContainerWriteController<A extends Abstr
 
     private static final String CREATE_REQUEST_PATH = "/";
 
-    private AbstractAnnotationCollectionService<C> annotationCollectionService;
+    private AbstractAnnotationCollectionService<A, C> annotationCollectionService;
 
     @Autowired
-    public AbstractAnnotationContainerWriteController(AbstractAnnotationCollectionService<C> annotationCollectionService) {
+    public AbstractAnnotationContainerWriteController(AbstractAnnotationCollectionService<A, C> annotationCollectionService) {
         this.annotationCollectionService = annotationCollectionService;
     }
 
