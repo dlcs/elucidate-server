@@ -1,5 +1,7 @@
 package com.digirati.elucidate.web.controller;
 
+import java.util.Collections;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -21,6 +23,8 @@ import com.digirati.elucidate.infrastructure.exception.InvalidAnnotationExceptio
 import com.digirati.elucidate.model.ServiceResponse;
 import com.digirati.elucidate.model.ServiceResponse.Status;
 import com.digirati.elucidate.model.ValidationError;
+import com.digirati.elucidate.model.enumeration.ClientPreference;
+import com.digirati.elucidate.service.query.AbstractAnnotationCollectionService;
 import com.digirati.elucidate.service.query.AbstractAnnotationService;
 
 public abstract class AbstractAnnotationWriteController<A extends AbstractAnnotation, C extends AbstractAnnotationCollection> {
@@ -31,39 +35,44 @@ public abstract class AbstractAnnotationWriteController<A extends AbstractAnnota
     private static final String UPDATE_REQUEST_PATH = "/{" + VARIABLE_COLLECTION_ID + "}/{" + VARIABLE_ANNOTATION_ID + "}";
 
     private AbstractAnnotationService<A> annotationService;
+    private AbstractAnnotationCollectionService<A, C> annotationCollectionService;
 
     @Autowired
-    public AbstractAnnotationWriteController(AbstractAnnotationService<A> annotationService) {
+    public AbstractAnnotationWriteController(AbstractAnnotationService<A> annotationService, AbstractAnnotationCollectionService<A, C> annotationCollectionService) {
         this.annotationService = annotationService;
+        this.annotationCollectionService = annotationCollectionService;
     }
 
     @RequestMapping(value = CREATE_REQUEST_PATH, method = RequestMethod.POST)
     public ResponseEntity<A> postCreate(@PathVariable(VARIABLE_COLLECTION_ID) String collectionId, @RequestBody A annotation, HttpServletRequest request, HttpServletResponse response) {
 
-        String annotationId = request.getHeader("Slug");
+        ServiceResponse<C> annotationCollectionServiceResponse = annotationCollectionService.getAnnotationCollection(collectionId, Collections.emptyList(), ClientPreference.MINIMAL_CONTAINER);
+        Status annotationCollectionStatus = annotationCollectionServiceResponse.getStatus();
 
-        ServiceResponse<A> serviceResponse = annotationService.createAnnotation(collectionId, annotationId, annotation);
-        Status status = serviceResponse.getStatus();
-
-        if (status.equals(Status.NOT_FOUND)) {
+        if (annotationCollectionStatus.equals(Status.NOT_FOUND)) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
 
-        if (status.equals(Status.ALREADY_EXISTS)) {
+        String annotationId = request.getHeader("Slug");
+
+        ServiceResponse<A> annotationServiceResponse = annotationService.createAnnotation(collectionId, annotationId, annotation);
+        Status annotationStatus = annotationServiceResponse.getStatus();
+
+        if (annotationStatus.equals(Status.ALREADY_EXISTS)) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body(null);
         }
 
-        if (status.equals(Status.NON_CONFORMANT)) {
+        if (annotationStatus.equals(Status.NON_CONFORMANT)) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         }
 
-        if (status.equals(Status.OK)) {
-            annotation = serviceResponse.getObj();
+        if (annotationStatus.equals(Status.OK)) {
+            annotation = annotationServiceResponse.getObj();
             response.setHeader(HttpHeaders.LOCATION, (String) annotation.getJsonMap().get(JSONLDConstants.ATTRIBUTE_ID));
             return ResponseEntity.status(HttpStatus.CREATED).body(annotation);
         }
 
-        throw new IllegalArgumentException(String.format("Unexpected service response status [%s]", status));
+        throw new IllegalArgumentException(String.format("Unexpected service response status [%s]", annotationStatus));
     }
 
     @RequestMapping(value = UPDATE_REQUEST_PATH, method = RequestMethod.PUT)
