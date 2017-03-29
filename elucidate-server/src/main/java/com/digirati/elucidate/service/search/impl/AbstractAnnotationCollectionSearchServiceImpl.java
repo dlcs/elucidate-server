@@ -43,7 +43,7 @@ public abstract class AbstractAnnotationCollectionSearchServiceImpl<A extends Ab
     protected abstract String buildPageIri(SearchType searchType, List<String> fields, String value, boolean strict, String xywh, String t, int page, boolean embeddedDescriptions);
 
     @Override
-    @Transactional(readOnly = false)
+    @Transactional(readOnly = true)
     public ServiceResponse<C> searchAnnotationCollectionByBody(List<String> fields, String value, boolean strict, ClientPreference clientPref) {
 
         W3CAnnotationCollection w3cAnnotationCollection = new W3CAnnotationCollection();
@@ -78,7 +78,7 @@ public abstract class AbstractAnnotationCollectionSearchServiceImpl<A extends Ab
     }
 
     @Override
-    @Transactional(readOnly = false)
+    @Transactional(readOnly = true)
     public ServiceResponse<C> searchAnnotationCollectionByTarget(List<String> fields, String value, boolean strict, String xywh, String t, ClientPreference clientPref) {
 
         W3CAnnotationCollection w3cAnnotationCollection = new W3CAnnotationCollection();

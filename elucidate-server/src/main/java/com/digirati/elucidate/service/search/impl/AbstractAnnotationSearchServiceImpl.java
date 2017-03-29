@@ -46,7 +46,7 @@ public abstract class AbstractAnnotationSearchServiceImpl<A extends AbstractAnno
     protected abstract String buildAnnotationIri(String collectionId, String annotationId);
 
     @Override
-    @Transactional(readOnly = false)
+    @Transactional(readOnly = true)
     public ServiceResponse<List<A>> searchAnnotationsByBody(List<String> fields, String value, boolean strict) {
 
         boolean searchIds = fields.contains(SearchConstants.FIELD_ID);
@@ -58,7 +58,7 @@ public abstract class AbstractAnnotationSearchServiceImpl<A extends AbstractAnno
     }
 
     @Override
-    @Transactional(readOnly = false)
+    @Transactional(readOnly = true)
     public ServiceResponse<List<A>> searchAnnotationsByTarget(List<String> fields, String value, boolean strict, String xywh, String t) {
 
         boolean searchIds = fields.contains(SearchConstants.FIELD_ID);

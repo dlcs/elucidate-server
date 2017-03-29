@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.digirati.elucidate.common.model.annotation.AbstractAnnotation;
 import com.digirati.elucidate.common.model.annotation.AbstractAnnotationPage;
@@ -33,7 +32,6 @@ public abstract class AbstractAnnotationPageSearchServiceImpl<A extends Abstract
     protected abstract String buildPageIri(SearchType searchType, List<String> fields, String value, boolean strict, String xywh, String t, int page, boolean embeddedDescriptions);
 
     @Override
-    @Transactional(readOnly = false)
     public ServiceResponse<P> buildAnnotationPageByBody(List<A> annotations, List<String> fields, String value, boolean strict, int page, boolean embeddedDescriptions) {
 
         AnnotationPageConverter<P> annotationPageConverter = (Map<String, Object> _jsonMap) -> {
@@ -52,7 +50,6 @@ public abstract class AbstractAnnotationPageSearchServiceImpl<A extends Abstract
     }
 
     @Override
-    @Transactional(readOnly = true)
     public ServiceResponse<P> buildAnnotationPageByTarget(List<A> annotations, List<String> fields, String value, boolean strict, String xywh, String t, int page, boolean embeddedDescriptions) {
 
         AnnotationPageConverter<P> annotationPageConverter = (Map<String, Object> _jsonMap) -> {
