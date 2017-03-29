@@ -33,7 +33,7 @@ public class AnnotationStoreRepositoryJDBCImpl extends AbstractRepositoryJDBCImp
 
     @Override
     public List<W3CAnnotation> getAnnotationsByCollectionId(String collectionId) {
-        String sql = "SELECT * FROM annotation_get WHERE collectionid = ? AND deleted = ?";
+        String sql = "SELECT * FROM annotation_get WHERE collectionid = ? AND deleted = ? ORDER BY COALESCE(modifieddatetime, createddatetime)";
         Object[] params = {collectionId, false};
         int[] sqlTypes = {Types.VARCHAR, Types.BOOLEAN};
 
