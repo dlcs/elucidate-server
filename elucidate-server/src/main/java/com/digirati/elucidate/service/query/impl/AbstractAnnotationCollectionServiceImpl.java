@@ -1,6 +1,7 @@
 package com.digirati.elucidate.service.query.impl;
 
 import java.io.IOException;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -26,18 +27,16 @@ import com.digirati.elucidate.service.query.AbstractAnnotationCollectionService;
 import com.digirati.elucidate.service.query.AbstractAnnotationService;
 import com.github.jsonldjava.utils.JsonUtils;
 
-public abstract class AbstractAnnotationCollectionServiceImpl<A extends AbstractAnnotation, P extends AbstractAnnotationPage, C extends AbstractAnnotationCollection> implements AbstractAnnotationCollectionService<C> {
+public abstract class AbstractAnnotationCollectionServiceImpl<A extends AbstractAnnotation, P extends AbstractAnnotationPage, C extends AbstractAnnotationCollection> implements AbstractAnnotationCollectionService<A, C> {
 
     protected final Logger LOGGER = Logger.getLogger(getClass());
 
-    private AbstractAnnotationService<A> annotationService;
     private AnnotationCollectionStoreRepository annotationCollectionStoreRepository;
     private IDGenerator idGenerator;
     private int pageSize;
 
     public AbstractAnnotationCollectionServiceImpl(AnnotationCollectionStoreRepository annotationCollectionStoreRepository, AbstractAnnotationService<A> annotationService, IDGenerator idGenerator, int pageSize) {
         this.annotationCollectionStoreRepository = annotationCollectionStoreRepository;
-        this.annotationService = annotationService;
         this.idGenerator = idGenerator;
         this.pageSize = pageSize;
     }
@@ -54,21 +53,12 @@ public abstract class AbstractAnnotationCollectionServiceImpl<A extends Abstract
 
     @Override
     @Transactional(readOnly = true)
-    public ServiceResponse<C> getAnnotationCollection(String collectionId, ClientPreference clientPref) {
+    public ServiceResponse<C> getAnnotationCollection(String collectionId, List<A> annotations, ClientPreference clientPref) {
 
         W3CAnnotationCollection w3cAnnotationCollection = annotationCollectionStoreRepository.getAnnotationCollectionById(collectionId);
         if (w3cAnnotationCollection == null) {
             return new ServiceResponse<C>(Status.NOT_FOUND, null);
         }
-
-        ServiceResponse<List<A>> serviceResponse = annotationService.getAnnotations(collectionId);
-
-        Status status = serviceResponse.getStatus();
-        if (!status.equals(Status.OK)) {
-            return new ServiceResponse<C>(status, null);
-        }
-
-        List<A> annotations = serviceResponse.getObj();
 
         AnnotationCollectionConverter<C> annotationCollectionConverter = () -> {
             return convertToAnnotationCollection(w3cAnnotationCollection);
@@ -101,7 +91,7 @@ public abstract class AbstractAnnotationCollectionServiceImpl<A extends Abstract
             return new ServiceResponse<C>(Status.NON_CONFORMANT, null);
         }
 
-        ServiceResponse<C> serviceResponse = getAnnotationCollection(collectionId, ClientPreference.MINIMAL_CONTAINER);
+        ServiceResponse<C> serviceResponse = getAnnotationCollection(collectionId, Collections.emptyList(), ClientPreference.MINIMAL_CONTAINER);
         Status status = serviceResponse.getStatus();
         if (status.equals(Status.OK)) {
             return new ServiceResponse<C>(Status.ALREADY_EXISTS, null);
@@ -119,7 +109,7 @@ public abstract class AbstractAnnotationCollectionServiceImpl<A extends Abstract
         }
 
         annotationCollectionStoreRepository.createAnnotationCollection(collectionId, w3cAnnotationCollectionJson);
-        return getAnnotationCollection(collectionId, ClientPreference.CONTAINED_DESCRIPTIONS);
+        return getAnnotationCollection(collectionId, Collections.emptyList(), ClientPreference.CONTAINED_DESCRIPTIONS);
     }
 
     private boolean validateCollectionId(String collectionId) {
