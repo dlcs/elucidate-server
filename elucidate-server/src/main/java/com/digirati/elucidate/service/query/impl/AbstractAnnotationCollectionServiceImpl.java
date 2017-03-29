@@ -60,21 +60,10 @@ public abstract class AbstractAnnotationCollectionServiceImpl<A extends Abstract
             return new ServiceResponse<C>(Status.NOT_FOUND, null);
         }
 
-        AnnotationCollectionConverter<C> annotationCollectionConverter = () -> {
-            return convertToAnnotationCollection(w3cAnnotationCollection);
-        };
-
-        AnnotationCollectionIRIBuilder annotationCollectionIriBuilder = () -> {
-            return buildCollectionIri(collectionId);
-        };
-
-        AnnotationPageIRIBuilder annotationPageIriBuilder = (int _page, boolean _embeddedDescriptions) -> {
-            return buildPageIri(collectionId, _page, _embeddedDescriptions);
-        };
-
-        FirstAnnotationPageBuilder<P> firstAnnotationPageBuilder = () -> {
-            return buildFirstAnnotationPage(annotations, collectionId, clientPref);
-        };
+        AnnotationCollectionConverter<C> annotationCollectionConverter = () -> convertToAnnotationCollection(w3cAnnotationCollection);
+        AnnotationCollectionIRIBuilder annotationCollectionIriBuilder = () -> buildCollectionIri(collectionId);
+        AnnotationPageIRIBuilder annotationPageIriBuilder = (int _page, boolean _embeddedDescriptions) -> buildPageIri(collectionId, _page, _embeddedDescriptions);
+        FirstAnnotationPageBuilder<P> firstAnnotationPageBuilder = () -> buildFirstAnnotationPage(annotations, collectionId, clientPref);
 
         return new AnnotationCollectionBuilder<A, P, C>(annotationCollectionConverter, annotationCollectionIriBuilder, annotationPageIriBuilder, firstAnnotationPageBuilder).buildAnnotationCollection(w3cAnnotationCollection, annotations, pageSize, clientPref);
     }

@@ -9,7 +9,6 @@ import com.digirati.elucidate.common.model.annotation.AbstractAnnotation;
 import com.digirati.elucidate.common.model.annotation.AbstractAnnotationPage;
 import com.digirati.elucidate.infrastructure.builder.AnnotationPageBuilder;
 import com.digirati.elucidate.infrastructure.builder.function.AnnotationCollectionIRIBuilder;
-import com.digirati.elucidate.infrastructure.builder.function.AnnotationPageConverter;
 import com.digirati.elucidate.infrastructure.builder.function.AnnotationPageIRIBuilder;
 import com.digirati.elucidate.model.ServiceResponse;
 import com.digirati.elucidate.service.query.AbstractAnnotationPageService;
@@ -33,18 +32,9 @@ public abstract class AbstractAnnotationPageServiceImpl<A extends AbstractAnnota
     @Override
     public ServiceResponse<P> buildAnnotationPage(List<A> annotations, String collectionId, int page, boolean embeddedDescriptions) {
 
-        AnnotationPageConverter<P> annotationPageConverter = (Map<String, Object> _jsonMap) -> {
-            return convertToAnnotationPage(_jsonMap);
-        };
+        AnnotationCollectionIRIBuilder annotationCollectionIRIBuilder = () -> buildCollectionIri(collectionId);
+        AnnotationPageIRIBuilder annotationPageIRIBuilder = (int _page, boolean _embeddedDescriptions) -> buildPageIri(collectionId, _page, _embeddedDescriptions);
 
-        AnnotationCollectionIRIBuilder annotationCollectionIRIBuilder = () -> {
-            return buildCollectionIri(collectionId);
-        };
-
-        AnnotationPageIRIBuilder annotationPageIRIBuilder = (int _page, boolean _embeddedDescriptions) -> {
-            return buildPageIri(collectionId, _page, _embeddedDescriptions);
-        };
-
-        return new AnnotationPageBuilder<A, P>(annotationPageConverter, annotationCollectionIRIBuilder, annotationPageIRIBuilder).buildAnnotationPage(annotations, page, embeddedDescriptions, pageSize);
+        return new AnnotationPageBuilder<A, P>(this::convertToAnnotationPage, annotationCollectionIRIBuilder, annotationPageIRIBuilder).buildAnnotationPage(annotations, page, embeddedDescriptions, pageSize);
     }
 }
