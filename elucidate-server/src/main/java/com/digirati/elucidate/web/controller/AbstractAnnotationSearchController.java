@@ -49,9 +49,7 @@ public abstract class AbstractAnnotationSearchController<A extends AbstractAnnot
     public ResponseEntity<?> getSearchBody(@RequestParam(value = URLConstants.PARAM_FIELDS, required = true) List<String> fields, @RequestParam(value = URLConstants.PARAM_VALUE, required = true) String value, @RequestParam(value = URLConstants.PARAM_STRICT, required = false, defaultValue = "false") boolean strict, @RequestParam(value = URLConstants.PARAM_PAGE, required = false) Integer page, @RequestParam(value = URLConstants.PARAM_IRIS, required = false, defaultValue = "false") boolean iris, @RequestParam(value = URLConstants.PARAM_DESC, required = false, defaultValue = "false") boolean descriptions, HttpServletRequest request) {
         if (page == null) {
 
-            AnnotationCollectionSearch<C> annotationCollectionSearch = (ClientPreference clientPref) -> {
-                return annotationCollectionSearchService.searchAnnotationCollectionByBody(fields, value, strict, clientPref);
-            };
+            AnnotationCollectionSearch<C> annotationCollectionSearch = (ClientPreference clientPref) -> annotationCollectionSearchService.searchAnnotationCollectionByBody(fields, value, strict, clientPref);
 
             return processCollectionSearchRequest(annotationCollectionSearch, request);
         } else {
@@ -78,9 +76,7 @@ public abstract class AbstractAnnotationSearchController<A extends AbstractAnnot
     public ResponseEntity<?> getSearchTarget(@RequestParam(value = URLConstants.PARAM_FIELDS, required = true) List<String> fields, @RequestParam(value = URLConstants.PARAM_VALUE, required = true) String value, @RequestParam(value = URLConstants.PARAM_STRICT, required = false, defaultValue = "false") boolean strict, @RequestParam(value = URLConstants.PARAM_XYWH, required = false) String xywh, @RequestParam(value = URLConstants.PARAM_T, required = false) String t, @RequestParam(value = URLConstants.PARAM_PAGE, required = false) Integer page, @RequestParam(value = URLConstants.PARAM_IRIS, required = false, defaultValue = "false") boolean iris, @RequestParam(value = URLConstants.PARAM_DESC, required = false, defaultValue = "false") boolean descriptions, HttpServletRequest request) {
         if (page == null) {
 
-            AnnotationCollectionSearch<C> annotationCollectionSearch = (ClientPreference clientPref) -> {
-                return annotationCollectionSearchService.searchAnnotationCollectionByTarget(fields, value, strict, xywh, t, clientPref);
-            };
+            AnnotationCollectionSearch<C> annotationCollectionSearch = (ClientPreference clientPref) -> annotationCollectionSearchService.searchAnnotationCollectionByTarget(fields, value, strict, xywh, t, clientPref);
 
             return processCollectionSearchRequest(annotationCollectionSearch, request);
         } else {

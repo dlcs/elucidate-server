@@ -58,21 +58,10 @@ public abstract class AbstractAnnotationCollectionSearchServiceImpl<A extends Ab
 
         List<A> annotations = serviceResponse.getObj();
 
-        AnnotationCollectionConverter<C> annotationCollectionConverter = () -> {
-            return convertToAnnotationCollection(w3cAnnotationCollection);
-        };
-
-        AnnotationCollectionIRIBuilder annotationCollectionIriBuilder = () -> {
-            return buildCollectionIri(SearchType.BODY, fields, value, strict, null, null);
-        };
-
-        AnnotationPageIRIBuilder annotationPageIriBuilder = (int _page, boolean _embeddedDescriptions) -> {
-            return buildPageIri(SearchType.BODY, fields, value, strict, null, null, _page, _embeddedDescriptions);
-        };
-
-        FirstAnnotationPageBuilder<P> firstAnnotationPageBuilder = () -> {
-            return buildFirstAnnotationPage(SearchType.BODY, annotations, fields, value, strict, null, null, clientPref);
-        };
+        AnnotationCollectionConverter<C> annotationCollectionConverter = () -> convertToAnnotationCollection(w3cAnnotationCollection);
+        AnnotationCollectionIRIBuilder annotationCollectionIriBuilder = () -> buildCollectionIri(SearchType.BODY, fields, value, strict, null, null);
+        AnnotationPageIRIBuilder annotationPageIriBuilder = (int _page, boolean _embeddedDescriptions) -> buildPageIri(SearchType.BODY, fields, value, strict, null, null, _page, _embeddedDescriptions);
+        FirstAnnotationPageBuilder<P> firstAnnotationPageBuilder = () -> buildFirstAnnotationPage(SearchType.BODY, annotations, fields, value, strict, null, null, clientPref);
 
         return new AnnotationCollectionBuilder<A, P, C>(annotationCollectionConverter, annotationCollectionIriBuilder, annotationPageIriBuilder, firstAnnotationPageBuilder).buildAnnotationCollection(w3cAnnotationCollection, annotations, pageSize, clientPref);
     }
@@ -93,21 +82,10 @@ public abstract class AbstractAnnotationCollectionSearchServiceImpl<A extends Ab
 
         List<A> annotations = serviceResponse.getObj();
 
-        AnnotationCollectionConverter<C> annotationCollectionConverter = () -> {
-            return convertToAnnotationCollection(w3cAnnotationCollection);
-        };
-
-        AnnotationCollectionIRIBuilder annotationCollectionIriBuilder = () -> {
-            return buildCollectionIri(SearchType.TARGET, fields, value, strict, xywh, t);
-        };
-
-        AnnotationPageIRIBuilder annotationPageIriBuilder = (int _page, boolean _embeddedDescriptions) -> {
-            return buildPageIri(SearchType.TARGET, fields, value, strict, xywh, t, _page, _embeddedDescriptions);
-        };
-
-        FirstAnnotationPageBuilder<P> firstAnnotationPageBuilder = () -> {
-            return buildFirstAnnotationPage(SearchType.TARGET, annotations, fields, value, strict, xywh, t, clientPref);
-        };
+        AnnotationCollectionConverter<C> annotationCollectionConverter = () -> convertToAnnotationCollection(w3cAnnotationCollection);
+        AnnotationCollectionIRIBuilder annotationCollectionIriBuilder = () -> buildCollectionIri(SearchType.TARGET, fields, value, strict, xywh, t);
+        AnnotationPageIRIBuilder annotationPageIriBuilder = (int _page, boolean _embeddedDescriptions) -> buildPageIri(SearchType.TARGET, fields, value, strict, xywh, t, _page, _embeddedDescriptions);
+        FirstAnnotationPageBuilder<P> firstAnnotationPageBuilder = () -> buildFirstAnnotationPage(SearchType.TARGET, annotations, fields, value, strict, xywh, t, clientPref);
 
         return new AnnotationCollectionBuilder<A, P, C>(annotationCollectionConverter, annotationCollectionIriBuilder, annotationPageIriBuilder, firstAnnotationPageBuilder).buildAnnotationCollection(w3cAnnotationCollection, annotations, pageSize, clientPref);
     }
