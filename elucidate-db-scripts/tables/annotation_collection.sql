@@ -10,12 +10,13 @@ CREATE TABLE public.annotation_collection
     createddatetime timestamp without time zone NOT NULL,
     modifieddatetime timestamp without time zone,
     cachekey character(32) NOT NULL,
-    id integer NOT NULL DEFAULT nextval('annotation_collection_id_seq'::regclass),
+    id serial NOT NULL,
     CONSTRAINT pk_annotation_collection PRIMARY KEY (id)
 )
 WITH (
-    OIDS=FALSE
+  OIDS=FALSE
 );
+
 ALTER TABLE public.annotation_collection OWNER TO postgres;
 GRANT ALL ON TABLE public.annotation_collection TO postgres;
 GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE public.annotation_collection TO annotations_role;

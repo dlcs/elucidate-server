@@ -1,15 +1,15 @@
-package com.digirati.elucidate.model.search.selector.fragment;
+package com.digirati.elucidate.model.annotation.selector.fragment;
 
 public class TFragmentSelector {
 
-    private int start;
-    private int end;
+    private Integer start;
+    private Integer end;
 
     public int getStart() {
         return start;
     }
 
-    public void setStart(int start) {
+    public void setStart(Integer start) {
         this.start = start;
     }
 
@@ -17,7 +17,7 @@ public class TFragmentSelector {
         return end;
     }
 
-    public void setEnd(int end) {
+    public void setEnd(Integer end) {
         this.end = end;
     }
 }

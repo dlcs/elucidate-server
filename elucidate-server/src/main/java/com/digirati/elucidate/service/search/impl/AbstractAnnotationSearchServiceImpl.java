@@ -5,13 +5,9 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.log4j.Logger;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.digirati.elucidate.common.infrastructure.constants.JSONLDConstants;
 import com.digirati.elucidate.common.infrastructure.constants.OAConstants;
@@ -21,19 +17,17 @@ import com.digirati.elucidate.common.infrastructure.constants.SelectorConstants;
 import com.digirati.elucidate.common.infrastructure.constants.URLConstants;
 import com.digirati.elucidate.common.model.annotation.AbstractAnnotation;
 import com.digirati.elucidate.common.model.annotation.w3c.W3CAnnotation;
+import com.digirati.elucidate.infrastructure.util.SelectorUtils;
 import com.digirati.elucidate.model.ServiceResponse;
 import com.digirati.elucidate.model.ServiceResponse.Status;
-import com.digirati.elucidate.model.search.selector.fragment.TFragmentSelector;
-import com.digirati.elucidate.model.search.selector.fragment.XYWHFragmentSelector;
+import com.digirati.elucidate.model.annotation.selector.fragment.TFragmentSelector;
+import com.digirati.elucidate.model.annotation.selector.fragment.XYWHFragmentSelector;
 import com.digirati.elucidate.repository.AnnotationSearchRepository;
 import com.digirati.elucidate.service.search.AbstractAnnotationSearchService;
 
 public abstract class AbstractAnnotationSearchServiceImpl<A extends AbstractAnnotation> implements AbstractAnnotationSearchService<A> {
 
     protected final Logger LOGGER = Logger.getLogger(getClass());
-
-    private static final Pattern XYWH_MATCHER = Pattern.compile("xywh=(\\d+),(\\d+),(\\d+),(\\d+)");
-    private static final Pattern T_MATCHER = Pattern.compile("t\\=(\\d+)?(,)?(\\d+)?");
 
     private AnnotationSearchRepository annotationSearchRepository;
 
@@ -46,7 +40,6 @@ public abstract class AbstractAnnotationSearchServiceImpl<A extends AbstractAnno
     protected abstract String buildAnnotationIri(String collectionId, String annotationId);
 
     @Override
-    @Transactional(readOnly = true)
     public ServiceResponse<List<A>> searchAnnotationsByBody(List<String> fields, String value, boolean strict) {
 
         boolean searchIds = fields.contains(SearchConstants.FIELD_ID);
@@ -58,7 +51,6 @@ public abstract class AbstractAnnotationSearchServiceImpl<A extends AbstractAnno
     }
 
     @Override
-    @Transactional(readOnly = true)
     public ServiceResponse<List<A>> searchAnnotationsByTarget(List<String> fields, String value, boolean strict, String xywh, String t) {
 
         boolean searchIds = fields.contains(SearchConstants.FIELD_ID);
@@ -76,8 +68,8 @@ public abstract class AbstractAnnotationSearchServiceImpl<A extends AbstractAnno
     @SuppressWarnings("unchecked")
     private void filterAnnotations(List<W3CAnnotation> w3cAnnotations, boolean searchIds, boolean searchSources, String value, boolean strict, String xywh, String t) {
 
-        XYWHFragmentSelector xywhSearch = extractXywhSelector(String.format("%s=%s", URLConstants.PARAM_XYWH, xywh));
-        TFragmentSelector tSearch = extractTSelector(String.format("%s=%s", URLConstants.PARAM_T, t));
+        XYWHFragmentSelector xywhSearch = SelectorUtils.extractXywhSelector(String.format("%s=%s", URLConstants.PARAM_XYWH, xywh));
+        TFragmentSelector tSearch = SelectorUtils.extractTSelector(String.format("%s=%s", URLConstants.PARAM_T, t));
 
         if (xywhSearch != null || tSearch != null) {
 
@@ -96,8 +88,8 @@ public abstract class AbstractAnnotationSearchServiceImpl<A extends AbstractAnno
 
                         if ((searchIds && (strict ? StringUtils.equalsIgnoreCase(id, value) : StringUtils.startsWith(id, value))) || (searchSources && (strict ? StringUtils.equalsIgnoreCase(source, value) : StringUtils.startsWith(source, value)))) {
 
-                            XYWHFragmentSelector xywhSelector = extractXywhSelector(id);
-                            TFragmentSelector tSelector = extractTSelector(id);
+                            XYWHFragmentSelector xywhSelector = SelectorUtils.extractXywhSelector(id);
+                            TFragmentSelector tSelector = SelectorUtils.extractTSelector(id);
 
                             if (selectorsFiltersAnnotation(xywhSearch, xywhSelector, tSearch, tSelector)) {
                                 iterator.remove();
@@ -121,8 +113,8 @@ public abstract class AbstractAnnotationSearchServiceImpl<A extends AbstractAnno
                                 }
 
                                 String selectorValue = extractValue(selectorJsonMap);
-                                xywhSelector = extractXywhSelector(selectorValue);
-                                tSelector = extractTSelector(selectorValue);
+                                xywhSelector = SelectorUtils.extractXywhSelector(selectorValue);
+                                tSelector = SelectorUtils.extractTSelector(selectorValue);
 
                                 if (xywhSearch != null || tSelector != null) {
                                     hasSelector = true;
@@ -143,61 +135,6 @@ public abstract class AbstractAnnotationSearchServiceImpl<A extends AbstractAnno
                 }
             }
         }
-    }
-
-    private XYWHFragmentSelector extractXywhSelector(String str) {
-
-        if (StringUtils.isNotBlank(str)) {
-
-            Matcher matcher = XYWH_MATCHER.matcher(str);
-            if (matcher.find()) {
-
-                String xStr = matcher.group(1);
-                String yStr = matcher.group(2);
-                String wStr = matcher.group(3);
-                String hStr = matcher.group(4);
-
-                if (NumberUtils.isDigits(xStr) && NumberUtils.isDigits(yStr) && NumberUtils.isDigits(wStr) && NumberUtils.isDigits(hStr)) {
-
-                    XYWHFragmentSelector xywhFragmentSelector = new XYWHFragmentSelector();
-                    xywhFragmentSelector.setX(Integer.parseInt(xStr));
-                    xywhFragmentSelector.setY(Integer.parseInt(yStr));
-                    xywhFragmentSelector.setW(Integer.parseInt(wStr));
-                    xywhFragmentSelector.setH(Integer.parseInt(hStr));
-                    return xywhFragmentSelector;
-                }
-            }
-
-        }
-        return null;
-    }
-
-    private TFragmentSelector extractTSelector(String str) {
-
-        if (StringUtils.isNotBlank(str)) {
-
-            Matcher matcher = T_MATCHER.matcher(str);
-            if (matcher.find()) {
-
-                String startStr = matcher.group(1);
-                String endStr = matcher.group(3);
-
-                if (StringUtils.isBlank(startStr) && StringUtils.isNotBlank(endStr)) {
-                    startStr = Integer.toString(0);
-                } else if (StringUtils.isNotBlank(startStr) && StringUtils.isBlank(endStr)) {
-                    endStr = Integer.toString(Integer.MAX_VALUE);
-                }
-
-                if (NumberUtils.isDigits(startStr) && NumberUtils.isDigits(endStr)) {
-
-                    TFragmentSelector tFragmentSelector = new TFragmentSelector();
-                    tFragmentSelector.setStart(Integer.parseInt(startStr));
-                    tFragmentSelector.setEnd(Integer.parseInt(endStr));
-                    return tFragmentSelector;
-                }
-            }
-        }
-        return null;
     }
 
     private String extractId(Map<String, Object> jsonMap) {

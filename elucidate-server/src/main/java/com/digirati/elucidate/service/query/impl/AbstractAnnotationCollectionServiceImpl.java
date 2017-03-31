@@ -7,7 +7,6 @@ import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.digirati.elucidate.common.model.annotation.AbstractAnnotation;
 import com.digirati.elucidate.common.model.annotation.AbstractAnnotationCollection;
@@ -52,7 +51,6 @@ public abstract class AbstractAnnotationCollectionServiceImpl<A extends Abstract
     protected abstract String buildPageIri(String collectionId, int page, boolean embeddedDescriptions);
 
     @Override
-    @Transactional(readOnly = true)
     public ServiceResponse<C> getAnnotationCollection(String collectionId, List<A> annotations, ClientPreference clientPref) {
 
         W3CAnnotationCollection w3cAnnotationCollection = annotationCollectionStoreRepository.getAnnotationCollectionById(collectionId);
@@ -69,7 +67,6 @@ public abstract class AbstractAnnotationCollectionServiceImpl<A extends Abstract
     }
 
     @Override
-    @Transactional(readOnly = false)
     public ServiceResponse<C> createAnnotationCollection(String collectionId, C annotationCollection) {
 
         if (StringUtils.isBlank(collectionId)) {

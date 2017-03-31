@@ -38,6 +38,7 @@ public class OAAnnotationSearchServiceImpl extends AbstractAnnotationSearchServi
         Map<String, Object> oaAnnotationMap = new ObjectMapper().convertValue(oaAnnotationNode, Map.class);
 
         OAAnnotation oaAnnotation = new OAAnnotation();
+        oaAnnotation.setId(w3cAnnotation.getId());
         oaAnnotation.setCacheKey(w3cAnnotation.getCacheKey());
         oaAnnotation.setCollectionId(w3cAnnotation.getCollectionId());
         oaAnnotation.setCreatedDateTime(w3cAnnotation.getCreatedDateTime());

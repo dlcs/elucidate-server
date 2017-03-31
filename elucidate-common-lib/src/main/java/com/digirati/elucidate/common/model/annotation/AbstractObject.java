@@ -7,12 +7,21 @@ import java.util.Map;
 @SuppressWarnings("serial")
 public abstract class AbstractObject implements Serializable {
 
+    private Integer id;
     private String collectionId;
     private Map<String, Object> jsonMap;
     private boolean deleted;
     private Date createdDateTime;
     private Date modifiedDateTime;
     private String cacheKey;
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
     public String getCollectionId() {
         return collectionId;

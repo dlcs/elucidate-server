@@ -9,13 +9,14 @@ public class W3CAnnotationCollectionRowMapper extends AbstractRowMapper<W3CAnnot
 
     @Override
     public W3CAnnotationCollection mapRow(ResultSet rs, int rowNum) throws SQLException {
-        W3CAnnotationCollection annotationCollection = new W3CAnnotationCollection();
-        annotationCollection.setCacheKey(getString(rs, "cachekey"));
-        annotationCollection.setCollectionId(getString(rs, "collectionid"));
-        annotationCollection.setCreatedDateTime(getDate(rs, "createddatetime"));
-        annotationCollection.setDeleted(getBoolean(rs, "deleted"));
-        annotationCollection.setJsonMap(getJsonMap(rs, "json"));
-        annotationCollection.setModifiedDateTime(getDate(rs, "modifieddatetime"));
-        return annotationCollection;
+        W3CAnnotationCollection w3cAnnotationCollection = new W3CAnnotationCollection();
+        w3cAnnotationCollection.setId(getInt(rs, "id"));
+        w3cAnnotationCollection.setCacheKey(getString(rs, "cachekey"));
+        w3cAnnotationCollection.setCollectionId(getString(rs, "collectionid"));
+        w3cAnnotationCollection.setCreatedDateTime(getDate(rs, "createddatetime"));
+        w3cAnnotationCollection.setDeleted(getBoolean(rs, "deleted"));
+        w3cAnnotationCollection.setJsonMap(getJsonMap(rs, "json"));
+        w3cAnnotationCollection.setModifiedDateTime(getDate(rs, "modifieddatetime"));
+        return w3cAnnotationCollection;
     }
 }

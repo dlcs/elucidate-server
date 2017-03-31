@@ -7,7 +7,7 @@ CREATE OR REPLACE FUNCTION public.annotation_search_by_target(
     _searchsources boolean,
     _value character varying,
     _strict boolean)
-  RETURNS SETOF annotation_get AS
+RETURNS SETOF annotation_get AS
 $BODY$
     BEGIN
         RETURN QUERY
@@ -18,7 +18,8 @@ $BODY$
                 a.createddatetime,
                 a.deleted,
                 a.json,
-                a.modifieddatetime
+                a.modifieddatetime,
+                a.id
             FROM
                 annotation AS a
                     LEFT JOIN annotation_collection AS ac ON a.collectionid = ac.id

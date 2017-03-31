@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.digirati.elucidate.common.infrastructure.rowmapper.W3CAnnotationRowMapper;
 import com.digirati.elucidate.common.model.annotation.w3c.W3CAnnotation;
@@ -23,6 +24,7 @@ public class AnnotationSearchRepositoryJDBCImpl extends AbstractRepositoryJDBCIm
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<W3CAnnotation> getAnnotationsByBody(boolean searchIds, boolean searchSources, String value, boolean strict) {
         String sql = "SELECT * FROM annotation_search_by_body(?, ?, ?, ?)";
         Object[] params = {searchIds, searchSources, value, strict};
@@ -32,6 +34,7 @@ public class AnnotationSearchRepositoryJDBCImpl extends AbstractRepositoryJDBCIm
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<W3CAnnotation> getAnnotationsByTarget(boolean searchIds, boolean searchSources, String value, boolean strict) {
         String sql = "SELECT * FROM annotation_search_by_target(?, ?, ?, ?)";
         Object[] params = {searchIds, searchSources, value, strict};
