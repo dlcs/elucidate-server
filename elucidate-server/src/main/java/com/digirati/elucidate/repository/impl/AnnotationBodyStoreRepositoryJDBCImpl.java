@@ -34,6 +34,7 @@ public class AnnotationBodyStoreRepositoryJDBCImpl extends AbstractRepositoryJDB
     }
 
     @Override
+    @Transactional(readOnly = false)
     public List<AnnotationBody> deletedAnnotationBodies(int annotationPK) {
         String sql = "SELECT * FROM annotation_body_delete(?)";
         Object[] params = {annotationPK};

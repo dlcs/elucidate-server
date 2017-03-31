@@ -46,6 +46,7 @@ public class AnnotationSelectorStoreRepositoryJDBCImpl extends AbstractRepositor
     }
 
     @Override
+    @Transactional(readOnly = false)
     public List<AnnotationCSSSelector> deleteAnnotationCssSelectors(Integer bodyPK, Integer targetPK) {
         String sql = "SELECT * FROM annotation_css_selector_delete(?, ?)";
         Object[] params = {bodyPK, targetPK};
@@ -65,6 +66,7 @@ public class AnnotationSelectorStoreRepositoryJDBCImpl extends AbstractRepositor
     }
 
     @Override
+    @Transactional(readOnly = false)
     public List<AnnotationDataPositionSelector> deleteAnnotationDataPositionSelectors(Integer bodyPK, Integer targetPK) {
         String sql = "SELECT * FROM annotation_data_position_selector_delete(?, ?)";
         Object[] params = {bodyPK, targetPK};
@@ -84,6 +86,7 @@ public class AnnotationSelectorStoreRepositoryJDBCImpl extends AbstractRepositor
     }
 
     @Override
+    @Transactional(readOnly = false)
     public List<AnnotationFragmentSelector> deleteAnnotationFragmentSelectors(Integer bodyPK, Integer targetPK) {
         String sql = "SELECT * FROM annotation_fragment_selector_delete(?, ?)";
         Object[] params = {bodyPK, targetPK};
@@ -103,6 +106,7 @@ public class AnnotationSelectorStoreRepositoryJDBCImpl extends AbstractRepositor
     }
 
     @Override
+    @Transactional(readOnly = false)
     public List<AnnotationSVGSelector> deleteAnnotationSvgSelectors(Integer bodyPK, Integer targetPK) {
         String sql = "SELECT * FROM annotation_svg_selector_delete(?, ?)";
         Object[] params = {bodyPK, targetPK};
@@ -122,6 +126,7 @@ public class AnnotationSelectorStoreRepositoryJDBCImpl extends AbstractRepositor
     }
 
     @Override
+    @Transactional(readOnly = false)
     public List<AnnotationTextPositionSelector> deleteAnnotationTextPositionSelectors(Integer bodyPK, Integer targetPK) {
         String sql = "SELECT * FROM annotation_text_position_selector_delete(?, ?)";
         Object[] params = {bodyPK, targetPK};
@@ -141,6 +146,7 @@ public class AnnotationSelectorStoreRepositoryJDBCImpl extends AbstractRepositor
     }
 
     @Override
+    @Transactional(readOnly = false)
     public List<AnnotationTextQuoteSelector> deleteAnnotationTextQuoteSelectors(Integer bodyPK, Integer targetPK) {
         String sql = "SELECT * FROM annotation_text_quote_selector_delete(?, ?)";
         Object[] params = {bodyPK, targetPK};
@@ -160,6 +166,7 @@ public class AnnotationSelectorStoreRepositoryJDBCImpl extends AbstractRepositor
     }
 
     @Override
+    @Transactional(readOnly = false)
     public List<AnnotationXPathSelector> deleteAnnotationXPathSelectors(Integer bodyPK, Integer targetPK) {
         String sql = "SELECT * FROM annotation_xpath_selector_delete(?, ?)";
         Object[] params = {bodyPK, targetPK};

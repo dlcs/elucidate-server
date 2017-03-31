@@ -34,6 +34,7 @@ public class AnnotationTargetStoreRepositoryJDBCImpl extends AbstractRepositoryJ
     }
 
     @Override
+    @Transactional(readOnly = false)
     public List<AnnotationTarget> deleteAnnotationTargets(int annotationPK) {
         String sql = "SELECT * FROM annotation_target_delete(?)";
         Object[] params = {annotationPK};
