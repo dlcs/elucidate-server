@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.digirati.elucidate.common.model.annotation.w3c.W3CAnnotation;
+import com.digirati.elucidate.infrastructure.extractor.agent.AnnotationCreatorExtractor;
 import com.digirati.elucidate.infrastructure.extractor.body.AnnotationBodyExtractor;
 import com.digirati.elucidate.infrastructure.extractor.selector.AnnotationCSSSelectorExtractor;
 import com.digirati.elucidate.infrastructure.extractor.selector.AnnotationDataPositionSelectorExtractor;
@@ -19,6 +20,7 @@ import com.digirati.elucidate.infrastructure.extractor.selector.AnnotationTextPo
 import com.digirati.elucidate.infrastructure.extractor.selector.AnnotationTextQuoteSelectorExtractor;
 import com.digirati.elucidate.infrastructure.extractor.selector.AnnotationXPathSelectorExtractor;
 import com.digirati.elucidate.infrastructure.extractor.targets.AnnotationTargetExtractor;
+import com.digirati.elucidate.model.annotation.agent.AnnotationAgent;
 import com.digirati.elucidate.model.annotation.body.AnnotationBody;
 import com.digirati.elucidate.model.annotation.selector.css.AnnotationCSSSelector;
 import com.digirati.elucidate.model.annotation.selector.dataposition.AnnotationDataPositionSelector;
@@ -28,6 +30,7 @@ import com.digirati.elucidate.model.annotation.selector.textposition.AnnotationT
 import com.digirati.elucidate.model.annotation.selector.textquote.AnnotationTextQuoteSelector;
 import com.digirati.elucidate.model.annotation.selector.xpath.AnnotationXPathSelector;
 import com.digirati.elucidate.model.annotation.targets.AnnotationTarget;
+import com.digirati.elucidate.repository.AnnotationAgentStoreRepository;
 import com.digirati.elucidate.repository.AnnotationBodyStoreRepository;
 import com.digirati.elucidate.repository.AnnotationSelectorStoreRepository;
 import com.digirati.elucidate.repository.AnnotationTargetStoreRepository;
@@ -44,12 +47,14 @@ public class AnnotationExtractorServiceImpl implements AnnotationExtractorServic
     private AnnotationBodyStoreRepository annotationBodyStoreRepository;
     private AnnotationTargetStoreRepository annotationTargetStoreRepository;
     private AnnotationSelectorStoreRepository annotationSelectorStoreRepository;
+    private AnnotationAgentStoreRepository annotationAgentStoreRepository;
 
     @Autowired
-    public AnnotationExtractorServiceImpl(AnnotationBodyStoreRepository annotationBodyStoreRepository, AnnotationTargetStoreRepository annotationTargetStoreRepository, AnnotationSelectorStoreRepository annotationSelectorStoreRepository) {
+    public AnnotationExtractorServiceImpl(AnnotationBodyStoreRepository annotationBodyStoreRepository, AnnotationTargetStoreRepository annotationTargetStoreRepository, AnnotationSelectorStoreRepository annotationSelectorStoreRepository, AnnotationAgentStoreRepository annotationAgentStoreRepository) {
         this.annotationBodyStoreRepository = annotationBodyStoreRepository;
         this.annotationTargetStoreRepository = annotationTargetStoreRepository;
         this.annotationSelectorStoreRepository = annotationSelectorStoreRepository;
+        this.annotationAgentStoreRepository = annotationAgentStoreRepository;
     }
 
     @Override
@@ -57,6 +62,7 @@ public class AnnotationExtractorServiceImpl implements AnnotationExtractorServic
         try {
             createAnnotationBodies(w3cAnnotation);
             createAnnotationTargets(w3cAnnotation);
+            createAnnotationCreators(w3cAnnotation);
         } catch (IOException e) {
             LOGGER.error(String.format("An error occurred processing `target`'s for W3CAnnotation [%s]", w3cAnnotation), e);
         }
@@ -70,16 +76,21 @@ public class AnnotationExtractorServiceImpl implements AnnotationExtractorServic
 
     @Override
     public void processAnnotationDelete(W3CAnnotation w3cAnnotation) {
+
+        deleteAnnotationCreators(w3cAnnotation);
+
         List<AnnotationBody> annotationBodies = deleteBodies(w3cAnnotation);
         for (AnnotationBody annotationBody : annotationBodies) {
             int bodyPK = annotationBody.getId();
             deleteAnnotationSelectors(bodyPK, null);
+            deleteAnnotationCreators(null, bodyPK, null);
         }
 
         List<AnnotationTarget> annotationTargets = deleteTargets(w3cAnnotation);
         for (AnnotationTarget annotationTarget : annotationTargets) {
             int targetPK = annotationTarget.getId();
             deleteAnnotationSelectors(null, targetPK);
+            deleteAnnotationCreators(null, null, targetPK);
         }
     }
 
@@ -96,8 +107,9 @@ public class AnnotationExtractorServiceImpl implements AnnotationExtractorServic
             annotationBody = annotationBodyStoreRepository.createAnnotationBody(annotationPK, bodyIri, sourceIri, bodyJson);
 
             int bodyPK = annotationBody.getId();
-            Map<String, Object> targetJsonMap = annotationBody.getJsonMap();
-            createAnnotationSelectors(bodyPK, null, targetJsonMap);
+            Map<String, Object> bodyJsonMap = annotationBody.getJsonMap();
+            createAnnotationSelectors(bodyPK, null, bodyJsonMap);
+            createAnnotationCreators(null, bodyPK, null, bodyJsonMap);
         }
     }
 
@@ -116,6 +128,7 @@ public class AnnotationExtractorServiceImpl implements AnnotationExtractorServic
             int targetPK = annotationTarget.getId();
             Map<String, Object> targetJsonMap = annotationTarget.getJsonMap();
             createAnnotationSelectors(null, targetPK, targetJsonMap);
+            createAnnotationCreators(null, null, targetPK, targetJsonMap);
         }
     }
 
@@ -229,6 +242,65 @@ public class AnnotationExtractorServiceImpl implements AnnotationExtractorServic
         }
     }
 
+    private void createAnnotationCreators(W3CAnnotation w3cAnnotation) throws IOException {
+        int annotationPK = w3cAnnotation.getId();
+        Map<String, Object> jsonMap = w3cAnnotation.getJsonMap();
+        createAnnotationCreators(annotationPK, null, null, jsonMap);
+    }
+
+    private void createAnnotationCreators(Integer annotationPK, Integer bodyPK, Integer targetPK, Map<String, Object> jsonMap) throws IOException {
+        List<AnnotationAgent> annotationCreators = new AnnotationCreatorExtractor().extractCreators(jsonMap);
+        for (AnnotationAgent annotationCreator : annotationCreators) {
+
+            String creatorIri = annotationCreator.getAgentIri();
+            String creatorJson = JsonUtils.toPrettyString(annotationCreator.getJsonMap());
+
+            String[] types = annotationCreator.getTypes() != null ? annotationCreator.getTypes().stream().toArray(String[]::new) : new String[] {};
+            String[] typesJson = new String[types.length];
+            if (types != null && types.length > 0) {
+                for (int i = 0; i < typesJson.length; i++) {
+                    typesJson[i] = JsonUtils.toPrettyString(annotationCreator.getTypesJsonList());
+                }
+            }
+
+            String[] names = annotationCreator.getNames() != null ? annotationCreator.getNames().stream().toArray(String[]::new) : new String[] {};
+            String[] namesJson = new String[names.length];
+            if (names != null && names.length > 0) {
+                for (int i = 0; i < namesJson.length; i++) {
+                    namesJson[i] = JsonUtils.toPrettyString(annotationCreator.getNameJsonMaps().get(i));
+                }
+            }
+
+            String nickname = annotationCreator.getNickname();
+
+            String[] emails = annotationCreator.getEmails() != null ? annotationCreator.getEmails().stream().toArray(String[]::new) : new String[] {};
+            String[] emailsJson = new String[emails.length];
+            if (emails != null && emails.length > 0) {
+                for (int i = 0; i < emailsJson.length; i++) {
+                    emailsJson[i] = JsonUtils.toPrettyString(annotationCreator.getEmailJsonMaps().get(i));
+                }
+            }
+
+            String[] emailSha1s = annotationCreator.getEmailSha1s() != null ? annotationCreator.getEmailSha1s().stream().toArray(String[]::new) : new String[] {};
+            String[] emailSha1sJson = new String[emailSha1s.length];
+            if (emailSha1s != null && emailSha1s.length > 0) {
+                for (int i = 0; i < emailSha1sJson.length; i++) {
+                    emailSha1sJson[i] = JsonUtils.toPrettyString(annotationCreator.getEmailSha1JsonMaps().get(i));
+                }
+            }
+
+            String[] homepages = annotationCreator.getHomepages() != null ? annotationCreator.getHomepages().stream().toArray(String[]::new) : new String[] {};
+            String[] homepagesJson = new String[homepages.length];
+            if (homepages != null && homepages.length > 0) {
+                for (int i = 0; i < homepagesJson.length; i++) {
+                    homepagesJson[i] = JsonUtils.toPrettyString(annotationCreator.getHomepageJsonMaps().get(i));
+                }
+            }
+
+            annotationAgentStoreRepository.createAnnotationCreator(annotationPK, bodyPK, targetPK, creatorIri, creatorJson, types, typesJson, names, namesJson, nickname, emails, emailsJson, emailSha1s, emailSha1sJson, homepages, homepagesJson);
+        }
+    }
+
     private List<AnnotationBody> deleteBodies(W3CAnnotation w3cAnnotation) {
         int annotationPK = w3cAnnotation.getId();
         return annotationBodyStoreRepository.deletedAnnotationBodies(annotationPK);
@@ -275,5 +347,14 @@ public class AnnotationExtractorServiceImpl implements AnnotationExtractorServic
 
     private void deleteAnnotationXPathSelectors(Integer bodyPK, Integer targetPK) {
         annotationSelectorStoreRepository.deleteAnnotationXPathSelectors(bodyPK, targetPK);
+    }
+
+    private void deleteAnnotationCreators(W3CAnnotation w3cAnnotation) {
+        int annotationPK = w3cAnnotation.getId();
+        deleteAnnotationCreators(annotationPK, null, null);
+    }
+
+    private void deleteAnnotationCreators(Integer annotationPK, Integer bodyPK, Integer targetPK) {
+        annotationAgentStoreRepository.deleteAnnotationCreators(annotationPK, bodyPK, targetPK);
     }
 }

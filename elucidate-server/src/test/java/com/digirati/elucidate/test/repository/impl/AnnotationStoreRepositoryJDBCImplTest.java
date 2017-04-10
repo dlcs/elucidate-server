@@ -27,7 +27,7 @@ import org.powermock.modules.junit4.PowerMockRunner;
 import org.springframework.dao.IncorrectResultSizeDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 
-import com.digirati.elucidate.common.infrastructure.rowmapper.W3CAnnotationRowMapper;
+import com.digirati.elucidate.common.infrastructure.database.rowmapper.W3CAnnotationRowMapper;
 import com.digirati.elucidate.common.model.annotation.w3c.W3CAnnotation;
 import com.digirati.elucidate.common.test.AbstractTest;
 import com.digirati.elucidate.repository.AnnotationStoreRepository;

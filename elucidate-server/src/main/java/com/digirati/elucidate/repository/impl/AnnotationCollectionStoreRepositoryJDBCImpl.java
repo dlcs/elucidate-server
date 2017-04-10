@@ -7,7 +7,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.digirati.elucidate.common.infrastructure.rowmapper.W3CAnnotationCollectionRowMapper;
+import com.digirati.elucidate.common.infrastructure.database.rowmapper.W3CAnnotationCollectionRowMapper;
 import com.digirati.elucidate.common.model.annotation.w3c.W3CAnnotationCollection;
 import com.digirati.elucidate.common.repository.impl.AbstractRepositoryJDBCImpl;
 import com.digirati.elucidate.repository.AnnotationCollectionStoreRepository;

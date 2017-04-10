@@ -17,7 +17,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import com.digirati.elucidate.common.infrastructure.rowmapper.W3CAnnotationRowMapper;
+import com.digirati.elucidate.common.infrastructure.database.rowmapper.W3CAnnotationRowMapper;
 import com.digirati.elucidate.common.model.annotation.w3c.W3CAnnotation;
 import com.digirati.elucidate.common.test.AbstractTest;
 import com.fasterxml.jackson.core.JsonGenerationException;

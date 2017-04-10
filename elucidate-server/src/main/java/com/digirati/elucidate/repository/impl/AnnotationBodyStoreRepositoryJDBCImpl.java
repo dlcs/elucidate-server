@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.digirati.elucidate.common.repository.impl.AbstractRepositoryJDBCImpl;
-import com.digirati.elucidate.infrastructure.rowmapper.AnnotationBodyRowMapper;
+import com.digirati.elucidate.infrastructure.database.rowmapper.AnnotationBodyRowMapper;
 import com.digirati.elucidate.model.annotation.body.AnnotationBody;
 import com.digirati.elucidate.repository.AnnotationBodyStoreRepository;
 
