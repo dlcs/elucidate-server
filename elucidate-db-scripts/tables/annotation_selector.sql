@@ -36,3 +36,15 @@ WITH (
 ALTER TABLE public.annotation_selector OWNER TO postgres;
 GRANT ALL ON TABLE public.annotation_selector TO postgres;
 GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE public.annotation_selector TO annotations_role;
+
+-- Index: public.idx_annotation_selector_bodyid
+
+-- DROP INDEX public.idx_annotation_selector_bodyid;
+
+CREATE INDEX idx_annotation_selector_bodyid ON public.annotation_selector USING btree (bodyid);
+
+-- Index: public.idx_annotation_selector_targetid
+
+-- DROP INDEX public.idx_annotation_selector_targetid;
+
+CREATE INDEX idx_annotation_selector_targetid ON public.annotation_selector USING btree (targetid);

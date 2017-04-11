@@ -19,3 +19,18 @@ WITH (
 );
 
 ALTER TABLE public.annotation_agent_homepage OWNER TO postgres;
+GRANT ALL ON TABLE public.annotation_agent_homepage TO postgres;
+GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE public.annotation_agent_homepage TO annotations_role;
+
+-- Index: public.idx_annotation_agent_homepage_annotationagentid
+
+-- DROP INDEX public.idx_annotation_agent_homepage_annotationagentid;
+
+CREATE INDEX idx_annotation_agent_homepage_annotationagentid ON public.annotation_agent_homepage USING btree (annotationagentid);
+
+-- Index: public.idx_annotation_agent_homepage_homepage
+
+-- DROP INDEX public.idx_annotation_agent_homepage_homepage;
+
+CREATE INDEX idx_annotation_agent_homepage_homepage ON public.annotation_agent_homepage USING btree (homepage);
+

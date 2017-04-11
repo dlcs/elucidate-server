@@ -18,4 +18,18 @@ WITH (
   OIDS=FALSE
 );
 
-ALTER TABLE public.annotation_agent_type  OWNER TO postgres;
+ALTER TABLE public.annotation_agent_type OWNER TO postgres;
+GRANT ALL ON TABLE public.annotation_agent_type TO postgres;
+GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE public.annotation_agent_type TO annotations_role;
+
+-- Index: public.idx_annotation_agent_type_annotationagentid
+
+-- DROP INDEX public.idx_annotation_agent_type_annotationagentid;
+
+CREATE INDEX idx_annotation_agent_type_annotationagentid ON public.annotation_agent_type USING btree (annotationagentid);
+
+-- Index: public.idx_annotation_agent_type_type
+
+-- DROP INDEX public.idx_annotation_agent_type_type;
+
+CREATE INDEX idx_annotation_agent_type_type ON public.annotation_agent_type USING btree (type);

@@ -19,3 +19,17 @@ WITH (
 );
 
 ALTER TABLE public.annotation_agent_email OWNER TO postgres;
+GRANT ALL ON TABLE public.annotation_agent_email TO postgres;
+GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE public.annotation_agent_email TO annotations_role;
+
+-- Index: public.idx_annotation_agent_email_annotationagentid
+
+-- DROP INDEX public.idx_annotation_agent_email_annotationagentid;
+
+CREATE INDEX idx_annotation_agent_email_annotationagentid ON public.annotation_agent_email USING btree (annotationagentid);
+
+-- Index: public.idx_annotation_agent_email_email
+
+-- DROP INDEX public.idx_annotation_agent_email_email;
+
+CREATE INDEX idx_annotation_agent_email_email ON public.annotation_agent_email USING btree (email);

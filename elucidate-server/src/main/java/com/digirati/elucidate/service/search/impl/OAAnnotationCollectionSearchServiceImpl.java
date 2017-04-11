@@ -59,18 +59,18 @@ public class OAAnnotationCollectionSearchServiceImpl extends AbstractAnnotationC
     }
 
     @Override
-    protected ServiceResponse<OAAnnotationPage> buildFirstAnnotationPage(SearchType searchType, List<OAAnnotation> oaAnnotations, List<String> fields, String value, boolean strict, String xywh, String t, ClientPreference clientPref) {
+    protected ServiceResponse<OAAnnotationPage> buildFirstAnnotationPage(SearchType searchType, List<OAAnnotation> oaAnnotations, List<String> fields, String value, boolean strict, String xywh, String t, String creatorIri, ClientPreference clientPref) {
         if (searchType.equals(SearchType.BODY)) {
             if (clientPref.equals(ClientPreference.CONTAINED_IRIS)) {
-                return oaAnnotationPageSearchService.buildAnnotationPageByBody(oaAnnotations, fields, value, strict, 0, false);
+                return oaAnnotationPageSearchService.buildAnnotationPageByBody(oaAnnotations, fields, value, strict, xywh, t, creatorIri, 0, false);
             } else {
-                return oaAnnotationPageSearchService.buildAnnotationPageByBody(oaAnnotations, fields, value, strict, 0, true);
+                return oaAnnotationPageSearchService.buildAnnotationPageByBody(oaAnnotations, fields, value, strict, xywh, t, creatorIri, 0, true);
             }
         } else if (searchType.equals(SearchType.TARGET)) {
             if (clientPref.equals(ClientPreference.CONTAINED_IRIS)) {
-                return oaAnnotationPageSearchService.buildAnnotationPageByTarget(oaAnnotations, fields, value, strict, xywh, t, 0, false);
+                return oaAnnotationPageSearchService.buildAnnotationPageByTarget(oaAnnotations, fields, value, strict, xywh, t, creatorIri, 0, false);
             } else {
-                return oaAnnotationPageSearchService.buildAnnotationPageByTarget(oaAnnotations, fields, value, strict, xywh, t, 0, true);
+                return oaAnnotationPageSearchService.buildAnnotationPageByTarget(oaAnnotations, fields, value, strict, xywh, t, creatorIri, 0, true);
             }
         } else {
             throw new IllegalArgumentException(String.format("Unexpected search type [%s]", searchType));
@@ -78,12 +78,12 @@ public class OAAnnotationCollectionSearchServiceImpl extends AbstractAnnotationC
     }
 
     @Override
-    protected String buildCollectionIri(SearchType searchType, List<String> fields, String value, boolean strict, String xywh, String t) {
-        return iriBuilderService.buildOACollectionSearchIri(searchType, fields, value, strict, xywh, t);
+    protected String buildCollectionIri(SearchType searchType, List<String> fields, String value, boolean strict, String xywh, String t, String creatorIri) {
+        return iriBuilderService.buildOACollectionSearchIri(searchType, fields, value, strict, xywh, t, creatorIri);
     }
 
     @Override
-    protected String buildPageIri(SearchType searchType, List<String> fields, String value, boolean strict, String xywh, String t, int page, boolean embeddedDescriptions) {
-        return iriBuilderService.buildOAPageSearchIri(searchType, fields, value, strict, xywh, t, page, embeddedDescriptions);
+    protected String buildPageIri(SearchType searchType, List<String> fields, String value, boolean strict, String xywh, String t, String creatorIri, int page, boolean embeddedDescriptions) {
+        return iriBuilderService.buildOAPageSearchIri(searchType, fields, value, strict, xywh, t, creatorIri, page, embeddedDescriptions);
     }
 }

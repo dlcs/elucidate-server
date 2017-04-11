@@ -37,7 +37,7 @@ public class AnnotationFragmentSelectorExtractor extends AbstractAnnotationSelec
             String value = (String) valueMap.get(JSONLDConstants.ATTRIBUTE_VALUE);
             annotationFragmentSelector.setValue(value);
 
-            XYWHFragmentSelector xywhFragmentSelector = SelectorUtils.extractXywhSelector(value);
+            XYWHFragmentSelector xywhFragmentSelector = SelectorUtils.extractXywhFragmentSelector(value);
             if (xywhFragmentSelector != null) {
                 annotationFragmentSelector.setX(xywhFragmentSelector.getX());
                 annotationFragmentSelector.setY(xywhFragmentSelector.getY());
@@ -45,7 +45,7 @@ public class AnnotationFragmentSelectorExtractor extends AbstractAnnotationSelec
                 annotationFragmentSelector.setH(xywhFragmentSelector.getH());
             }
 
-            TFragmentSelector tFragmentSelector = SelectorUtils.extractTSelector(value);
+            TFragmentSelector tFragmentSelector = SelectorUtils.extractTFragmentSelector(value);
             if (tFragmentSelector != null) {
                 annotationFragmentSelector.setStart(tFragmentSelector.getStart());
                 annotationFragmentSelector.setEnd(tFragmentSelector.getEnd());

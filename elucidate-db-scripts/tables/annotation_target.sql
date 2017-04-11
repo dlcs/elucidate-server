@@ -22,3 +22,21 @@ WITH (
 ALTER TABLE public.annotation_target OWNER TO postgres;
 GRANT ALL ON TABLE public.annotation_target TO postgres;
 GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE public.annotation_target TO annotations_role;
+
+-- Index: public.idx_annotation_target_annotationid
+
+-- DROP INDEX public.idx_annotation_target_annotationid;
+
+CREATE INDEX idx_annotation_target_annotationid ON public.annotation_target USING btree (annotationid);
+
+-- Index: public.idx_annotation_target_sourceiri
+
+-- DROP INDEX public.idx_annotation_target_sourceiri;
+
+CREATE INDEX idx_annotation_target_sourceiri ON public.annotation_target USING btree (sourceiri);
+
+-- Index: public.idx_annotation_target_targetiri
+
+-- DROP INDEX public.idx_annotation_target_targetiri;
+
+CREATE INDEX idx_annotation_target_targetiri ON public.annotation_target USING btree (targetiri);

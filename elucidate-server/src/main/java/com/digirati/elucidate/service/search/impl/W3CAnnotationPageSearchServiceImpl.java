@@ -35,12 +35,12 @@ public class W3CAnnotationPageSearchServiceImpl extends AbstractAnnotationPageSe
     }
 
     @Override
-    protected String buildCollectionIri(SearchType searchType, List<String> fields, String value, boolean strict, String xywh, String t) {
-        return iriBuilderService.buildW3CCollectionSearchIri(searchType, fields, value, strict, xywh, t);
+    protected String buildCollectionIri(SearchType searchType, List<String> fields, String value, boolean strict, String xywh, String t, String creatorIri) {
+        return iriBuilderService.buildW3CCollectionSearchIri(searchType, fields, value, strict, xywh, t, creatorIri);
     }
 
     @Override
-    protected String buildPageIri(SearchType searchType, List<String> fields, String value, boolean strict, String xywh, String t, int page, boolean embeddedDescriptions) {
-        return iriBuilderService.buildW3CPageSearchIri(searchType, fields, value, strict, xywh, t, page, embeddedDescriptions);
+    protected String buildPageIri(SearchType searchType, List<String> fields, String value, boolean strict, String xywh, String t, String creatorIri, int page, boolean embeddedDescriptions) {
+        return iriBuilderService.buildW3CPageSearchIri(searchType, fields, value, strict, xywh, t, creatorIri, page, embeddedDescriptions);
     }
 }

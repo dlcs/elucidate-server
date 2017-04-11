@@ -35,19 +35,19 @@ public abstract class AbstractAnnotationCollectionSearchServiceImpl<A extends Ab
 
     protected abstract C convertToAnnotationCollection(W3CAnnotationCollection w3cAnnotationCollection);
 
-    protected abstract ServiceResponse<P> buildFirstAnnotationPage(SearchType searchType, List<A> annotations, List<String> fields, String value, boolean strict, String xywh, String t, ClientPreference clientPref);
+    protected abstract ServiceResponse<P> buildFirstAnnotationPage(SearchType searchType, List<A> annotations, List<String> fields, String value, boolean strict, String xywh, String t, String creatorIri, ClientPreference clientPref);
 
-    protected abstract String buildCollectionIri(SearchType searchType, List<String> fields, String value, boolean strict, String xywh, String t);
+    protected abstract String buildCollectionIri(SearchType searchType, List<String> fields, String value, boolean strict, String xywh, String t, String creatorIri);
 
-    protected abstract String buildPageIri(SearchType searchType, List<String> fields, String value, boolean strict, String xywh, String t, int page, boolean embeddedDescriptions);
+    protected abstract String buildPageIri(SearchType searchType, List<String> fields, String value, boolean strict, String xywh, String t, String creatorIri, int page, boolean embeddedDescriptions);
 
     @Override
-    public ServiceResponse<C> searchAnnotationCollectionByBody(List<String> fields, String value, boolean strict, ClientPreference clientPref) {
+    public ServiceResponse<C> searchAnnotationCollectionByBody(List<String> fields, String value, boolean strict, String xywh, String t, String creatorIri, ClientPreference clientPref) {
 
         W3CAnnotationCollection w3cAnnotationCollection = new W3CAnnotationCollection();
         w3cAnnotationCollection.setJsonMap(new HashMap<String, Object>());
 
-        ServiceResponse<List<A>> serviceResponse = annotationSearchService.searchAnnotationsByBody(fields, value, strict);
+        ServiceResponse<List<A>> serviceResponse = annotationSearchService.searchAnnotationsByBody(fields, value, strict, xywh, t, creatorIri);
         Status status = serviceResponse.getStatus();
 
         if (!status.equals(Status.OK)) {
@@ -57,20 +57,20 @@ public abstract class AbstractAnnotationCollectionSearchServiceImpl<A extends Ab
         List<A> annotations = serviceResponse.getObj();
 
         AnnotationCollectionConverter<C> annotationCollectionConverter = () -> convertToAnnotationCollection(w3cAnnotationCollection);
-        AnnotationCollectionIRIBuilder annotationCollectionIriBuilder = () -> buildCollectionIri(SearchType.BODY, fields, value, strict, null, null);
-        AnnotationPageIRIBuilder annotationPageIriBuilder = (int _page, boolean _embeddedDescriptions) -> buildPageIri(SearchType.BODY, fields, value, strict, null, null, _page, _embeddedDescriptions);
-        FirstAnnotationPageBuilder<P> firstAnnotationPageBuilder = () -> buildFirstAnnotationPage(SearchType.BODY, annotations, fields, value, strict, null, null, clientPref);
+        AnnotationCollectionIRIBuilder annotationCollectionIriBuilder = () -> buildCollectionIri(SearchType.BODY, fields, value, strict, xywh, t, creatorIri);
+        AnnotationPageIRIBuilder annotationPageIriBuilder = (int _page, boolean _embeddedDescriptions) -> buildPageIri(SearchType.BODY, fields, value, strict, xywh, t, creatorIri, _page, _embeddedDescriptions);
+        FirstAnnotationPageBuilder<P> firstAnnotationPageBuilder = () -> buildFirstAnnotationPage(SearchType.BODY, annotations, fields, value, strict, xywh, t, creatorIri, clientPref);
 
         return new AnnotationCollectionBuilder<A, P, C>(annotationCollectionConverter, annotationCollectionIriBuilder, annotationPageIriBuilder, firstAnnotationPageBuilder).buildAnnotationCollection(w3cAnnotationCollection, annotations, pageSize, clientPref);
     }
 
     @Override
-    public ServiceResponse<C> searchAnnotationCollectionByTarget(List<String> fields, String value, boolean strict, String xywh, String t, ClientPreference clientPref) {
+    public ServiceResponse<C> searchAnnotationCollectionByTarget(List<String> fields, String value, boolean strict, String xywh, String t, String creatorIri, ClientPreference clientPref) {
 
         W3CAnnotationCollection w3cAnnotationCollection = new W3CAnnotationCollection();
         w3cAnnotationCollection.setJsonMap(new HashMap<String, Object>());
 
-        ServiceResponse<List<A>> serviceResponse = annotationSearchService.searchAnnotationsByTarget(fields, value, strict, xywh, t);
+        ServiceResponse<List<A>> serviceResponse = annotationSearchService.searchAnnotationsByTarget(fields, value, strict, xywh, t, creatorIri);
         Status status = serviceResponse.getStatus();
 
         if (!status.equals(Status.OK)) {
@@ -80,9 +80,9 @@ public abstract class AbstractAnnotationCollectionSearchServiceImpl<A extends Ab
         List<A> annotations = serviceResponse.getObj();
 
         AnnotationCollectionConverter<C> annotationCollectionConverter = () -> convertToAnnotationCollection(w3cAnnotationCollection);
-        AnnotationCollectionIRIBuilder annotationCollectionIriBuilder = () -> buildCollectionIri(SearchType.TARGET, fields, value, strict, xywh, t);
-        AnnotationPageIRIBuilder annotationPageIriBuilder = (int _page, boolean _embeddedDescriptions) -> buildPageIri(SearchType.TARGET, fields, value, strict, xywh, t, _page, _embeddedDescriptions);
-        FirstAnnotationPageBuilder<P> firstAnnotationPageBuilder = () -> buildFirstAnnotationPage(SearchType.TARGET, annotations, fields, value, strict, xywh, t, clientPref);
+        AnnotationCollectionIRIBuilder annotationCollectionIriBuilder = () -> buildCollectionIri(SearchType.TARGET, fields, value, strict, xywh, t, creatorIri);
+        AnnotationPageIRIBuilder annotationPageIriBuilder = (int _page, boolean _embeddedDescriptions) -> buildPageIri(SearchType.TARGET, fields, value, strict, xywh, t, creatorIri, _page, _embeddedDescriptions);
+        FirstAnnotationPageBuilder<P> firstAnnotationPageBuilder = () -> buildFirstAnnotationPage(SearchType.TARGET, annotations, fields, value, strict, xywh, t, creatorIri, clientPref);
 
         return new AnnotationCollectionBuilder<A, P, C>(annotationCollectionConverter, annotationCollectionIriBuilder, annotationPageIriBuilder, firstAnnotationPageBuilder).buildAnnotationCollection(w3cAnnotationCollection, annotations, pageSize, clientPref);
     }

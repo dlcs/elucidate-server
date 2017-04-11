@@ -26,24 +26,24 @@ public abstract class AbstractAnnotationPageSearchServiceImpl<A extends Abstract
 
     protected abstract P convertToAnnotationPage(Map<String, Object> jsonMap);
 
-    protected abstract String buildCollectionIri(SearchType searchType, List<String> fields, String value, boolean strict, String xywh, String t);
+    protected abstract String buildCollectionIri(SearchType searchType, List<String> fields, String value, boolean strict, String xywh, String t, String creatorIri);
 
-    protected abstract String buildPageIri(SearchType searchType, List<String> fields, String value, boolean strict, String xywh, String t, int page, boolean embeddedDescriptions);
+    protected abstract String buildPageIri(SearchType searchType, List<String> fields, String value, boolean strict, String xywh, String t, String creatorIri, int page, boolean embeddedDescriptions);
 
     @Override
-    public ServiceResponse<P> buildAnnotationPageByBody(List<A> annotations, List<String> fields, String value, boolean strict, int page, boolean embeddedDescriptions) {
+    public ServiceResponse<P> buildAnnotationPageByBody(List<A> annotations, List<String> fields, String value, boolean strict, String xywh, String t, String creatorIri, int page, boolean embeddedDescriptions) {
 
-        AnnotationCollectionIRIBuilder annotationCollectionIriBuilder = () -> buildCollectionIri(SearchType.BODY, fields, value, strict, null, null);
-        AnnotationPageIRIBuilder annotationPageIriBuilder = (int _page, boolean _embeddedDescriptions) -> buildPageIri(SearchType.BODY, fields, value, strict, null, null, _page, _embeddedDescriptions);
+        AnnotationCollectionIRIBuilder annotationCollectionIriBuilder = () -> buildCollectionIri(SearchType.BODY, fields, value, strict, xywh, t, creatorIri);
+        AnnotationPageIRIBuilder annotationPageIriBuilder = (int _page, boolean _embeddedDescriptions) -> buildPageIri(SearchType.BODY, fields, value, strict, xywh, t, creatorIri, _page, _embeddedDescriptions);
 
         return new AnnotationPageBuilder<A, P>(this::convertToAnnotationPage, annotationCollectionIriBuilder, annotationPageIriBuilder).buildAnnotationPage(annotations, page, embeddedDescriptions, pageSize);
     }
 
     @Override
-    public ServiceResponse<P> buildAnnotationPageByTarget(List<A> annotations, List<String> fields, String value, boolean strict, String xywh, String t, int page, boolean embeddedDescriptions) {
+    public ServiceResponse<P> buildAnnotationPageByTarget(List<A> annotations, List<String> fields, String value, boolean strict, String xywh, String t, String creatorIri, int page, boolean embeddedDescriptions) {
 
-        AnnotationCollectionIRIBuilder annotationCollectionIriBuilder = () -> buildCollectionIri(SearchType.TARGET, fields, value, strict, xywh, t);
-        AnnotationPageIRIBuilder annotationPageIriBuilder = (int _page, boolean _embeddedDescriptions) -> buildPageIri(SearchType.TARGET, fields, value, strict, xywh, t, _page, _embeddedDescriptions);
+        AnnotationCollectionIRIBuilder annotationCollectionIriBuilder = () -> buildCollectionIri(SearchType.TARGET, fields, value, strict, xywh, t, creatorIri);
+        AnnotationPageIRIBuilder annotationPageIriBuilder = (int _page, boolean _embeddedDescriptions) -> buildPageIri(SearchType.TARGET, fields, value, strict, xywh, t, creatorIri, _page, _embeddedDescriptions);
 
         return new AnnotationPageBuilder<A, P>(this::convertToAnnotationPage, annotationCollectionIriBuilder, annotationPageIriBuilder).buildAnnotationPage(annotations, page, embeddedDescriptions, pageSize);
     }

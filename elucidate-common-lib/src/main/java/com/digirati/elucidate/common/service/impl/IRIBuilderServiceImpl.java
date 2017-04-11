@@ -79,7 +79,7 @@ public class IRIBuilderServiceImpl implements IRIBuilderService {
 
     @Override
     @SuppressWarnings("serial")
-    public String buildW3CCollectionSearchIri(SearchType searchType, List<String> fields, String value, boolean strict, String xywh, String t) {
+    public String buildW3CCollectionSearchIri(SearchType searchType, List<String> fields, String value, boolean strict, String xywh, String t, String creatorIri) {
         return buildIri(String.format("w3c/search/%s", searchType.toString().toLowerCase()), new HashMap<String, Object>() {
             {
                 put(URLConstants.PARAM_FIELDS, StringUtils.join(fields, ","));
@@ -92,6 +92,9 @@ public class IRIBuilderServiceImpl implements IRIBuilderService {
                 }
                 if (StringUtils.isNotBlank(t)) {
                     put(URLConstants.PARAM_T, t);
+                }
+                if (StringUtils.isNotBlank(creatorIri)) {
+                    put(URLConstants.PARAM_CREATOR, creatorIri);
                 }
             }
         });
@@ -99,7 +102,7 @@ public class IRIBuilderServiceImpl implements IRIBuilderService {
 
     @Override
     @SuppressWarnings("serial")
-    public String buildW3CPageSearchIri(SearchType searchType, List<String> fields, String value, boolean strict, String xywh, String t, int page, boolean embeddedDescriptions) {
+    public String buildW3CPageSearchIri(SearchType searchType, List<String> fields, String value, boolean strict, String xywh, String t, String creatorIri, int page, boolean embeddedDescriptions) {
         return buildIri(String.format("w3c/search/%s", searchType.toString().toLowerCase()), new HashMap<String, Object>() {
             {
                 put(URLConstants.PARAM_FIELDS, StringUtils.join(fields, ","));
@@ -112,6 +115,9 @@ public class IRIBuilderServiceImpl implements IRIBuilderService {
                 }
                 if (StringUtils.isNotBlank(t)) {
                     put(URLConstants.PARAM_T, t);
+                }
+                if (StringUtils.isNotBlank(creatorIri)) {
+                    put(URLConstants.PARAM_CREATOR, creatorIri);
                 }
                 put(URLConstants.PARAM_PAGE, page);
                 if (embeddedDescriptions) {
@@ -136,7 +142,7 @@ public class IRIBuilderServiceImpl implements IRIBuilderService {
 
     @Override
     @SuppressWarnings("serial")
-    public String buildOACollectionSearchIri(SearchType searchType, List<String> fields, String value, boolean strict, String xywh, String t) {
+    public String buildOACollectionSearchIri(SearchType searchType, List<String> fields, String value, boolean strict, String xywh, String t, String creatorIri) {
         return buildIri(String.format("oa/search/%s", searchType.toString().toLowerCase()), new HashMap<String, Object>() {
             {
                 put(URLConstants.PARAM_FIELDS, StringUtils.join(fields, ","));
@@ -149,6 +155,9 @@ public class IRIBuilderServiceImpl implements IRIBuilderService {
                 }
                 if (StringUtils.isNotBlank(t)) {
                     put(URLConstants.PARAM_T, t);
+                }
+                if (StringUtils.isNotBlank(creatorIri)) {
+                    put(URLConstants.PARAM_CREATOR, creatorIri);
                 }
             }
         });
@@ -172,7 +181,7 @@ public class IRIBuilderServiceImpl implements IRIBuilderService {
 
     @Override
     @SuppressWarnings("serial")
-    public String buildOAPageSearchIri(SearchType searchType, List<String> fields, String value, boolean strict, String xywh, String t, int page, boolean embeddedDescriptions) {
+    public String buildOAPageSearchIri(SearchType searchType, List<String> fields, String value, boolean strict, String xywh, String t, String creatorIri, int page, boolean embeddedDescriptions) {
         return buildIri(String.format("oa/search/%s", searchType.toString().toLowerCase()), new HashMap<String, Object>() {
             {
                 put(URLConstants.PARAM_FIELDS, StringUtils.join(fields, ","));
@@ -185,6 +194,9 @@ public class IRIBuilderServiceImpl implements IRIBuilderService {
                 }
                 if (StringUtils.isNotBlank(t)) {
                     put(URLConstants.PARAM_T, t);
+                }
+                if (StringUtils.isNotBlank(creatorIri)) {
+                    put(URLConstants.PARAM_CREATOR, creatorIri);
                 }
                 put(URLConstants.PARAM_PAGE, page);
                 if (embeddedDescriptions) {

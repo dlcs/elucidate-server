@@ -14,7 +14,7 @@ public class SelectorUtils {
     private static final Pattern XYWH_MATCHER = Pattern.compile("xywh=(\\d+),(\\d+),(\\d+),(\\d+)");
     private static final Pattern T_MATCHER = Pattern.compile("t\\=(\\d+)?(,)?(\\d+)?");
 
-    public static XYWHFragmentSelector extractXywhSelector(String str) {
+    public static XYWHFragmentSelector extractXywhFragmentSelector(String str) {
 
         if (StringUtils.isNotBlank(str)) {
 
@@ -41,7 +41,7 @@ public class SelectorUtils {
         return null;
     }
 
-    public static TFragmentSelector extractTSelector(String str) {
+    public static TFragmentSelector extractTFragmentSelector(String str) {
 
         if (StringUtils.isNotBlank(str)) {
 

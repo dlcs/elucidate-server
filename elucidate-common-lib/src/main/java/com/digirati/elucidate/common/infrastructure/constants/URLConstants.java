@@ -10,6 +10,7 @@ public class URLConstants {
     public static final String PARAM_STRICT = "strict";
     public static final String PARAM_XYWH = "xywh";
     public static final String PARAM_T = "t";
+    public static final String PARAM_CREATOR = "creator";
 
     private URLConstants() {}
 }

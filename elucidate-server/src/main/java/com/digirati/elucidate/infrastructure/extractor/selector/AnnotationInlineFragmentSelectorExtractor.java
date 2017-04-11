@@ -36,7 +36,7 @@ public class AnnotationInlineFragmentSelectorExtractor {
                 annotationFragmentSelector.setConformsTo(SelectorConstants.MEDIA_FRAGS);
                 annotationFragmentSelector.setValue(fragmentStr);
 
-                XYWHFragmentSelector xywhFragmentSelector = SelectorUtils.extractXywhSelector(fragmentStr);
+                XYWHFragmentSelector xywhFragmentSelector = SelectorUtils.extractXywhFragmentSelector(fragmentStr);
                 if (xywhFragmentSelector != null) {
                     annotationFragmentSelector.setX(xywhFragmentSelector.getX());
                     annotationFragmentSelector.setY(xywhFragmentSelector.getY());
@@ -44,7 +44,7 @@ public class AnnotationInlineFragmentSelectorExtractor {
                     annotationFragmentSelector.setH(xywhFragmentSelector.getH());
                 }
 
-                TFragmentSelector tFragmentSelector = SelectorUtils.extractTSelector(fragmentStr);
+                TFragmentSelector tFragmentSelector = SelectorUtils.extractTFragmentSelector(fragmentStr);
                 if (tFragmentSelector != null) {
                     annotationFragmentSelector.setStart(tFragmentSelector.getStart());
                     annotationFragmentSelector.setEnd(tFragmentSelector.getEnd());
