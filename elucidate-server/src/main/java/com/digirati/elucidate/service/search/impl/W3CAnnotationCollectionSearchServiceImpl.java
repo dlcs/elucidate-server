@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 import com.digirati.elucidate.common.model.annotation.w3c.W3CAnnotation;
 import com.digirati.elucidate.common.model.annotation.w3c.W3CAnnotationCollection;
 import com.digirati.elucidate.common.model.annotation.w3c.W3CAnnotationPage;
-import com.digirati.elucidate.common.model.enumeration.SearchType;
 import com.digirati.elucidate.common.service.IRIBuilderService;
 import com.digirati.elucidate.model.ServiceResponse;
 import com.digirati.elucidate.model.enumeration.ClientPreference;
@@ -38,31 +37,59 @@ public class W3CAnnotationCollectionSearchServiceImpl extends AbstractAnnotation
     }
 
     @Override
-    protected ServiceResponse<W3CAnnotationPage> buildFirstAnnotationPage(SearchType searchType, List<W3CAnnotation> w3cAnnotations, List<String> fields, String value, boolean strict, String xywh, String t, String creatorIri, ClientPreference clientPref) {
-        if (searchType.equals(SearchType.BODY)) {
-            if (clientPref.equals(ClientPreference.CONTAINED_IRIS)) {
-                return w3cAnnotationPageSearchService.buildAnnotationPageByBody(w3cAnnotations, fields, value, strict, xywh, t, creatorIri, 0, false);
-            } else {
-                return w3cAnnotationPageSearchService.buildAnnotationPageByBody(w3cAnnotations, fields, value, strict, xywh, t, creatorIri, 0, true);
-            }
-        } else if (searchType.equals(SearchType.TARGET)) {
-            if (clientPref.equals(ClientPreference.CONTAINED_IRIS)) {
-                return w3cAnnotationPageSearchService.buildAnnotationPageByTarget(w3cAnnotations, fields, value, strict, xywh, t, creatorIri, 0, false);
-            } else {
-                return w3cAnnotationPageSearchService.buildAnnotationPageByTarget(w3cAnnotations, fields, value, strict, xywh, t, creatorIri, 0, true);
-            }
+    protected ServiceResponse<W3CAnnotationPage> buildBodySearchFirstAnnotationPage(List<W3CAnnotation> w3cAnnotations, List<String> fields, String value, boolean strict, String xywh, String t, String creatorIri, ClientPreference clientPref) {
+        if (clientPref.equals(ClientPreference.CONTAINED_IRIS)) {
+            return w3cAnnotationPageSearchService.buildAnnotationPageByBody(w3cAnnotations, fields, value, strict, xywh, t, creatorIri, 0, false);
         } else {
-            throw new IllegalArgumentException(String.format("Unexpected search type [%s]", searchType));
+            return w3cAnnotationPageSearchService.buildAnnotationPageByBody(w3cAnnotations, fields, value, strict, xywh, t, creatorIri, 0, true);
         }
     }
 
     @Override
-    protected String buildCollectionIri(SearchType searchType, List<String> fields, String value, boolean strict, String xywh, String t, String creatorIri) {
-        return iriBuilderService.buildW3CCollectionSearchIri(searchType, fields, value, strict, xywh, t, creatorIri);
+    protected String buildBodySearchCollectionIri(List<String> fields, String value, boolean strict, String xywh, String t, String creatorIri) {
+        return iriBuilderService.buildW3CCollectionBodySearchIri(fields, value, strict, xywh, t, creatorIri);
     }
 
     @Override
-    protected String buildPageIri(SearchType searchType, List<String> fields, String value, boolean strict, String xywh, String t, String creatorIri, int page, boolean embeddedDescriptions) {
-        return iriBuilderService.buildW3CPageSearchIri(searchType, fields, value, strict, xywh, t, creatorIri, page, embeddedDescriptions);
+    protected String buildBodySearchPageIri(List<String> fields, String value, boolean strict, String xywh, String t, String creatorIri, int page, boolean embeddedDescriptions) {
+        return iriBuilderService.buildW3CPageBodySearchIri(fields, value, strict, xywh, t, creatorIri, page, embeddedDescriptions);
+    }
+
+    @Override
+    protected ServiceResponse<W3CAnnotationPage> buildTargetSearchFirstAnnotationPage(List<W3CAnnotation> w3cAnnotations, List<String> fields, String value, boolean strict, String xywh, String t, String creatorIri, ClientPreference clientPref) {
+        if (clientPref.equals(ClientPreference.CONTAINED_IRIS)) {
+            return w3cAnnotationPageSearchService.buildAnnotationPageByTarget(w3cAnnotations, fields, value, strict, xywh, t, creatorIri, 0, false);
+        } else {
+            return w3cAnnotationPageSearchService.buildAnnotationPageByTarget(w3cAnnotations, fields, value, strict, xywh, t, creatorIri, 0, true);
+        }
+    }
+
+    @Override
+    protected String buildTargetSearchCollectionIri(List<String> fields, String value, boolean strict, String xywh, String t, String creatorIri) {
+        return iriBuilderService.buildW3CCollectionTargetSearchIri(fields, value, strict, xywh, t, creatorIri);
+    }
+
+    @Override
+    protected String buildTargetSearchPageIri(List<String> fields, String value, boolean strict, String xywh, String t, String creatorIri, int page, boolean embeddedDescriptions) {
+        return iriBuilderService.buildW3CPageTargetSearchIri(fields, value, strict, xywh, t, creatorIri, page, embeddedDescriptions);
+    }
+
+    @Override
+    protected ServiceResponse<W3CAnnotationPage> buildCreatorSearchFirstAnnotationPage(List<W3CAnnotation> w3cAnnotations, List<String> levels, String type, String value, ClientPreference clientPref) {
+        if (clientPref.equals(ClientPreference.CONTAINED_IRIS)) {
+            return w3cAnnotationPageSearchService.buildAnnotationPageByCreator(w3cAnnotations, levels, type, value, 0, false);
+        } else {
+            return w3cAnnotationPageSearchService.buildAnnotationPageByCreator(w3cAnnotations, levels, type, value, 0, true);
+        }
+    }
+
+    @Override
+    protected String buildCreatorSearchCollectionIri(List<String> levels, String type, String value) {
+        return iriBuilderService.buildW3CCollectionCreatorSearchIri(levels, type, value);
+    }
+
+    @Override
+    protected String buildCreatorSearchPageIri(List<String> levels, String type, String value, int page, boolean embeddedDescriptions) {
+        return iriBuilderService.buildW3CPageCreatorSearchIri(levels, type, value, page, embeddedDescriptions);
     }
 }

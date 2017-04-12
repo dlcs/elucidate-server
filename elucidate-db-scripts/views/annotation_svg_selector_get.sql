@@ -24,7 +24,7 @@ CREATE OR REPLACE VIEW public.annotation_svg_selector_get AS
             LEFT JOIN annotation a ON at.annotationid = a.id
             LEFT JOIN annotation_collection ac ON a.collectionid = ac.id
     WHERE
-        asl.type::text = 'http://www.w3.org/ns/oa#SvgSelector'::text;
+        asl.type = 'http://www.w3.org/ns/oa#SvgSelector';
 
 ALTER TABLE public.annotation_svg_selector_get OWNER TO postgres;
 GRANT ALL ON TABLE public.annotation_svg_selector_get TO postgres;

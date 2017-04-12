@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 
 import com.digirati.elucidate.common.model.annotation.oa.OAAnnotation;
 import com.digirati.elucidate.common.model.annotation.oa.OAAnnotationPage;
-import com.digirati.elucidate.common.model.enumeration.SearchType;
 import com.digirati.elucidate.common.service.IRIBuilderService;
 import com.digirati.elucidate.converter.OAToW3CAnnotationPageConverter;
 import com.digirati.elucidate.service.search.OAAnnotationPageSearchService;
@@ -44,12 +43,32 @@ public class OAAnnotationPageSearchServiceImpl extends AbstractAnnotationPageSea
     }
 
     @Override
-    protected String buildCollectionIri(SearchType searchType, List<String> fields, String value, boolean strict, String xywh, String t, String creatorIri) {
-        return iriBuilderService.buildOACollectionSearchIri(searchType, fields, value, strict, xywh, t, creatorIri);
+    protected String buildBodySearchCollectionIri(List<String> fields, String value, boolean strict, String xywh, String t, String creatorIri) {
+        return iriBuilderService.buildOACollectionBodySearchIri(fields, value, strict, xywh, t, creatorIri);
     }
 
     @Override
-    protected String buildPageIri(SearchType searchType, List<String> fields, String value, boolean strict, String xywh, String t, String creatorIri, int page, boolean embeddedDescriptions) {
-        return iriBuilderService.buildOAPageSearchIri(searchType, fields, value, strict, xywh, t, creatorIri, page, embeddedDescriptions);
+    protected String buildBodySearchPageIri(List<String> fields, String value, boolean strict, String xywh, String t, String creatorIri, int page, boolean embeddedDescriptions) {
+        return iriBuilderService.buildOAPageBodySearchIri(fields, value, strict, xywh, t, creatorIri, page, embeddedDescriptions);
+    }
+
+    @Override
+    protected String buildTargetSearchCollectionIri(List<String> fields, String value, boolean strict, String xywh, String t, String creatorIri) {
+        return iriBuilderService.buildOACollectionTargetSearchIri(fields, value, strict, xywh, t, creatorIri);
+    }
+
+    @Override
+    protected String buildTargetSearchPageIri(List<String> fields, String value, boolean strict, String xywh, String t, String creatorIri, int page, boolean embeddedDescriptions) {
+        return iriBuilderService.buildOAPageTargetSearchIri(fields, value, strict, xywh, t, creatorIri, page, embeddedDescriptions);
+    }
+
+    @Override
+    protected String buildCreatorSearchCollectionIri(List<String> levels, String type, String value) {
+        return iriBuilderService.buildOACollectionCreatorSearchIri(levels, type, value);
+    }
+
+    @Override
+    protected String buildCreatorSearchPageIri(List<String> levels, String type, String value, int page, boolean embeddedDescriptions) {
+        return iriBuilderService.buildOAPageCreatorSearchIri(levels, type, value, page, embeddedDescriptions);
     }
 }

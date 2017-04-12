@@ -1,7 +1,10 @@
+-- Function: public.annotation_text_position_selector_delete(integer, integer)
+
+-- DROP FUNCTION public.annotation_text_position_selector_delete(integer, integer);
+
 CREATE OR REPLACE FUNCTION public.annotation_text_position_selector_delete(
     _bodyid integer,
-    _targetid integer
-)
+    _targetid integer)
 RETURNS SETOF annotation_text_position_selector_get AS
 $BODY$
     BEGIN

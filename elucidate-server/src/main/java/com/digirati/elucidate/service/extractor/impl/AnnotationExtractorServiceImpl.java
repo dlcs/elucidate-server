@@ -257,7 +257,7 @@ public class AnnotationExtractorServiceImpl implements AnnotationExtractorServic
 
             String[] types = annotationCreator.getTypes() != null ? annotationCreator.getTypes().stream().toArray(String[]::new) : new String[] {};
             String[] typesJson = new String[types.length];
-            if (types != null && types.length > 0) {
+            if (types.length > 0) {
                 for (int i = 0; i < typesJson.length; i++) {
                     typesJson[i] = JsonUtils.toPrettyString(annotationCreator.getTypesJsonList());
                 }
@@ -265,7 +265,7 @@ public class AnnotationExtractorServiceImpl implements AnnotationExtractorServic
 
             String[] names = annotationCreator.getNames() != null ? annotationCreator.getNames().stream().toArray(String[]::new) : new String[] {};
             String[] namesJson = new String[names.length];
-            if (names != null && names.length > 0) {
+            if (names.length > 0) {
                 for (int i = 0; i < namesJson.length; i++) {
                     namesJson[i] = JsonUtils.toPrettyString(annotationCreator.getNameJsonMaps().get(i));
                 }
@@ -275,7 +275,7 @@ public class AnnotationExtractorServiceImpl implements AnnotationExtractorServic
 
             String[] emails = annotationCreator.getEmails() != null ? annotationCreator.getEmails().stream().toArray(String[]::new) : new String[] {};
             String[] emailsJson = new String[emails.length];
-            if (emails != null && emails.length > 0) {
+            if (emails.length > 0) {
                 for (int i = 0; i < emailsJson.length; i++) {
                     emailsJson[i] = JsonUtils.toPrettyString(annotationCreator.getEmailJsonMaps().get(i));
                 }
@@ -283,7 +283,7 @@ public class AnnotationExtractorServiceImpl implements AnnotationExtractorServic
 
             String[] emailSha1s = annotationCreator.getEmailSha1s() != null ? annotationCreator.getEmailSha1s().stream().toArray(String[]::new) : new String[] {};
             String[] emailSha1sJson = new String[emailSha1s.length];
-            if (emailSha1s != null && emailSha1s.length > 0) {
+            if (emailSha1s.length > 0) {
                 for (int i = 0; i < emailSha1sJson.length; i++) {
                     emailSha1sJson[i] = JsonUtils.toPrettyString(annotationCreator.getEmailSha1JsonMaps().get(i));
                 }
@@ -291,7 +291,7 @@ public class AnnotationExtractorServiceImpl implements AnnotationExtractorServic
 
             String[] homepages = annotationCreator.getHomepages() != null ? annotationCreator.getHomepages().stream().toArray(String[]::new) : new String[] {};
             String[] homepagesJson = new String[homepages.length];
-            if (homepages != null && homepages.length > 0) {
+            if (homepages.length > 0) {
                 for (int i = 0; i < homepagesJson.length; i++) {
                     homepagesJson[i] = JsonUtils.toPrettyString(annotationCreator.getHomepageJsonMaps().get(i));
                 }

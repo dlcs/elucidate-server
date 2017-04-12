@@ -53,7 +53,7 @@ public abstract class AbstractAnnotationContainerReadController<A extends Abstra
         }
     }
 
-    private ResponseEntity<?> processCollectionRequest(String collectionId, HttpServletRequest request) {
+    private ResponseEntity<C> processCollectionRequest(String collectionId, HttpServletRequest request) {
 
         ClientPreference clientPref = determineClientPreference(request);
         if (clientPref == null) {
@@ -74,7 +74,7 @@ public abstract class AbstractAnnotationContainerReadController<A extends Abstra
         return ResponseEntity.ok(serviceResponse.getObj());
     }
 
-    private ResponseEntity<?> processPageRequest(String collectionId, int page, boolean iris, boolean descs) {
+    private ResponseEntity<P> processPageRequest(String collectionId, int page, boolean iris, boolean descs) {
 
         if (iris && descs) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);

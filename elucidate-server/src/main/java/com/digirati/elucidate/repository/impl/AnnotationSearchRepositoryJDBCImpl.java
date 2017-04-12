@@ -42,4 +42,13 @@ public class AnnotationSearchRepositoryJDBCImpl extends AbstractRepositoryJDBCIm
 
         return queryForList(sql, params, sqlTypes, new W3CAnnotationRowMapper());
     }
+
+    @Override
+    public List<W3CAnnotation> getAnnotationsByCreator(boolean searchAnnotations, boolean searchBodies, boolean searchTargets, String type, String value) {
+        String sql = "SELECT * FROM annotation_search_by_creator(?, ?, ?, ?, ?)";
+        Object[] params = {searchAnnotations, searchBodies, searchTargets, type, value};
+        int[] sqlTypes = {Types.BOOLEAN, Types.BOOLEAN, Types.BOOLEAN, Types.VARCHAR, Types.VARCHAR};
+
+        return queryForList(sql, params, sqlTypes, new W3CAnnotationRowMapper());
+    }
 }

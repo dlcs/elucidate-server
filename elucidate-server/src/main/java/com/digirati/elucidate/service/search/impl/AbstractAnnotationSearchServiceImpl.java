@@ -92,6 +92,23 @@ public abstract class AbstractAnnotationSearchServiceImpl<A extends AbstractAnno
         return new Integer[] {null, null};
     }
 
+    @Override
+    public ServiceResponse<List<A>> searchAnnotationsByCreator(List<String> levels, String type, String value) {
+
+        boolean searchAnnotations = levels.contains(SearchConstants.LEVEL_ANNOTATION);
+        boolean searchBodies = levels.contains(SearchConstants.LEVEL_BODY);
+        boolean searchTargets = levels.contains(SearchConstants.LEVEL_TARGET);
+
+        if (!type.equals(SearchConstants.TYPE_ID) && !type.equals(SearchConstants.TYPE_NAME) && !type.equals(SearchConstants.TYPE_NICKNAME) && !type.equals(SearchConstants.TYPE_EMAIL) && !type.equals(SearchConstants.TYPE_EMAIL_SHA1)) {
+            return new ServiceResponse<List<A>>(Status.NON_CONFORMANT, null);
+        }
+
+        List<W3CAnnotation> w3cAnnotations = annotationSearchRepository.getAnnotationsByCreator(searchAnnotations, searchBodies, searchTargets, type, value);
+
+        List<A> annotations = convertAnnotations(w3cAnnotations);
+        return new ServiceResponse<List<A>>(Status.OK, annotations);
+    }
+
     private List<A> convertAnnotations(List<W3CAnnotation> w3cAnnotations) {
         List<A> annotations = new ArrayList<A>();
         for (W3CAnnotation w3cAnnotation : w3cAnnotations) {

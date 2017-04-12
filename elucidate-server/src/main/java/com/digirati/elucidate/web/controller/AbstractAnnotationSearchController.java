@@ -30,6 +30,7 @@ public abstract class AbstractAnnotationSearchController<A extends AbstractAnnot
 
     private static final String REQUEST_PATH_BODY = "/search/body";
     private static final String REQUEST_PATH_TARGET = "/search/target";
+    private static final String REQUEST_PATH_CREATOR = "/search/creator";
     private static final String PREFER_MINIMAL_CONTAINER = "http://www.w3.org/ns/ldp#preferminimalcontainer";
     private static final String PREFER_CONTAINED_IRIS = "http://www.w3.org/ns/oa#prefercontainediris";
     private static final String PREFER_CONTAINED_DESCRIPTIONS = "http://www.w3.org/ns/oa#prefercontaineddescriptions";
@@ -98,7 +99,33 @@ public abstract class AbstractAnnotationSearchController<A extends AbstractAnnot
         }
     }
 
-    private ResponseEntity<?> processCollectionSearchRequest(AnnotationCollectionSearch<C> annotationCollectionSearch, HttpServletRequest request) {
+    @RequestMapping(value = REQUEST_PATH_CREATOR, method = RequestMethod.GET)
+    public ResponseEntity<?> getSearchCreator(@RequestParam(value = URLConstants.PARAM_LEVELS, required = true) List<String> levels, @RequestParam(value = URLConstants.PARAM_TYPE, required = true) String type, @RequestParam(value = URLConstants.PARAM_VALUE, required = true) String value, @RequestParam(value = URLConstants.PARAM_PAGE, required = false) Integer page, @RequestParam(value = URLConstants.PARAM_IRIS, required = false, defaultValue = "false") boolean iris, @RequestParam(value = URLConstants.PARAM_DESC, required = false, defaultValue = "false") boolean descriptions, HttpServletRequest request) {
+        if (page == null) {
+
+            AnnotationCollectionSearch<C> annotationCollectionSearch = (ClientPreference clientPref) -> annotationCollectionSearchService.searchAnnotationCollectionByCreator(levels, type, value, clientPref);
+
+            return processCollectionSearchRequest(annotationCollectionSearch, request);
+        } else {
+            AnnotationPageSearch<P> annotationPageSearch = (boolean embeddedDescriptions) -> {
+
+                ServiceResponse<List<A>> serviceResponse = annotationSearchService.searchAnnotationsByCreator(levels, type, value);
+                Status status = serviceResponse.getStatus();
+
+                if (!status.equals(Status.OK)) {
+                    return new ServiceResponse<P>(status, null);
+                }
+
+                List<A> annotations = serviceResponse.getObj();
+
+                return annotationPageSearchService.buildAnnotationPageByCreator(annotations, levels, type, value, page, embeddedDescriptions);
+            };
+
+            return processPageSearchRequest(annotationPageSearch, iris, descriptions);
+        }
+    }
+
+    private ResponseEntity<C> processCollectionSearchRequest(AnnotationCollectionSearch<C> annotationCollectionSearch, HttpServletRequest request) {
 
         ClientPreference clientPref = determineClientPreference(request);
         if (clientPref == null) {
@@ -115,7 +142,7 @@ public abstract class AbstractAnnotationSearchController<A extends AbstractAnnot
         return ResponseEntity.ok(serviceResponse.getObj());
     }
 
-    private ResponseEntity<?> processPageSearchRequest(AnnotationPageSearch<P> annotationPageSearch, boolean iris, boolean descs) {
+    private ResponseEntity<P> processPageSearchRequest(AnnotationPageSearch<P> annotationPageSearch, boolean iris, boolean descs) {
 
         if (iris && descs) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);

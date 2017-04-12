@@ -111,7 +111,7 @@ public abstract class AbstractAnnotationWriteController<A extends AbstractAnnota
     }
 
     @RequestMapping(value = UPDATE_REQUEST_PATH, method = RequestMethod.DELETE)
-    public ResponseEntity<?> delete(@PathVariable(VARIABLE_COLLECTION_ID) String collectionId, @PathVariable(VARIABLE_ANNOTATION_ID) String annotationId, HttpServletRequest request) {
+    public ResponseEntity<Void> delete(@PathVariable(VARIABLE_COLLECTION_ID) String collectionId, @PathVariable(VARIABLE_ANNOTATION_ID) String annotationId, HttpServletRequest request) {
 
         String cacheKey = request.getHeader(HttpHeaders.IF_MATCH);
 
