@@ -7,8 +7,9 @@ import org.springframework.web.bind.annotation.RestController;
 import com.digirati.elucidate.common.model.annotation.w3c.W3CAnnotation;
 import com.digirati.elucidate.common.model.annotation.w3c.W3CAnnotationCollection;
 import com.digirati.elucidate.common.model.annotation.w3c.W3CAnnotationPage;
-import com.digirati.elucidate.service.W3CAnnotationCollectionService;
-import com.digirati.elucidate.service.W3CAnnotationPageService;
+import com.digirati.elucidate.service.query.W3CAnnotationCollectionService;
+import com.digirati.elucidate.service.query.W3CAnnotationPageService;
+import com.digirati.elucidate.service.query.W3CAnnotationService;
 import com.digirati.elucidate.web.controller.AbstractAnnotationContainerReadController;
 
 @RestController(W3CAnnotationContainerReadController.CONTROLLER_NAME)
@@ -18,7 +19,7 @@ public class W3CAnnotationContainerReadController extends AbstractAnnotationCont
     public static final String CONTROLLER_NAME = "w3cAnnotationContainerReadController";
 
     @Autowired
-    public W3CAnnotationContainerReadController(W3CAnnotationCollectionService w3cAnnotationCollectionService, W3CAnnotationPageService w3cAnnotationPageService) {
-        super(w3cAnnotationCollectionService, w3cAnnotationPageService);
+    public W3CAnnotationContainerReadController(W3CAnnotationService w3cAnnotationService, W3CAnnotationPageService w3cAnnotationPageService, W3CAnnotationCollectionService w3cAnnotationCollectionService) {
+        super(w3cAnnotationService, w3cAnnotationPageService, w3cAnnotationCollectionService);
     }
 }

@@ -6,7 +6,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.digirati.elucidate.common.model.annotation.w3c.W3CAnnotation;
 import com.digirati.elucidate.common.model.annotation.w3c.W3CAnnotationCollection;
-import com.digirati.elucidate.service.W3CAnnotationService;
+import com.digirati.elucidate.service.query.W3CAnnotationCollectionService;
+import com.digirati.elucidate.service.query.W3CAnnotationService;
 import com.digirati.elucidate.web.controller.AbstractAnnotationWriteController;
 
 @RestController(W3CAnnotationWriteController.CONTROLLER_NAME)
@@ -16,7 +17,7 @@ public class W3CAnnotationWriteController extends AbstractAnnotationWriteControl
     public static final String CONTROLLER_NAME = "w3cAnnotationWriteController";
 
     @Autowired
-    public W3CAnnotationWriteController(W3CAnnotationService w3cAnnotationService) {
-        super(w3cAnnotationService);
+    public W3CAnnotationWriteController(W3CAnnotationService w3cAnnotationService, W3CAnnotationCollectionService w3cAnnotationCollectionService) {
+        super(w3cAnnotationService, w3cAnnotationCollectionService);
     }
 }

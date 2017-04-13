@@ -45,7 +45,7 @@ public class ServicesConfig {
     @Bean(name = "listenerTaskExecutor", initMethod = "initialize", destroyMethod = "shutdown")
     public TaskExecutor listenerTaskExecutor() {
         ThreadPoolTaskExecutor threadPoolTaskExecutor = new ThreadPoolTaskExecutor();
-        threadPoolTaskExecutor.setCorePoolSize(environment.getRequiredProperty("aws.sqs.poolSize", Integer.class));
+        threadPoolTaskExecutor.setCorePoolSize(environment.getRequiredProperty("listener.poolSize", Integer.class));
         return threadPoolTaskExecutor;
     }
     
@@ -54,7 +54,7 @@ public class ServicesConfig {
         Class<?> clazz = Class.forName(environment.getProperty("annotation.id.generator"));
         return (IDGenerator) clazz.newInstance();
     }
-    
+
     @Bean(name = "collectionIdGenerator")
     public IDGenerator collectionIdGenerator() throws ClassNotFoundException, InstantiationException, IllegalAccessException {
         Class<?> clazz = Class.forName(environment.getProperty("annotation.collection.id.generator"));

@@ -40,7 +40,7 @@ public abstract class AbstractRepositoryJDBCImpl {
         return jdbcTemplate.query(sql, params, sqlTypes, rowMapper);
     }
 
-    protected void update(String sql, Object[] params, int sqlTypes[]) {
+    protected void update(String sql, Object[] params, int[] sqlTypes) {
         LOGGER.info(String.format("Executing SQL update [%s] with parameters [%s] and SQL types [%s]", sql, Arrays.toString(params), Arrays.toString(sqlTypes)));
         int rowsAffected = jdbcTemplate.update(sql, params, sqlTypes);
         LOGGER.info(String.format("SQL Update [%s] affected [%s] rows", sql, rowsAffected));

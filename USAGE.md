@@ -281,3 +281,29 @@ If-Match: 24d535a13f2c16e2701bf46b11407cea
 ```
 HTTP/1.1 204 No Content
 ```
+
+## Search
+
+All search results are returned as Annotation Containers.
+
+### Search By `body`
+
+Base URL: `GET http://example.org/w3c/search/body HTTP/1.1`
+
+| Parameter | Mandatory | Valid Values           | Description                                                                                                                                                 |
+| --------- | --------- | ---------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `fields`  | Yes       | `id`,`source`          | The fields within `body` that the `value` parameter is targetting.                                                                                          |
+| `value`   | Yes       | Percent-encoded string | The value (usually a URI) that the defined `fields` will be searched for.                                                                                   |
+| `strict`  | No        | `true`,`false`         | If `true`, the defined `value` must match the defined `fields` exactly. Otherwise, the `value` is treated as a prefix. If unspecified, defaults to `false`. |
+
+### Search by `target`
+
+Base URL: `GET http://example.org/w3c/search/target HTTP/1.1`
+
+| Parameter | Mandatory | Valid Values           | Description                                                                                                                                                                                                                |
+| --------- | --------- | ----------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `fields`  | Yes       | `id`,`source`                                                                       | The fields within `target` that the `value` parameter is targetting.                                                                                          |
+| `value`   | Yes       | Percent-encoded string                                                              | The value (usually a URI) that the defined `fields` will be searched for.                                                                                     |
+| `strict`  | No        | `true`,`false`                                                                      | If `true`, the defined `value` must match the defined `fields` exactly. Otherwise, the `value` is treated as a prefix. If unspecified, defaults to `false`.   |
+| `xywh`    | No        | [Media Fragments](https://www.w3.org/TR/media-frags/#naming-space) spatial selector | If specified, returns only results that intersect with the defined spatial dimensions.                                                                        |
+| `t`       | No        | [Media Fragments](https://www.w3.org/TR/media-frags/#naming-time) temporal selector | If specified, returns only results that intersect with the defined temporal dimensions.                                                                       | 
