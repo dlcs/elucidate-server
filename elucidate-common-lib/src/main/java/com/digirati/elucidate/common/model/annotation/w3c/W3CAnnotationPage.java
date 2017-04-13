@@ -9,6 +9,6 @@ public class W3CAnnotationPage extends AbstractAnnotationPage implements Seriali
 
     @Override
     public String toString() {
-        return "W3CAnnotationPage [getCollectionId()=" + getCollectionId() + ", isDeleted()=" + isDeleted() + ", getCreatedDateTime()=" + getCreatedDateTime() + ", getModifiedDateTime()=" + getModifiedDateTime() + ", getCacheKey()=" + getCacheKey() + "]";
+        return "W3CAnnotationPage [getPk()=" + getPk() + ", getJsonMap()=" + getJsonMap() + ", isDeleted()=" + isDeleted() + ", getCreatedDateTime()=" + getCreatedDateTime() + ", getModifiedDateTime()=" + getModifiedDateTime() + "]";
     }
 }

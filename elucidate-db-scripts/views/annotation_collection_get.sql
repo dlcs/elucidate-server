@@ -9,10 +9,11 @@ CREATE OR REPLACE VIEW public.annotation_collection_get AS
         ac.createddatetime,
         ac.deleted,
         ac.json,
-        ac.modifieddatetime
+        ac.modifieddatetime,
+        ac.id
     FROM
         annotation_collection ac;
 
-ALTER TABLE public.annotation_collection_get OWNER TO postgres;
+ALTER TABLE public.annotation_collection_getOWNER TO postgres;
 GRANT ALL ON TABLE public.annotation_collection_get TO postgres;
 GRANT ALL ON TABLE public.annotation_collection_get TO annotations_role;

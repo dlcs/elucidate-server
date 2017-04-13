@@ -17,14 +17,6 @@ public abstract class AbstractObjectTest<T extends AbstractObject> extends Abstr
 
         assertNotNull(abstractObject);
 
-        String cacheKey = generateRandomCacheKey();
-        abstractObject.setCacheKey(cacheKey);
-        assertThat(cacheKey, is(equalTo(abstractObject.getCacheKey())));
-
-        String collectionId = generateRandomId();
-        abstractObject.setCollectionId(collectionId);
-        assertThat(collectionId, is(equalTo(abstractObject.getCollectionId())));
-
         Date createdDateTime = generateRandomDate();
         abstractObject.setCreatedDateTime(createdDateTime);
         assertThat(createdDateTime, is(equalTo(abstractObject.getCreatedDateTime())));

@@ -30,6 +30,6 @@ public class JSONLDProfile {
 
     @Override
     public String toString() {
-        return "JsonLdProfile [contexts=" + contexts + ", formats=" + formats + "]";
+        return "JSONLDProfile [getContexts()=" + getContexts() + ", getFormats()=" + getFormats() + "]";
     }
 }

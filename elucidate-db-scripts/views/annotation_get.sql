@@ -10,10 +10,11 @@ CREATE OR REPLACE VIEW public.annotation_get AS
         a.createddatetime,
         a.deleted,
         a.json,
-        a.modifieddatetime
+        a.modifieddatetime,
+        a.id
     FROM
         annotation a
-        LEFT JOIN annotation_collection ac ON a.collectionid = ac.id;
+            LEFT JOIN annotation_collection ac ON a.collectionid = ac.id;
 
 ALTER TABLE public.annotation_get OWNER TO postgres;
 GRANT ALL ON TABLE public.annotation_get TO postgres;

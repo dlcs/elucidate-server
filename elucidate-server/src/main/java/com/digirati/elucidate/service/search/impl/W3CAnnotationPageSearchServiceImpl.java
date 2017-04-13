@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 
 import com.digirati.elucidate.common.model.annotation.w3c.W3CAnnotation;
 import com.digirati.elucidate.common.model.annotation.w3c.W3CAnnotationPage;
-import com.digirati.elucidate.common.model.enumeration.SearchType;
 import com.digirati.elucidate.common.service.IRIBuilderService;
 import com.digirati.elucidate.service.search.W3CAnnotationPageSearchService;
 
@@ -35,12 +34,32 @@ public class W3CAnnotationPageSearchServiceImpl extends AbstractAnnotationPageSe
     }
 
     @Override
-    protected String buildCollectionIri(SearchType searchType, List<String> fields, String value, boolean strict, String xywh, String t) {
-        return iriBuilderService.buildW3CCollectionSearchIri(searchType, fields, value, strict, xywh, t);
+    protected String buildBodySearchCollectionIri(List<String> fields, String value, boolean strict, String xywh, String t, String creatorIri) {
+        return iriBuilderService.buildW3CCollectionBodySearchIri(fields, value, strict, xywh, t, creatorIri);
     }
 
     @Override
-    protected String buildPageIri(SearchType searchType, List<String> fields, String value, boolean strict, String xywh, String t, int page, boolean embeddedDescriptions) {
-        return iriBuilderService.buildW3CPageSearchIri(searchType, fields, value, strict, xywh, t, page, embeddedDescriptions);
+    protected String buildBodySearchPageIri(List<String> fields, String value, boolean strict, String xywh, String t, String creatorIri, int page, boolean embeddedDescriptions) {
+        return iriBuilderService.buildW3CPageBodySearchIri(fields, value, strict, xywh, t, creatorIri, page, embeddedDescriptions);
+    }
+
+    @Override
+    protected String buildTargetSearchCollectionIri(List<String> fields, String value, boolean strict, String xywh, String t, String creatorIri) {
+        return iriBuilderService.buildW3CCollectionTargetSearchIri(fields, value, strict, xywh, t, creatorIri);
+    }
+
+    @Override
+    protected String buildTargetSearchPageIri(List<String> fields, String value, boolean strict, String xywh, String t, String creatorIri, int page, boolean embeddedDescriptions) {
+        return iriBuilderService.buildW3CPageTargetSearchIri(fields, value, strict, xywh, t, creatorIri, page, embeddedDescriptions);
+    }
+
+    @Override
+    protected String buildCreatorSearchCollectionIri(List<String> levels, String type, String value) {
+        return iriBuilderService.buildW3CCollectionCreatorSearchIri(levels, type, value);
+    }
+
+    @Override
+    protected String buildCreatorSearchPageIri(List<String> levels, String type, String value, int page, boolean embeddedDescriptions) {
+        return iriBuilderService.buildW3CPageCreatorSearchIri(levels, type, value, page, embeddedDescriptions);
     }
 }
