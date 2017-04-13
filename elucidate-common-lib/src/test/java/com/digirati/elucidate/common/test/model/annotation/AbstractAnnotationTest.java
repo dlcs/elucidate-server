@@ -13,6 +13,14 @@ public abstract class AbstractAnnotationTest<T extends AbstractAnnotation> exten
 
         assertNotNull(abstractAnnotation);
 
+        String cacheKey = generateRandomCacheKey();
+        abstractAnnotation.setCacheKey(cacheKey);
+        assertThat(cacheKey, is(equalTo(abstractAnnotation.getCacheKey())));
+
+        String collectionId = generateRandomId();
+        abstractAnnotation.setCollectionId(collectionId);
+        assertThat(collectionId, is(equalTo(abstractAnnotation.getCollectionId())));
+
         String annotationId = generateRandomId();
         abstractAnnotation.setAnnotationId(annotationId);
         assertThat(annotationId, is(equalTo(abstractAnnotation.getAnnotationId())));

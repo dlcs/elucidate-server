@@ -28,6 +28,6 @@ public class AnnotationTarget extends AbstractAnnotation implements Serializable
 
     @Override
     public String toString() {
-        return "AnnotationTarget [targetIri=" + targetIri + ", sourceIri=" + sourceIri + "]";
+        return "AnnotationTarget [getTargetIri()=" + getTargetIri() + ", getSourceIri()=" + getSourceIri() + ", getAnnotationId()=" + getAnnotationId() + ", getCollectionId()=" + getCollectionId() + ", getCacheKey()=" + getCacheKey() + ", getPk()=" + getPk() + ", getJsonMap()=" + getJsonMap() + ", isDeleted()=" + isDeleted() + ", getCreatedDateTime()=" + getCreatedDateTime() + ", getModifiedDateTime()=" + getModifiedDateTime() + "]";
     }
 }

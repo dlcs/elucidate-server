@@ -38,4 +38,9 @@ public class XYWHFragmentSelector {
     public void setH(Integer h) {
         this.h = h;
     }
+
+    @Override
+    public String toString() {
+        return "XYWHFragmentSelector [getX()=" + getX() + ", getY()=" + getY() + ", getW()=" + getW() + ", getH()=" + getH() + "]";
+    }
 }

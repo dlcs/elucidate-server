@@ -13,7 +13,7 @@ public class AnnotationBodyRowMapper implements RowMapper<AnnotationBody> {
     @Override
     public AnnotationBody mapRow(ResultSet rs, int rowNum) throws SQLException {
         AnnotationBody annotationBody = new AnnotationBody();
-        annotationBody.setId(ResultSetUtils.getInt(rs, "id"));
+        annotationBody.setPk(ResultSetUtils.getInt(rs, "id"));
         annotationBody.setAnnotationId(ResultSetUtils.getString(rs, "annotationid"));
         annotationBody.setCollectionId(ResultSetUtils.getString(rs, "collectionid"));
         annotationBody.setBodyIri(ResultSetUtils.getString(rs, "bodyiri"));

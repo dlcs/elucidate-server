@@ -13,7 +13,7 @@ public class AnnotationTargetRowMapper implements RowMapper<AnnotationTarget> {
     @Override
     public AnnotationTarget mapRow(ResultSet rs, int rowNum) throws SQLException {
         AnnotationTarget annotationTarget = new AnnotationTarget();
-        annotationTarget.setId(ResultSetUtils.getInt(rs, "id"));
+        annotationTarget.setPk(ResultSetUtils.getInt(rs, "id"));
         annotationTarget.setAnnotationId(ResultSetUtils.getString(rs, "annotationid"));
         annotationTarget.setCollectionId(ResultSetUtils.getString(rs, "collectionid"));
         annotationTarget.setTargetIri(ResultSetUtils.getString(rs, "targetiri"));

@@ -13,7 +13,7 @@ public class AnnotationTextPositionSelectorRowMapper implements RowMapper<Annota
     @Override
     public AnnotationTextPositionSelector mapRow(ResultSet rs, int rowNum) throws SQLException {
         AnnotationTextPositionSelector annotationTextPositionSelector = new AnnotationTextPositionSelector();
-        annotationTextPositionSelector.setId(ResultSetUtils.getInt(rs, "id"));
+        annotationTextPositionSelector.setPk(ResultSetUtils.getInt(rs, "id"));
         annotationTextPositionSelector.setBodyiri(ResultSetUtils.getString(rs, "bodyiri"));
         annotationTextPositionSelector.setBodySourceIri(ResultSetUtils.getString(rs, "bodysourceiri"));
         annotationTextPositionSelector.setTargetIri(ResultSetUtils.getString(rs, "targetiri"));

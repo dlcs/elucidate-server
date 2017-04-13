@@ -9,6 +9,6 @@ public class OAAnnotationPage extends AbstractAnnotationPage implements Serializ
 
     @Override
     public String toString() {
-        return "OAAnnotationPage [getCollectionId()=" + getCollectionId() + ", isDeleted()=" + isDeleted() + ", getCreatedDateTime()=" + getCreatedDateTime() + ", getModifiedDateTime()=" + getModifiedDateTime() + ", getCacheKey()=" + getCacheKey() + "]";
+        return "OAAnnotationPage [getPk()=" + getPk() + ", getJsonMap()=" + getJsonMap() + ", isDeleted()=" + isDeleted() + ", getCreatedDateTime()=" + getCreatedDateTime() + ", getModifiedDateTime()=" + getModifiedDateTime() + "]";
     }
 }

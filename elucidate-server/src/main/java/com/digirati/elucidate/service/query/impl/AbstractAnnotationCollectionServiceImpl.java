@@ -88,7 +88,7 @@ public abstract class AbstractAnnotationCollectionServiceImpl<A extends Abstract
         String w3cAnnotationCollectionJson;
         try {
             Map<String, Object> w3cAnnotationCollectionMap = w3cAnnotationCollection.getJsonMap();
-            w3cAnnotationCollectionJson = JsonUtils.toPrettyString(w3cAnnotationCollectionMap);
+            w3cAnnotationCollectionJson = JsonUtils.toString(w3cAnnotationCollectionMap);
         } catch (IOException e) {
             LOGGER.debug(String.format("Detected invalid JSON on W3C Annotation Collection [%s]", w3cAnnotationCollection), e);
             return new ServiceResponse<C>(Status.NON_CONFORMANT, null);

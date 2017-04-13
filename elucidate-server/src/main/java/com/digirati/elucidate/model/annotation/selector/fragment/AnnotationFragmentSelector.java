@@ -79,4 +79,9 @@ public class AnnotationFragmentSelector extends AbstractAnnotationSelector imple
     public void setEnd(Integer end) {
         this.end = end;
     }
+
+    @Override
+    public String toString() {
+        return "AnnotationFragmentSelector [getConformsTo()=" + getConformsTo() + ", getValue()=" + getValue() + ", getX()=" + getX() + ", getY()=" + getY() + ", getW()=" + getW() + ", getH()=" + getH() + ", getStart()=" + getStart() + ", getEnd()=" + getEnd() + ", getSelectorIri()=" + getSelectorIri() + ", getBodyiri()=" + getBodyiri() + ", getBodySourceIri()=" + getBodySourceIri() + ", getTargetIri()=" + getTargetIri() + ", getTargetSourceIri()=" + getTargetSourceIri() + ", getAnnotationId()=" + getAnnotationId() + ", getCollectionId()=" + getCollectionId() + ", getCacheKey()=" + getCacheKey() + ", getPk()=" + getPk() + ", getJsonMap()=" + getJsonMap() + ", isDeleted()=" + isDeleted() + ", getCreatedDateTime()=" + getCreatedDateTime() + ", getModifiedDateTime()=" + getModifiedDateTime() + "]";
+    }
 }

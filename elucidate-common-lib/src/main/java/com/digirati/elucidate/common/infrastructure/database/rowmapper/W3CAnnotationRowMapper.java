@@ -13,7 +13,7 @@ public class W3CAnnotationRowMapper implements RowMapper<W3CAnnotation> {
     @Override
     public W3CAnnotation mapRow(ResultSet rs, int rowNum) throws SQLException {
         W3CAnnotation w3cAnnotation = new W3CAnnotation();
-        w3cAnnotation.setId(ResultSetUtils.getInt(rs, "id"));
+        w3cAnnotation.setPk(ResultSetUtils.getInt(rs, "id"));
         w3cAnnotation.setAnnotationId(ResultSetUtils.getString(rs, "annotationid"));
         w3cAnnotation.setCacheKey(ResultSetUtils.getString(rs, "cachekey"));
         w3cAnnotation.setCollectionId(ResultSetUtils.getString(rs, "collectionid"));

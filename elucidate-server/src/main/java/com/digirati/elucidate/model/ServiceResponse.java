@@ -21,4 +21,9 @@ public class ServiceResponse<T> {
     public T getObj() {
         return obj;
     }
+
+    @Override
+    public String toString() {
+        return "ServiceResponse [getStatus()=" + getStatus() + ", getObj()=" + getObj() + "]";
+    }
 }

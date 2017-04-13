@@ -23,14 +23,14 @@ public class AnnotationAgentResultSetExtractor implements ResultSetExtractor<Lis
 
         while (rs.next()) {
 
-            Integer id = ResultSetUtils.getInt(rs, "id");
-            AnnotationAgent annotationAgent = annotationAgents.get(id);
+            Integer pk = ResultSetUtils.getInt(rs, "id");
+            AnnotationAgent annotationAgent = annotationAgents.get(pk);
             if (annotationAgent == null) {
                 annotationAgent = new AnnotationAgent();
                 annotationAgent.setAgentIri(ResultSetUtils.getString(rs, "agentiri"));
                 annotationAgent.setCreatedDateTime(ResultSetUtils.getDate(rs, "createddatetime"));
                 annotationAgent.setDeleted(ResultSetUtils.getBoolean(rs, "deleted"));
-                annotationAgent.setId(id);
+                annotationAgent.setPk(pk);
                 annotationAgent.setJsonMap(ResultSetUtils.getJsonMap(rs, "json"));
                 annotationAgent.setModifiedDateTime(ResultSetUtils.getDate(rs, "modifieddatetime"));
                 annotationAgent.setNickname(ResultSetUtils.getString(rs, "nickname"));

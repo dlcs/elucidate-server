@@ -13,7 +13,7 @@ public class AnnotationFragmentSelectorRowMapper implements RowMapper<Annotation
     @Override
     public AnnotationFragmentSelector mapRow(ResultSet rs, int rowNum) throws SQLException {
         AnnotationFragmentSelector annotationFragmentSelector = new AnnotationFragmentSelector();
-        annotationFragmentSelector.setId(ResultSetUtils.getInt(rs, "id"));
+        annotationFragmentSelector.setPk(ResultSetUtils.getInt(rs, "id"));
         annotationFragmentSelector.setBodyiri(ResultSetUtils.getString(rs, "bodyiri"));
         annotationFragmentSelector.setBodySourceIri(ResultSetUtils.getString(rs, "bodysourceiri"));
         annotationFragmentSelector.setTargetIri(ResultSetUtils.getString(rs, "targetiri"));

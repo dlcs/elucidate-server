@@ -5,7 +5,7 @@ import java.io.Serializable;
 import com.digirati.elucidate.common.model.annotation.AbstractAnnotation;
 
 @SuppressWarnings("serial")
-public class AbstractAnnotationSelector extends AbstractAnnotation implements Serializable {
+public abstract class AbstractAnnotationSelector extends AbstractAnnotation implements Serializable {
 
     private String selectorIri;
     private String bodyiri;

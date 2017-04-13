@@ -7,28 +7,18 @@ import java.util.Map;
 @SuppressWarnings("serial")
 public abstract class AbstractObject implements Serializable {
 
-    private Integer id;
-    private String collectionId;
+    private Integer pk;
     private Map<String, Object> jsonMap;
     private boolean deleted;
     private Date createdDateTime;
     private Date modifiedDateTime;
-    private String cacheKey;
 
-    public Integer getId() {
-        return id;
+    public Integer getPk() {
+        return pk;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getCollectionId() {
-        return collectionId;
-    }
-
-    public void setCollectionId(String collectionId) {
-        this.collectionId = collectionId;
+    public void setPk(Integer pk) {
+        this.pk = pk;
     }
 
     public Map<String, Object> getJsonMap() {
@@ -61,13 +51,5 @@ public abstract class AbstractObject implements Serializable {
 
     public void setModifiedDateTime(Date modifiedDateTime) {
         this.modifiedDateTime = modifiedDateTime;
-    }
-
-    public String getCacheKey() {
-        return cacheKey;
-    }
-
-    public void setCacheKey(String cacheKey) {
-        this.cacheKey = cacheKey;
     }
 }

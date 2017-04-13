@@ -13,7 +13,7 @@ public class AnnotationCSSSelectorRowMapper implements RowMapper<AnnotationCSSSe
     @Override
     public AnnotationCSSSelector mapRow(ResultSet rs, int rowNum) throws SQLException {
         AnnotationCSSSelector annotationCssSelector = new AnnotationCSSSelector();
-        annotationCssSelector.setId(ResultSetUtils.getInt(rs, "id"));
+        annotationCssSelector.setPk(ResultSetUtils.getInt(rs, "id"));
         annotationCssSelector.setBodyiri(ResultSetUtils.getString(rs, "bodyiri"));
         annotationCssSelector.setBodySourceIri(ResultSetUtils.getString(rs, "bodysourceiri"));
         annotationCssSelector.setTargetIri(ResultSetUtils.getString(rs, "targetiri"));

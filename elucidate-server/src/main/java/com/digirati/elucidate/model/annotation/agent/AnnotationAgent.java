@@ -1,14 +1,14 @@
 package com.digirati.elucidate.model.annotation.agent;
 
 import java.io.Serializable;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-@SuppressWarnings("serial")
-public class AnnotationAgent implements Serializable {
+import com.digirati.elucidate.common.model.annotation.AbstractObject;
 
-    private Integer id;
+@SuppressWarnings("serial")
+public class AnnotationAgent extends AbstractObject implements Serializable {
+
     private String agentIri;
     private List<String> types;
     private List<String> typesJsonList;
@@ -21,18 +21,6 @@ public class AnnotationAgent implements Serializable {
     private List<Map<String, Object>> emailSha1JsonMaps;
     private List<String> homepages;
     private List<Map<String, Object>> homepageJsonMaps;
-    private Map<String, Object> jsonMap;
-    private Date createdDateTime;
-    private Date modifiedDateTime;
-    private boolean deleted;
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
 
     public String getAgentIri() {
         return agentIri;
@@ -130,35 +118,8 @@ public class AnnotationAgent implements Serializable {
         this.homepageJsonMaps = homepageJsonMaps;
     }
 
-    public Map<String, Object> getJsonMap() {
-        return jsonMap;
-    }
-
-    public void setJsonMap(Map<String, Object> jsonMap) {
-        this.jsonMap = jsonMap;
-    }
-
-    public Date getCreatedDateTime() {
-        return createdDateTime;
-    }
-
-    public void setCreatedDateTime(Date createdDateTime) {
-        this.createdDateTime = createdDateTime;
-    }
-
-    public Date getModifiedDateTime() {
-        return modifiedDateTime;
-    }
-
-    public void setModifiedDateTime(Date modifiedDateTime) {
-        this.modifiedDateTime = modifiedDateTime;
-    }
-
-    public boolean isDeleted() {
-        return deleted;
-    }
-
-    public void setDeleted(boolean deleted) {
-        this.deleted = deleted;
+    @Override
+    public String toString() {
+        return "AnnotationAgent [getAgentIri()=" + getAgentIri() + ", getTypes()=" + getTypes() + ", getTypesJsonList()=" + getTypesJsonList() + ", getNames()=" + getNames() + ", getNameJsonMaps()=" + getNameJsonMaps() + ", getNickname()=" + getNickname() + ", getEmails()=" + getEmails() + ", getEmailJsonMaps()=" + getEmailJsonMaps() + ", getEmailSha1s()=" + getEmailSha1s() + ", getEmailSha1JsonMaps()=" + getEmailSha1JsonMaps() + ", getHomepages()=" + getHomepages() + ", getHomepageJsonMaps()=" + getHomepageJsonMaps() + ", getPk()=" + getPk() + ", getJsonMap()=" + getJsonMap() + ", isDeleted()=" + isDeleted() + ", getCreatedDateTime()=" + getCreatedDateTime() + ", getModifiedDateTime()=" + getModifiedDateTime() + "]";
     }
 }

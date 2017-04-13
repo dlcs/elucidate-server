@@ -25,4 +25,9 @@ public class AnnotationTextPositionSelector extends AbstractAnnotationSelector i
     public void setEnd(Integer end) {
         this.end = end;
     }
+
+    @Override
+    public String toString() {
+        return "AnnotationTextPositionSelector [getStart()=" + getStart() + ", getEnd()=" + getEnd() + ", getSelectorIri()=" + getSelectorIri() + ", getBodyiri()=" + getBodyiri() + ", getBodySourceIri()=" + getBodySourceIri() + ", getTargetIri()=" + getTargetIri() + ", getTargetSourceIri()=" + getTargetSourceIri() + ", getAnnotationId()=" + getAnnotationId() + ", getCollectionId()=" + getCollectionId() + ", getCacheKey()=" + getCacheKey() + ", getPk()=" + getPk() + ", getJsonMap()=" + getJsonMap() + ", isDeleted()=" + isDeleted() + ", getCreatedDateTime()=" + getCreatedDateTime() + ", getModifiedDateTime()=" + getModifiedDateTime() + "]";
+    }
 }

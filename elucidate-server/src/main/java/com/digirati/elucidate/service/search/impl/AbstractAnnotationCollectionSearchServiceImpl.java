@@ -44,6 +44,7 @@ public abstract class AbstractAnnotationCollectionSearchServiceImpl<A extends Ab
         Status status = serviceResponse.getStatus();
 
         if (!status.equals(Status.OK)) {
+            LOGGER.warn(String.format("Got unexpected service response code [%s] (expected [%s]", status, Status.OK));
             return new ServiceResponse<C>(status, null);
         }
 
@@ -73,6 +74,7 @@ public abstract class AbstractAnnotationCollectionSearchServiceImpl<A extends Ab
         Status status = serviceResponse.getStatus();
 
         if (!status.equals(Status.OK)) {
+            LOGGER.warn(String.format("Got unexpected service response code [%s] (expected [%s]", status, Status.OK));
             return new ServiceResponse<C>(status, null);
         }
 
@@ -102,6 +104,7 @@ public abstract class AbstractAnnotationCollectionSearchServiceImpl<A extends Ab
         Status status = serviceResponse.getStatus();
 
         if (!status.equals(Status.OK)) {
+            LOGGER.warn(String.format("Got unexpected service response code [%s] (expected [%s]", status, Status.OK));
             return new ServiceResponse<C>(status, null);
         }
 

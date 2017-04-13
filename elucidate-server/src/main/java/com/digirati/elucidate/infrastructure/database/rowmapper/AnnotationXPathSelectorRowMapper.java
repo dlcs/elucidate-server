@@ -13,7 +13,7 @@ public class AnnotationXPathSelectorRowMapper implements RowMapper<AnnotationXPa
     @Override
     public AnnotationXPathSelector mapRow(ResultSet rs, int rowNum) throws SQLException {
         AnnotationXPathSelector annotationXPathSelector = new AnnotationXPathSelector();
-        annotationXPathSelector.setId(ResultSetUtils.getInt(rs, "id"));
+        annotationXPathSelector.setPk(ResultSetUtils.getInt(rs, "id"));
         annotationXPathSelector.setBodyiri(ResultSetUtils.getString(rs, "bodyiri"));
         annotationXPathSelector.setBodySourceIri(ResultSetUtils.getString(rs, "bodysourceiri"));
         annotationXPathSelector.setTargetIri(ResultSetUtils.getString(rs, "targetiri"));

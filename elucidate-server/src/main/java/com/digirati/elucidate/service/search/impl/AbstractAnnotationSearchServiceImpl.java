@@ -42,9 +42,16 @@ public abstract class AbstractAnnotationSearchServiceImpl<A extends AbstractAnno
         Integer[] xywhParameters = buildXywhParameters(xywh);
         Integer[] tParameters = buildTParameters(t);
 
+        if (!searchIds && !searchSources) {
+            LOGGER.warn(String.format("Provided search parameter [%s] with value [%s] is invalid - at least one of [%s] or [%s] must be provided", URLConstants.PARAM_FIELDS, fields, SearchConstants.FIELD_ID, SearchConstants.FIELD_SOURCE));
+            return new ServiceResponse<List<A>>(Status.NON_CONFORMANT, null);
+        }
+
+        LOGGER.info(String.format("Searching for Annotations by `body` using fields [%s] against value [%s] (strict matching: [%s]) with selectors [xywh = [%s], t = [%s]] and `creator` IRI [%s]", fields, value, strict, xywh, t, creatorIri));
         List<W3CAnnotation> w3cAnnotations = annotationSearchRepository.getAnnotationsByBody(searchIds, searchSources, value, strict, xywhParameters[0], xywhParameters[1], xywhParameters[2], xywhParameters[3], tParameters[0], tParameters[1], creatorIri);
 
         List<A> annotations = convertAnnotations(w3cAnnotations);
+        LOGGER.info(String.format("Seaching for Annotations by `body` got [%s] hits", annotations.size()));
         return new ServiceResponse<List<A>>(Status.OK, annotations);
     }
 
@@ -56,9 +63,16 @@ public abstract class AbstractAnnotationSearchServiceImpl<A extends AbstractAnno
         Integer[] xywhParameters = buildXywhParameters(xywh);
         Integer[] tParameters = buildTParameters(t);
 
+        if (!searchIds && !searchSources) {
+            LOGGER.warn(String.format("Provided search parameter [%s] with value [%s] is invalid - at least one of [%s] or [%s] must be provided", URLConstants.PARAM_FIELDS, fields, SearchConstants.FIELD_ID, SearchConstants.FIELD_SOURCE));
+            return new ServiceResponse<List<A>>(Status.NON_CONFORMANT, null);
+        }
+
+        LOGGER.info(String.format("Searching for Annotations by `target` using fields [%s] against value [%s] (strict matching: [%s]) with selectors [xywh = [%s], t = [%s]] and `creator` IRI [%s]", fields, value, strict, xywh, t, creatorIri));
         List<W3CAnnotation> w3cAnnotations = annotationSearchRepository.getAnnotationsByTarget(searchIds, searchSources, value, strict, xywhParameters[0], xywhParameters[1], xywhParameters[2], xywhParameters[3], tParameters[0], tParameters[1], creatorIri);
 
         List<A> annotations = convertAnnotations(w3cAnnotations);
+        LOGGER.info(String.format("Seaching for Annotations by `target` got [%s] hits", annotations.size()));
         return new ServiceResponse<List<A>>(Status.OK, annotations);
     }
 
@@ -99,13 +113,21 @@ public abstract class AbstractAnnotationSearchServiceImpl<A extends AbstractAnno
         boolean searchBodies = levels.contains(SearchConstants.LEVEL_BODY);
         boolean searchTargets = levels.contains(SearchConstants.LEVEL_TARGET);
 
-        if (!type.equals(SearchConstants.TYPE_ID) && !type.equals(SearchConstants.TYPE_NAME) && !type.equals(SearchConstants.TYPE_NICKNAME) && !type.equals(SearchConstants.TYPE_EMAIL) && !type.equals(SearchConstants.TYPE_EMAIL_SHA1)) {
+        if (!searchAnnotations && !searchBodies && !searchTargets) {
+            LOGGER.warn(String.format("Provided search parameter [%s] with value [%s] is invalid - at least one of [%s], [%s] or [%s] must be provided", URLConstants.PARAM_LEVELS, levels, SearchConstants.LEVEL_ANNOTATION, SearchConstants.LEVEL_BODY, SearchConstants.LEVEL_TARGET));
             return new ServiceResponse<List<A>>(Status.NON_CONFORMANT, null);
         }
 
+        if (!type.equals(SearchConstants.TYPE_ID) && !type.equals(SearchConstants.TYPE_NAME) && !type.equals(SearchConstants.TYPE_NICKNAME) && !type.equals(SearchConstants.TYPE_EMAIL) && !type.equals(SearchConstants.TYPE_EMAIL_SHA1)) {
+            LOGGER.warn(String.format("Provided search parameter [%s] with value [%s] is invalid - one of [%s], [%s], [%s], [%s], [%s] must be provided", URLConstants.PARAM_TYPE, type, SearchConstants.TYPE_ID, SearchConstants.TYPE_NAME, SearchConstants.TYPE_NICKNAME, SearchConstants.TYPE_EMAIL, SearchConstants.TYPE_EMAIL_SHA1));
+            return new ServiceResponse<List<A>>(Status.NON_CONFORMANT, null);
+        }
+
+        LOGGER.info(String.format("Searching for Annotations by `creator` using levels [%s] with field [%s] against value [%s]", levels, type, value));
         List<W3CAnnotation> w3cAnnotations = annotationSearchRepository.getAnnotationsByCreator(searchAnnotations, searchBodies, searchTargets, type, value);
 
         List<A> annotations = convertAnnotations(w3cAnnotations);
+        LOGGER.info(String.format("Seaching for Annotations by `creator` got [%s] hits", annotations.size()));
         return new ServiceResponse<List<A>>(Status.OK, annotations);
     }
 

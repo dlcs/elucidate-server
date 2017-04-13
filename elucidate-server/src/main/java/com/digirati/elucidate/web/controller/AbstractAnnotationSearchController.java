@@ -135,6 +135,10 @@ public abstract class AbstractAnnotationSearchController<A extends AbstractAnnot
         ServiceResponse<C> serviceResponse = annotationCollectionSearch.searchAnnotationCollection(clientPref);
         Status status = serviceResponse.getStatus();
 
+        if (status.equals(Status.NON_CONFORMANT)) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        }
+
         if (status.equals(Status.NOT_FOUND)) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
@@ -155,6 +159,10 @@ public abstract class AbstractAnnotationSearchController<A extends AbstractAnnot
             serviceResponse = annotationPageSearch.searchAnnotationPage(false);
         }
         Status status = serviceResponse.getStatus();
+
+        if (status.equals(Status.NON_CONFORMANT)) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        }
 
         if (status.equals(Status.NOT_FOUND)) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);

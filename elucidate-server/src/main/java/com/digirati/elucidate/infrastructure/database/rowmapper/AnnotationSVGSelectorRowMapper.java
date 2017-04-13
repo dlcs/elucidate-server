@@ -13,7 +13,7 @@ public class AnnotationSVGSelectorRowMapper implements RowMapper<AnnotationSVGSe
     @Override
     public AnnotationSVGSelector mapRow(ResultSet rs, int rowNum) throws SQLException {
         AnnotationSVGSelector annotationSvgSelector = new AnnotationSVGSelector();
-        annotationSvgSelector.setId(ResultSetUtils.getInt(rs, "id"));
+        annotationSvgSelector.setPk(ResultSetUtils.getInt(rs, "id"));
         annotationSvgSelector.setBodyiri(ResultSetUtils.getString(rs, "bodyiri"));
         annotationSvgSelector.setBodySourceIri(ResultSetUtils.getString(rs, "bodysourceiri"));
         annotationSvgSelector.setTargetIri(ResultSetUtils.getString(rs, "targetiri"));

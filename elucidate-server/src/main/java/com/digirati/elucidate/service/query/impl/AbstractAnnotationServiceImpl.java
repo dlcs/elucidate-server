@@ -109,7 +109,7 @@ public abstract class AbstractAnnotationServiceImpl<A extends AbstractAnnotation
 
         String annotationJson;
         try {
-            annotationJson = JsonUtils.toPrettyString(annotationMap);
+            annotationJson = JsonUtils.toString(annotationMap);
         } catch (IOException e) {
             LOGGER.debug(String.format("Detected invalid JSON in Annotation Map [%s]", annotationMap), e);
             return new ServiceResponse<A>(Status.NON_CONFORMANT, null);
@@ -158,7 +158,7 @@ public abstract class AbstractAnnotationServiceImpl<A extends AbstractAnnotation
 
         String annotationJson;
         try {
-            annotationJson = JsonUtils.toPrettyString(annotationMap);
+            annotationJson = JsonUtils.toString(annotationMap);
         } catch (IOException e) {
             LOGGER.debug(String.format("Detected invalid JSON in Annotation Map [%s]", annotationMap), e);
             return new ServiceResponse<A>(Status.NON_CONFORMANT, null);

@@ -13,7 +13,7 @@ public class AnnotationTextQuoteSelectorRowMapper implements RowMapper<Annotatio
     @Override
     public AnnotationTextQuoteSelector mapRow(ResultSet rs, int rowNum) throws SQLException {
         AnnotationTextQuoteSelector annotationTextQuoteSelector = new AnnotationTextQuoteSelector();
-        annotationTextQuoteSelector.setId(ResultSetUtils.getInt(rs, "id"));
+        annotationTextQuoteSelector.setPk(ResultSetUtils.getInt(rs, "id"));
         annotationTextQuoteSelector.setBodyiri(ResultSetUtils.getString(rs, "bodyiri"));
         annotationTextQuoteSelector.setBodySourceIri(ResultSetUtils.getString(rs, "bodysourceiri"));
         annotationTextQuoteSelector.setTargetIri(ResultSetUtils.getString(rs, "targetiri"));
