@@ -103,7 +103,7 @@ public class AnnotationExtractorServiceImpl implements AnnotationExtractorServic
         Map<String, Object> jsonMap = w3cAnnotation.getJsonMap();
 
         List<AnnotationBody> annotationBodies = new AnnotationBodyExtractor().extractBodies(jsonMap);
-        LOGGER.info(String.format("Got [%s] Annotation Bodies for W3CAnnotation with PK", annotationBodies.size(), annotationPk));
+        LOGGER.info(String.format("Got [%s] Annotation Bodies for W3CAnnotation with PK [%s]", annotationBodies.size(), annotationPk));
         for (AnnotationBody annotationBody : annotationBodies) {
 
             String bodyIri = annotationBody.getBodyIri();
