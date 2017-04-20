@@ -321,3 +321,23 @@ Base URL: `GET http://example.org/w3c/search/creator HTTP/1.1`
 | `levels`  | Yes       | `annotation`,`body`,`target`               | The level within the annotation against which the search for a creator will be made. |
 | `type`    | Yes       | `id`,`name`,`nickname`,`email`,`emailsha1` | The type of field within the `creator` that will be searched against.                |
 | `value`   | No        | Percent-encoded string                     | The value that the defined `type` will be searched for.                              |
+
+## Statistics
+
+Provides the ability for clients to view the total number of times in which a specific `id` or `source` appears within `body`'s or `target`'s. All statistics queries are returned as simplified Annotation Pages.
+
+### Body Statistics
+
+Base URL: `GET http://example.org/w3c/stats/body HTTP/1.1`
+
+| Parameter | Mandatory | Valid Values   | Description                                                     |
+| --------- | ---------- | ------------- | --------------------------------------------------------------- |
+| `field`   | Yes        | `id`,`source` | The field within the `body` that IRI's will be counted against. |
+
+### Target Statistics
+
+Base URL: `GET http://example.org/w3c/stats/target HTTP/1.1`
+
+| Parameter | Mandatory | Valid Values   | Description                                                     |
+| --------- | ---------- | ------------- | --------------------------------------------------------------- |
+| `field`   | Yes        | `id`,`source` | The field within the `target` that IRI's will be counted against. |
