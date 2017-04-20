@@ -34,7 +34,7 @@ public abstract class AbstractAnnotationCollectionServiceImpl<A extends Abstract
     private IDGenerator idGenerator;
     private int pageSize;
 
-    public AbstractAnnotationCollectionServiceImpl(AnnotationCollectionStoreRepository annotationCollectionStoreRepository, AbstractAnnotationService<A> annotationService, IDGenerator idGenerator, int pageSize) {
+    protected AbstractAnnotationCollectionServiceImpl(AnnotationCollectionStoreRepository annotationCollectionStoreRepository, AbstractAnnotationService<A> annotationService, IDGenerator idGenerator, int pageSize) {
         this.annotationCollectionStoreRepository = annotationCollectionStoreRepository;
         this.idGenerator = idGenerator;
         this.pageSize = pageSize;

@@ -44,6 +44,7 @@ public class AnnotationSearchRepositoryJDBCImpl extends AbstractRepositoryJDBCIm
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<W3CAnnotation> getAnnotationsByCreator(boolean searchAnnotations, boolean searchBodies, boolean searchTargets, String type, String value) {
         String sql = "SELECT * FROM annotation_search_by_creator(?, ?, ?, ?, ?)";
         Object[] params = {searchAnnotations, searchBodies, searchTargets, type, value};

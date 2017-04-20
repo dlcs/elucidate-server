@@ -26,7 +26,7 @@ public abstract class AbstractAnnotationSearchServiceImpl<A extends AbstractAnno
 
     private AnnotationSearchRepository annotationSearchRepository;
 
-    public AbstractAnnotationSearchServiceImpl(AnnotationSearchRepository annotationSearchRepository) {
+    protected AbstractAnnotationSearchServiceImpl(AnnotationSearchRepository annotationSearchRepository) {
         this.annotationSearchRepository = annotationSearchRepository;
     }
 

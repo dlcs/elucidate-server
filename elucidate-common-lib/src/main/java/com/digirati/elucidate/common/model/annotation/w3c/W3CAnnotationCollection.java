@@ -7,8 +7,4 @@ import com.digirati.elucidate.common.model.annotation.AbstractAnnotationCollecti
 @SuppressWarnings("serial")
 public class W3CAnnotationCollection extends AbstractAnnotationCollection implements Serializable {
 
-    @Override
-    public String toString() {
-        return "W3CAnnotationCollection [getCollectionId()=" + getCollectionId() + ", getCacheKey()=" + getCacheKey() + ", getPk()=" + getPk() + ", getJsonMap()=" + getJsonMap() + ", isDeleted()=" + isDeleted() + ", getCreatedDateTime()=" + getCreatedDateTime() + ", getModifiedDateTime()=" + getModifiedDateTime() + "]";
-    }
 }

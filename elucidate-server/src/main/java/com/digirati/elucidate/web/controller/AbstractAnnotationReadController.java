@@ -1,6 +1,5 @@
 package com.digirati.elucidate.web.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -22,8 +21,7 @@ public abstract class AbstractAnnotationReadController<A extends AbstractAnnotat
 
     private AbstractAnnotationService<A> annotationService;
 
-    @Autowired
-    public AbstractAnnotationReadController(AbstractAnnotationService<A> annotationService) {
+    protected AbstractAnnotationReadController(AbstractAnnotationService<A> annotationService) {
         this.annotationService = annotationService;
     }
 

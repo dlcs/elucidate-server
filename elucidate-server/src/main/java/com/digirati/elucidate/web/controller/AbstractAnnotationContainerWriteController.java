@@ -3,7 +3,6 @@ package com.digirati.elucidate.web.controller;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -28,8 +27,7 @@ public abstract class AbstractAnnotationContainerWriteController<A extends Abstr
 
     private AbstractAnnotationCollectionService<A, C> annotationCollectionService;
 
-    @Autowired
-    public AbstractAnnotationContainerWriteController(AbstractAnnotationCollectionService<A, C> annotationCollectionService) {
+    protected AbstractAnnotationContainerWriteController(AbstractAnnotationCollectionService<A, C> annotationCollectionService) {
         this.annotationCollectionService = annotationCollectionService;
     }
 

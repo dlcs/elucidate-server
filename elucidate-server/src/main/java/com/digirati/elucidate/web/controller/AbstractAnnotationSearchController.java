@@ -6,7 +6,6 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -39,8 +38,7 @@ public abstract class AbstractAnnotationSearchController<A extends AbstractAnnot
     private AbstractAnnotationPageSearchService<A, P> annotationPageSearchService;
     private AbstractAnnotationCollectionSearchService<C> annotationCollectionSearchService;
 
-    @Autowired
-    public AbstractAnnotationSearchController(AbstractAnnotationSearchService<A> annotationSearchService, AbstractAnnotationPageSearchService<A, P> annotationPageSearchService, AbstractAnnotationCollectionSearchService<C> annotationCollectionSearchService) {
+    protected AbstractAnnotationSearchController(AbstractAnnotationSearchService<A> annotationSearchService, AbstractAnnotationPageSearchService<A, P> annotationPageSearchService, AbstractAnnotationCollectionSearchService<C> annotationCollectionSearchService) {
         this.annotationSearchService = annotationSearchService;
         this.annotationPageSearchService = annotationPageSearchService;
         this.annotationCollectionSearchService = annotationCollectionSearchService;

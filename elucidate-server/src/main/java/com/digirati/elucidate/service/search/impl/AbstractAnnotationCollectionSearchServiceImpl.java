@@ -27,7 +27,7 @@ public abstract class AbstractAnnotationCollectionSearchServiceImpl<A extends Ab
     private AbstractAnnotationSearchService<A> annotationSearchService;
     private int pageSize;
 
-    public AbstractAnnotationCollectionSearchServiceImpl(AbstractAnnotationSearchService<A> annotationSearchService, int pageSize) {
+    protected AbstractAnnotationCollectionSearchServiceImpl(AbstractAnnotationSearchService<A> annotationSearchService, int pageSize) {
         this.annotationSearchService = annotationSearchService;
         this.pageSize = pageSize;
     }

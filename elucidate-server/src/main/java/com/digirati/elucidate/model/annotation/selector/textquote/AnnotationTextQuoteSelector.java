@@ -34,9 +34,4 @@ public class AnnotationTextQuoteSelector extends AbstractAnnotationSelector impl
     public void setSuffix(String suffix) {
         this.suffix = suffix;
     }
-
-    @Override
-    public String toString() {
-        return "AnnotationTextQuoteSelector [getExact()=" + getExact() + ", getPrefix()=" + getPrefix() + ", getSuffix()=" + getSuffix() + ", getSelectorIri()=" + getSelectorIri() + ", getBodyiri()=" + getBodyiri() + ", getBodySourceIri()=" + getBodySourceIri() + ", getTargetIri()=" + getTargetIri() + ", getTargetSourceIri()=" + getTargetSourceIri() + ", getAnnotationId()=" + getAnnotationId() + ", getCollectionId()=" + getCollectionId() + ", getCacheKey()=" + getCacheKey() + ", getPk()=" + getPk() + ", getJsonMap()=" + getJsonMap() + ", isDeleted()=" + isDeleted() + ", getCreatedDateTime()=" + getCreatedDateTime() + ", getModifiedDateTime()=" + getModifiedDateTime() + "]";
-    }
 }

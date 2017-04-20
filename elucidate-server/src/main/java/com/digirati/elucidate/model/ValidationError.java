@@ -14,9 +14,4 @@ public class ValidationError implements Serializable {
     public void setJsonError(String jsonError) {
         this.jsonError = jsonError;
     }
-
-    @Override
-    public String toString() {
-        return "ValidationError [getJsonError()=" + getJsonError() + "]";
-    }
 }

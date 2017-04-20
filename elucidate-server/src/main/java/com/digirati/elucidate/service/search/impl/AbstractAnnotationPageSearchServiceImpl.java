@@ -19,7 +19,7 @@ public abstract class AbstractAnnotationPageSearchServiceImpl<A extends Abstract
 
     private int pageSize;
 
-    public AbstractAnnotationPageSearchServiceImpl(int pageSize) {
+    protected AbstractAnnotationPageSearchServiceImpl(int pageSize) {
         this.pageSize = pageSize;
     }
 
