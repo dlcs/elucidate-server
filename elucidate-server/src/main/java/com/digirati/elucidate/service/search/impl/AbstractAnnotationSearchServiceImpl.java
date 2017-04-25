@@ -1,6 +1,5 @@
 package com.digirati.elucidate.service.search.impl;
 
-
 import java.util.ArrayList;
 import java.util.List;
 

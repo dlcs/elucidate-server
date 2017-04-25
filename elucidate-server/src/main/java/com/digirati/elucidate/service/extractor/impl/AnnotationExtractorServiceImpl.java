@@ -65,7 +65,7 @@ public class AnnotationExtractorServiceImpl implements AnnotationExtractorServic
             createAnnotationTargets(w3cAnnotation);
             createAnnotationCreators(w3cAnnotation);
         } catch (IOException e) {
-            LOGGER.error(String.format("An error occurred processing `target`'s for W3CAnnotation [%s]", w3cAnnotation), e);
+            LOGGER.info(String.format("An error occurred processing `target`'s for W3CAnnotation [%s]", w3cAnnotation), e);
         }
     }
 
@@ -99,11 +99,9 @@ public class AnnotationExtractorServiceImpl implements AnnotationExtractorServic
 
     private void createAnnotationBodies(W3CAnnotation w3cAnnotation) throws IOException {
         int annotationPk = w3cAnnotation.getPk();
-        LOGGER.info(String.format("Creating Annotation Bodies for W3CAnnotation with PK [%s]", annotationPk));
         Map<String, Object> jsonMap = w3cAnnotation.getJsonMap();
 
         List<AnnotationBody> annotationBodies = new AnnotationBodyExtractor().extractBodies(jsonMap);
-        LOGGER.info(String.format("Got [%s] Annotation Bodies for W3CAnnotation with PK [%s]", annotationBodies.size(), annotationPk));
         for (AnnotationBody annotationBody : annotationBodies) {
 
             String bodyIri = annotationBody.getBodyIri();
@@ -120,11 +118,9 @@ public class AnnotationExtractorServiceImpl implements AnnotationExtractorServic
 
     private void createAnnotationTargets(W3CAnnotation w3cAnnotation) throws IOException {
         int annotationPk = w3cAnnotation.getPk();
-        LOGGER.info(String.format("Creating Annotation Targets for W3CAnnotation with PK [%s]", annotationPk));
         Map<String, Object> jsonMap = w3cAnnotation.getJsonMap();
 
         List<AnnotationTarget> annotationTargets = new AnnotationTargetExtractor().extractTargets(jsonMap);
-        LOGGER.info(String.format("Got [%s] Annotation Targets for W3CAnnotation with PK [%s]", annotationTargets.size(), annotationPk));
         for (AnnotationTarget annotationTarget : annotationTargets) {
 
             String targetIri = annotationTarget.getTargetIri();
@@ -140,7 +136,6 @@ public class AnnotationExtractorServiceImpl implements AnnotationExtractorServic
     }
 
     private void createAnnotationSelectors(Integer bodyPk, Integer targetPk, Map<String, Object> jsonMap) throws IOException {
-        LOGGER.info(String.format("Creating Annotation Selectors for JSON [%s] (Body PK = [%s], Target PK = [%s])", jsonMap, bodyPk, targetPk));
         createAnnotationCssSelectors(bodyPk, targetPk, jsonMap);
         createAnnotationDataPositionSelectors(bodyPk, targetPk, jsonMap);
         createAnnotationInlineFragmentSelector(bodyPk, targetPk, jsonMap);
@@ -153,7 +148,6 @@ public class AnnotationExtractorServiceImpl implements AnnotationExtractorServic
 
     private void createAnnotationCssSelectors(Integer bodyPk, Integer targetPk, Map<String, Object> jsonMap) throws IOException {
         List<AnnotationCSSSelector> annotationCssSelectors = new AnnotationCSSSelectorExtractor().extractSelectors(jsonMap);
-        LOGGER.info(String.format("Got [%s] Annotation CSS Selectors for (Body PK = [%s], Target PK = [%s])", annotationCssSelectors.size(), bodyPk, targetPk));
         for (AnnotationCSSSelector annotationCssSelector : annotationCssSelectors) {
 
             String selectorIri = annotationCssSelector.getSelectorIri();
@@ -165,7 +159,6 @@ public class AnnotationExtractorServiceImpl implements AnnotationExtractorServic
 
     private void createAnnotationDataPositionSelectors(Integer bodyPk, Integer targetPk, Map<String, Object> jsonMap) throws IOException {
         List<AnnotationDataPositionSelector> annotationDataPositionSelectors = new AnnotationDataPositionSelectorExtractor().extractSelectors(jsonMap);
-        LOGGER.info(String.format("Got [%s] Annotation Data Position Selectors for (Body PK = [%s], Target PK = [%s])", annotationDataPositionSelectors.size(), bodyPk, targetPk));
         for (AnnotationDataPositionSelector annotationDataPositionSelector : annotationDataPositionSelectors) {
 
             String selectorIri = annotationDataPositionSelector.getSelectorIri();
@@ -178,7 +171,6 @@ public class AnnotationExtractorServiceImpl implements AnnotationExtractorServic
 
     private void createAnnotationInlineFragmentSelector(Integer bodyPk, Integer targetPk, Map<String, Object> jsonMap) throws IOException {
         AnnotationFragmentSelector annotationFragmentSelector = new AnnotationInlineFragmentSelectorExtractor().extractAnnotationInlineFragmentSelector(jsonMap);
-        LOGGER.info(String.format("Got inline Annotation Fragment Selector [%s] for (Body PK = [%s], Target PK = [%s])", annotationFragmentSelector, bodyPk, targetPk));
         if (annotationFragmentSelector != null) {
             createAnnotationFragmentSelector(bodyPk, targetPk, annotationFragmentSelector);
         }
@@ -186,7 +178,6 @@ public class AnnotationExtractorServiceImpl implements AnnotationExtractorServic
 
     private void createAnnotationFragmentSelectors(Integer bodyPk, Integer targetPk, Map<String, Object> jsonMap) throws IOException {
         List<AnnotationFragmentSelector> annotationFragmentSelectors = new AnnotationFragmentSelectorExtractor().extractSelectors(jsonMap);
-        LOGGER.info(String.format("Got [%s] Annotation Fragment Selectors for (Body PK = [%s], Target PK = [%s])", annotationFragmentSelectors.size(), bodyPk, targetPk));
         for (AnnotationFragmentSelector annotationFragmentSelector : annotationFragmentSelectors) {
             createAnnotationFragmentSelector(bodyPk, targetPk, annotationFragmentSelector);
         }
@@ -209,7 +200,6 @@ public class AnnotationExtractorServiceImpl implements AnnotationExtractorServic
 
     private void createAnnotationSvgSelectors(Integer bodyPk, Integer targetPk, Map<String, Object> jsonMap) throws IOException {
         List<AnnotationSVGSelector> annotationSvgSelectors = new AnnotationSVGSelectorExtractor().extractSelectors(jsonMap);
-        LOGGER.info(String.format("Got [%s] Annotation SVG Selectors for (Body PK = [%s], Target PK = [%s])", annotationSvgSelectors.size(), bodyPk, targetPk));
         for (AnnotationSVGSelector annotationSvgSelector : annotationSvgSelectors) {
 
             String selectorIri = annotationSvgSelector.getSelectorIri();
@@ -221,7 +211,6 @@ public class AnnotationExtractorServiceImpl implements AnnotationExtractorServic
 
     private void createAnnotationTextPositionSelectors(Integer bodyPk, Integer targetPk, Map<String, Object> jsonMap) throws IOException {
         List<AnnotationTextPositionSelector> annotationTextPositionSelectors = new AnnotationTextPositionSelectorExtractor().extractSelectors(jsonMap);
-        LOGGER.info(String.format("Got [%s] Annotation Text Position Selectors for (Body PK = [%s], Target PK = [%s])", annotationTextPositionSelectors.size(), bodyPk, targetPk));
         for (AnnotationTextPositionSelector annotationTextPositionSelector : annotationTextPositionSelectors) {
 
             String selectorIri = annotationTextPositionSelector.getSelectorIri();
@@ -234,7 +223,6 @@ public class AnnotationExtractorServiceImpl implements AnnotationExtractorServic
 
     private void createAnnotationTextQuoteSelectors(Integer bodyPk, Integer targetPk, Map<String, Object> jsonMap) throws IOException {
         List<AnnotationTextQuoteSelector> annotationTextQuoteSelectors = new AnnotationTextQuoteSelectorExtractor().extractSelectors(jsonMap);
-        LOGGER.info(String.format("Got [%s] Annotation Text Quote Selectors for (Body PK = [%s], Target PK = [%s])", annotationTextQuoteSelectors.size(), bodyPk, targetPk));
         for (AnnotationTextQuoteSelector annotationTextQuoteSelector : annotationTextQuoteSelectors) {
 
             String selectorIri = annotationTextQuoteSelector.getSelectorIri();
@@ -248,7 +236,6 @@ public class AnnotationExtractorServiceImpl implements AnnotationExtractorServic
 
     private void createAnnotationXPathSelectors(Integer bodyPk, Integer targetPk, Map<String, Object> jsonMap) throws IOException {
         List<AnnotationXPathSelector> annotationXPathSelectors = new AnnotationXPathSelectorExtractor().extractSelectors(jsonMap);
-        LOGGER.info(String.format("Got [%s] Annotation XPath Selectors for (Body PK = [%s], Target PK = [%s])", annotationXPathSelectors.size(), bodyPk, targetPk));
         for (AnnotationXPathSelector annotationXPathSelector : annotationXPathSelectors) {
 
             String selectorIri = annotationXPathSelector.getSelectorIri();
@@ -260,14 +247,12 @@ public class AnnotationExtractorServiceImpl implements AnnotationExtractorServic
 
     private void createAnnotationCreators(W3CAnnotation w3cAnnotation) throws IOException {
         int annotationPk = w3cAnnotation.getPk();
-        LOGGER.info(String.format("Creating Annotation Creators for W3CAnnotation with PK [%s]", annotationPk));
         Map<String, Object> jsonMap = w3cAnnotation.getJsonMap();
         createAnnotationCreators(annotationPk, null, null, jsonMap);
     }
 
     private void createAnnotationCreators(Integer annotationPk, Integer bodyPk, Integer targetPk, Map<String, Object> jsonMap) throws IOException {
         List<AnnotationAgent> annotationCreators = new AnnotationCreatorExtractor().extractCreators(jsonMap);
-        LOGGER.info(String.format("Got [%s] Annotation Creators for (Annotation PK = [%s], Body PK = [%s], Target PK = [%s])", annotationCreators.size(), annotationPk, bodyPk, targetPk));
         for (AnnotationAgent annotationCreator : annotationCreators) {
 
             String creatorIri = annotationCreator.getAgentIri();

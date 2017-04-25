@@ -5,7 +5,7 @@ import java.util.List;
 import com.digirati.elucidate.common.model.annotation.AbstractAnnotation;
 import com.digirati.elucidate.model.ServiceResponse;
 
-public interface AbstractAnnotationSearchService<A extends AbstractAnnotation> {
+public abstract interface AbstractAnnotationSearchService<A extends AbstractAnnotation> {
 
     public ServiceResponse<List<A>> searchAnnotationsByBody(List<String> fields, String value, boolean strict, String xywh, String t, String creatorIri);
 

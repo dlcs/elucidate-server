@@ -28,7 +28,7 @@ public abstract class AbstractAnnotationSelectorExtractor<T extends AbstractAnno
         if (jsonSelectors != null && !jsonSelectors.isEmpty()) {
             for (Map<String, Object> jsonSelector : jsonSelectors) {
 
-                List<String> types = (List<String>) jsonSelector.get(JSONLDConstants.ATTRBUTE_TYPE);
+                List<String> types = (List<String>) jsonSelector.get(JSONLDConstants.ATTRIBUTE_TYPE);
                 if (types == null || types.size() != 1) {
                     return null;
                 }
