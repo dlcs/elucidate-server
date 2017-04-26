@@ -79,7 +79,7 @@ public class IRIBuilderServiceImpl implements IRIBuilderService {
     @Override
     @SuppressWarnings("serial")
     public String buildW3CCollectionBodySearchIri(List<String> fields, String value, boolean strict, String xywh, String t, String creatorIri) {
-        return buildIri("w3c/search/body", new HashMap<String, Object>() {
+        return buildIri("w3c/services/search/body", new HashMap<String, Object>() {
             {
                 put(URLConstants.PARAM_FIELDS, StringUtils.join(fields, ","));
                 put(URLConstants.PARAM_VALUE, value);
@@ -102,7 +102,7 @@ public class IRIBuilderServiceImpl implements IRIBuilderService {
     @Override
     @SuppressWarnings("serial")
     public String buildW3CPageBodySearchIri(List<String> fields, String value, boolean strict, String xywh, String t, String creatorIri, int page, boolean embeddedDescriptions) {
-        return buildIri("w3c/search/body", new HashMap<String, Object>() {
+        return buildIri("w3c/services/search/body", new HashMap<String, Object>() {
             {
                 put(URLConstants.PARAM_FIELDS, StringUtils.join(fields, ","));
                 put(URLConstants.PARAM_VALUE, value);
@@ -131,7 +131,7 @@ public class IRIBuilderServiceImpl implements IRIBuilderService {
     @Override
     @SuppressWarnings("serial")
     public String buildW3CCollectionTargetSearchIri(List<String> fields, String value, boolean strict, String xywh, String t, String creatorIri) {
-        return buildIri("w3c/search/target", new HashMap<String, Object>() {
+        return buildIri("w3c/services/search/target", new HashMap<String, Object>() {
             {
                 put(URLConstants.PARAM_FIELDS, StringUtils.join(fields, ","));
                 put(URLConstants.PARAM_VALUE, value);
@@ -154,7 +154,7 @@ public class IRIBuilderServiceImpl implements IRIBuilderService {
     @Override
     @SuppressWarnings("serial")
     public String buildW3CPageTargetSearchIri(List<String> fields, String value, boolean strict, String xywh, String t, String creatorIri, int page, boolean embeddedDescriptions) {
-        return buildIri("w3c/search/target", new HashMap<String, Object>() {
+        return buildIri("w3c/services/search/target", new HashMap<String, Object>() {
             {
                 put(URLConstants.PARAM_FIELDS, StringUtils.join(fields, ","));
                 put(URLConstants.PARAM_VALUE, value);
@@ -183,7 +183,7 @@ public class IRIBuilderServiceImpl implements IRIBuilderService {
     @Override
     @SuppressWarnings("serial")
     public String buildW3CCollectionCreatorSearchIri(List<String> levels, String type, String value) {
-        return buildIri("w3c/search/creator", new HashMap<String, Object>() {
+        return buildIri("w3c/services/search/creator", new HashMap<String, Object>() {
             {
                 put(URLConstants.PARAM_LEVELS, StringUtils.join(levels, ","));
                 put(URLConstants.PARAM_TYPE, type);
@@ -195,7 +195,7 @@ public class IRIBuilderServiceImpl implements IRIBuilderService {
     @Override
     @SuppressWarnings("serial")
     public String buildW3CPageCreatorSearchIri(List<String> levels, String type, String value, int page, boolean embeddedDescriptions) {
-        return buildIri("w3c/search/creator", new HashMap<String, Object>() {
+        return buildIri("w3c/services/search/creator", new HashMap<String, Object>() {
             {
                 put(URLConstants.PARAM_LEVELS, StringUtils.join(levels, ","));
                 put(URLConstants.PARAM_TYPE, type);
@@ -213,7 +213,7 @@ public class IRIBuilderServiceImpl implements IRIBuilderService {
     @Override
     @SuppressWarnings("serial")
     public String buildW3CStatisticsPageBodyIri(String field, int page) {
-        return buildIri("w3c/stats/body", new HashMap<String, Object>() {
+        return buildIri("w3c/services/stats/body", new HashMap<String, Object>() {
             {
                 put(URLConstants.PARAM_FIELD, field);
                 put(URLConstants.PARAM_PAGE, page);
@@ -266,7 +266,7 @@ public class IRIBuilderServiceImpl implements IRIBuilderService {
     @Override
     @SuppressWarnings("serial")
     public String buildOACollectionBodySearchIri(List<String> fields, String value, boolean strict, String xywh, String t, String creatorIri) {
-        return buildIri("oa/search/body", new HashMap<String, Object>() {
+        return buildIri("oa/services/search/body", new HashMap<String, Object>() {
             {
                 put(URLConstants.PARAM_FIELDS, StringUtils.join(fields, ","));
                 put(URLConstants.PARAM_VALUE, value);
@@ -289,7 +289,7 @@ public class IRIBuilderServiceImpl implements IRIBuilderService {
     @Override
     @SuppressWarnings("serial")
     public String buildOAPageBodySearchIri(List<String> fields, String value, boolean strict, String xywh, String t, String creatorIri, int page, boolean embeddedDescriptions) {
-        return buildIri("oa/search/body", new HashMap<String, Object>() {
+        return buildIri("oa/services/search/body", new HashMap<String, Object>() {
             {
                 put(URLConstants.PARAM_FIELDS, StringUtils.join(fields, ","));
                 put(URLConstants.PARAM_VALUE, value);
@@ -318,7 +318,7 @@ public class IRIBuilderServiceImpl implements IRIBuilderService {
     @Override
     @SuppressWarnings("serial")
     public String buildOACollectionTargetSearchIri(List<String> fields, String value, boolean strict, String xywh, String t, String creatorIri) {
-        return buildIri("oa/search/target", new HashMap<String, Object>() {
+        return buildIri("oa/services/search/target", new HashMap<String, Object>() {
             {
                 put(URLConstants.PARAM_FIELDS, StringUtils.join(fields, ","));
                 put(URLConstants.PARAM_VALUE, value);
@@ -341,7 +341,7 @@ public class IRIBuilderServiceImpl implements IRIBuilderService {
     @Override
     @SuppressWarnings("serial")
     public String buildOAPageTargetSearchIri(List<String> fields, String value, boolean strict, String xywh, String t, String creatorIri, int page, boolean embeddedDescriptions) {
-        return buildIri("oa/search/target", new HashMap<String, Object>() {
+        return buildIri("oa/services/search/target", new HashMap<String, Object>() {
             {
                 put(URLConstants.PARAM_FIELDS, StringUtils.join(fields, ","));
                 put(URLConstants.PARAM_VALUE, value);
@@ -370,7 +370,7 @@ public class IRIBuilderServiceImpl implements IRIBuilderService {
     @Override
     @SuppressWarnings("serial")
     public String buildOACollectionCreatorSearchIri(List<String> levels, String type, String value) {
-        return buildIri("oa/search/creator", new HashMap<String, Object>() {
+        return buildIri("oa/services/search/creator", new HashMap<String, Object>() {
             {
                 put(URLConstants.PARAM_LEVELS, StringUtils.join(levels, ","));
                 put(URLConstants.PARAM_TYPE, type);
@@ -382,7 +382,7 @@ public class IRIBuilderServiceImpl implements IRIBuilderService {
     @Override
     @SuppressWarnings("serial")
     public String buildOAPageCreatorSearchIri(List<String> levels, String type, String value, int page, boolean embeddedDescriptions) {
-        return buildIri("oa/search/creator", new HashMap<String, Object>() {
+        return buildIri("oa/services/search/creator", new HashMap<String, Object>() {
             {
                 put(URLConstants.PARAM_LEVELS, StringUtils.join(levels, ","));
                 put(URLConstants.PARAM_TYPE, type);
@@ -400,7 +400,7 @@ public class IRIBuilderServiceImpl implements IRIBuilderService {
     @Override
     @SuppressWarnings("serial")
     public String buildOAStatisticsPageBodyIri(String field, int page) {
-        return buildIri("oa/stats/body", new HashMap<String, Object>() {
+        return buildIri("oa/services/stats/body", new HashMap<String, Object>() {
             {
                 put(URLConstants.PARAM_FIELD, field);
                 put(URLConstants.PARAM_PAGE, page);
