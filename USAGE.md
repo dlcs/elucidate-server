@@ -350,6 +350,8 @@ Multiple batch operations can be specified in a single request by utilising mult
 
 ### Batch Update
 
+#### Request
+
 ```
 POST http://example.org/w3c/services/batch/update HTTP/1.1
 
@@ -360,10 +362,16 @@ Content-Type: application/ld+json; profile="http://www.w3.org/ns/anno.jsonld"
   "@context": "http://www.w3.org/ns/anno.jsonld",
   "body": {
     "id": "http://example.com/old.html"
-    "oa:isReplacedBy": "http://example.com/new.html"
+    "oa:isReplacedBy": "http://example.com/new.html",
+    "source": {
+      "id": "http://example.com/old.html"
+      "oa:isReplacedBy": "http://example.com/new.html"
+    }
   }
 }
 ```
+
+#### Response
 
 ```
 HTTP/1.1 200 OK
@@ -375,36 +383,7 @@ Content-Type: application/ld+json;charset=UTF-8
   "body": {
     "id": "http://example.com/old.html"
     "oa:isReplacedBy": "http://example.com/new.html",
-    "total": 526
-  }
-}
-```
-
-```
-POST http://example.org/w3c/services/batch/update HTTP/1.1
-
-Accept: application/ld+json; profile="http://www.w3.org/ns/anno.jsonld"
-Content-Type: application/ld+json; profile="http://www.w3.org/ns/anno.jsonld"
-
-{
-  "@context": "http://www.w3.org/ns/anno.jsonld",
-  "body": {
-    "source": {
-      "id": "http://example.com/old.html"
-      "oa:isReplacedBy": "http://example.com/new.html"
-    }
-  }
-}
-```
-
-```
-HTTP/1.1 200 OK
-
-Content-Type: application/ld+json;charset=UTF-8
-
-{
-  "@context": "http://www.w3.org/ns/anno.jsonld",
-  "body": {
+    "total": 526,
     "source": {
       "id": "http://example.com/old.html"
       "oa:isReplacedBy": "http://example.com/new.html",
@@ -416,33 +395,7 @@ Content-Type: application/ld+json;charset=UTF-8
 
 ### Batch Delete
 
-```
-POST http://example.org/w3c/services/batch/delete HTTP/1.1
-
-Accept: application/ld+json; profile="http://www.w3.org/ns/anno.jsonld"
-Content-Type: application/ld+json; profile="http://www.w3.org/ns/anno.jsonld"
-
-{
-  "@context": "http://www.w3.org/ns/anno.jsonld",
-  "body": {
-    "id": "http://example.com/index.html"
-  }
-}
-```
-
-```
-HTTP/1.1 200 OK
-
-Content-Type: application/ld+json;charset=UTF-8
-
-{
-  "@context": "http://www.w3.org/ns/anno.jsonld",
-  "body": {
-    "id": "http://example.com/index.html"
-    "total": 526
-  }
-}
-```
+#### Request
 
 ```
 POST http://example.org/w3c/services/batch/delete HTTP/1.1
@@ -453,6 +406,7 @@ Content-Type: application/ld+json; profile="http://www.w3.org/ns/anno.jsonld"
 {
   "@context": "http://www.w3.org/ns/anno.jsonld",
   "body": {
+    "id": "http://example.com/index.html",
     "source": {
       "id": "http://example.com/index.html"
     }
@@ -460,6 +414,8 @@ Content-Type: application/ld+json; profile="http://www.w3.org/ns/anno.jsonld"
 }
 ```
 
+#### Response
+
 ```
 HTTP/1.1 200 OK
 
@@ -468,6 +424,8 @@ Content-Type: application/ld+json;charset=UTF-8
 {
   "@context": "http://www.w3.org/ns/anno.jsonld",
   "body": {
+    "id": "http://example.com/index.html"
+    "total": 526,
     "source": {
       "id": "http://example.com/index.html"
       "total": 183
