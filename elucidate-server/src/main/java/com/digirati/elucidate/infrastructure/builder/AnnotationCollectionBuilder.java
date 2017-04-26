@@ -42,7 +42,7 @@ public class AnnotationCollectionBuilder<A extends AbstractAnnotation, P extends
 
         C annotationCollection = annotationCollectionConverter.convertToAnnotationCollection();
         Map<String, Object> jsonMap = annotationCollection.getJsonMap();
-        jsonMap.put(JSONLDConstants.ATTRBUTE_TYPE, new ArrayList<String>() {
+        jsonMap.put(JSONLDConstants.ATTRIBUTE_TYPE, new ArrayList<String>() {
             {
                 add(ActivityStreamConstants.URI_ORDERED_COLLECTION);
             }
@@ -104,7 +104,7 @@ public class AnnotationCollectionBuilder<A extends AbstractAnnotation, P extends
             {
                 add(new HashMap<String, Object>() {
                     {
-                        put(JSONLDConstants.ATTRBUTE_TYPE, XMLSchemaConstants.URI_NON_NEGATIVE_INTEGER);
+                        put(JSONLDConstants.ATTRIBUTE_TYPE, XMLSchemaConstants.URI_NON_NEGATIVE_INTEGER);
                         put(JSONLDConstants.ATTRIBUTE_VALUE, totalAnnotations);
                     }
                 });

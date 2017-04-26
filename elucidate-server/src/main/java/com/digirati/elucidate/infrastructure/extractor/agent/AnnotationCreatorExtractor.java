@@ -27,7 +27,7 @@ public class AnnotationCreatorExtractor {
                 String agentIri = (String) creatorJsonMap.get(JSONLDConstants.ATTRIBUTE_ID);
                 annotationAgent.setAgentIri(agentIri);
 
-                List<String> types = (List<String>) creatorJsonMap.get(JSONLDConstants.ATTRBUTE_TYPE);
+                List<String> types = (List<String>) creatorJsonMap.get(JSONLDConstants.ATTRIBUTE_TYPE);
                 annotationAgent.setTypes(types);
                 annotationAgent.setTypesJsonList(types);
 

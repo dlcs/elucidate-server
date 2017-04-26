@@ -14,7 +14,7 @@ CREATE OR REPLACE FUNCTION public.annotation_search_by_body(
     _start integer,
     _end integer,
     _creatoriri character varying)
-RETURNS SETOF annotation_get AS
+  RETURNS SETOF annotation_get AS
 $BODY$
     BEGIN
         RETURN QUERY
@@ -34,7 +34,7 @@ $BODY$
                     LEFT JOIN annotation_selector AS asl ON asl.bodyid = ab.id
                     LEFT JOIN annotation_agent AS ag ON ag.bodyid = ab.id
             WHERE
-                CASE _searchids
+                (CASE _searchids
                     WHEN true THEN
                         (
                             CASE _strict
@@ -59,7 +59,7 @@ $BODY$
                         )
                     ELSE
                         false
-                END
+                END)
                 AND CASE ((_start IS NOT NULL AND _end IS NOT NULL) OR (_x IS NOT NULL AND _y IS NOT NULL AND _w IS NOT NULL AND _h IS NOT NULL))
                     WHEN true THEN
                         (
@@ -112,6 +112,7 @@ $BODY$
                     ELSE
                         true
                 END
+                AND at.deleted = false
                 AND a.deleted = false;
     END;
 $BODY$

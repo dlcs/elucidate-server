@@ -14,8 +14,8 @@ import com.digirati.elucidate.service.statistics.AbstractAnnotationStatisticsPag
 
 public abstract class AbstractAnnotationStatisticsController<S extends AbstractStatisticsPage> {
 
-    private static final String REQUEST_PATH_BODY = "/stats/body";
-    private static final String REQUEST_PATH_TARGET = "/stats/target";
+    private static final String REQUEST_PATH_BODY = "/services/stats/body";
+    private static final String REQUEST_PATH_TARGET = "/services/stats/target";
 
     private AbstractAnnotationStatisticsPageService<S> statisticsPageService;
 

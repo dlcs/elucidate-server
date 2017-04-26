@@ -86,7 +86,7 @@ public abstract class AbstractAnnotationStatisticsPageServiceImpl<S extends Abst
             {
                 add(new HashMap<String, Object>() {
                     {
-                        put(JSONLDConstants.ATTRBUTE_TYPE, XMLSchemaConstants.URI_NON_NEGATIVE_INTEGER);
+                        put(JSONLDConstants.ATTRIBUTE_TYPE, XMLSchemaConstants.URI_NON_NEGATIVE_INTEGER);
                         put(JSONLDConstants.ATTRIBUTE_VALUE, from);
                     }
                 });
@@ -158,7 +158,7 @@ public abstract class AbstractAnnotationStatisticsPageServiceImpl<S extends Abst
                         {
                             add(new HashMap<String, Object>() {
                                 {
-                                    put(JSONLDConstants.ATTRBUTE_TYPE, XMLSchemaConstants.URI_NON_NEGATIVE_INTEGER);
+                                    put(JSONLDConstants.ATTRIBUTE_TYPE, XMLSchemaConstants.URI_NON_NEGATIVE_INTEGER);
                                     put(JSONLDConstants.ATTRIBUTE_VALUE, count.getValue());
                                 }
                             });
