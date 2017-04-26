@@ -6,7 +6,6 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,9 +27,9 @@ import com.digirati.elucidate.service.search.AbstractAnnotationSearchService;
 
 public abstract class AbstractAnnotationSearchController<A extends AbstractAnnotation, P extends AbstractAnnotationPage, C extends AbstractAnnotationCollection> {
 
-    private static final String REQUEST_PATH_BODY = "/search/body";
-    private static final String REQUEST_PATH_TARGET = "/search/target";
-    private static final String REQUEST_PATH_CREATOR = "/search/creator";
+    private static final String REQUEST_PATH_BODY = "/services/search/body";
+    private static final String REQUEST_PATH_TARGET = "/services/search/target";
+    private static final String REQUEST_PATH_CREATOR = "/services/search/creator";
     private static final String PREFER_MINIMAL_CONTAINER = "http://www.w3.org/ns/ldp#preferminimalcontainer";
     private static final String PREFER_CONTAINED_IRIS = "http://www.w3.org/ns/oa#prefercontainediris";
     private static final String PREFER_CONTAINED_DESCRIPTIONS = "http://www.w3.org/ns/oa#prefercontaineddescriptions";
@@ -39,8 +38,7 @@ public abstract class AbstractAnnotationSearchController<A extends AbstractAnnot
     private AbstractAnnotationPageSearchService<A, P> annotationPageSearchService;
     private AbstractAnnotationCollectionSearchService<C> annotationCollectionSearchService;
 
-    @Autowired
-    public AbstractAnnotationSearchController(AbstractAnnotationSearchService<A> annotationSearchService, AbstractAnnotationPageSearchService<A, P> annotationPageSearchService, AbstractAnnotationCollectionSearchService<C> annotationCollectionSearchService) {
+    protected AbstractAnnotationSearchController(AbstractAnnotationSearchService<A> annotationSearchService, AbstractAnnotationPageSearchService<A, P> annotationPageSearchService, AbstractAnnotationCollectionSearchService<C> annotationCollectionSearchService) {
         this.annotationSearchService = annotationSearchService;
         this.annotationPageSearchService = annotationPageSearchService;
         this.annotationCollectionSearchService = annotationCollectionSearchService;

@@ -25,6 +25,7 @@ public class OAConstants {
     public static final String URI_DATA_POSITION_SELECTOR = "http://www.w3.org/ns/oa#DataPositionSelector";
     public static final String URI_SVG_SELECTOR = "http://www.w3.org/ns/oa#SvgSelector";
     public static final String URI_HAS_BODY = "http://www.w3.org/ns/oa#hasBody";
+    public static final String URI_IS_REPLACED_BY = "http://www.w3.org/ns/oa#isReplacedBy";
 
     private OAConstants() {}
 }

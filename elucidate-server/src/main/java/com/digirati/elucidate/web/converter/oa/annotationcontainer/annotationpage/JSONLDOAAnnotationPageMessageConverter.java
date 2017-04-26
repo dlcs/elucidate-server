@@ -11,7 +11,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.HttpMediaTypeNotSupportedException;
 
 import com.digirati.elucidate.common.model.annotation.oa.OAAnnotationPage;
-import com.digirati.elucidate.common.model.annotation.w3c.W3CAnnotationPage;
 import com.digirati.elucidate.model.JSONLDProfile;
 import com.digirati.elucidate.model.JSONLDProfile.Format;
 import com.github.jsonldjava.core.JsonLdProcessor;
@@ -79,6 +78,6 @@ public class JSONLDOAAnnotationPageMessageConverter extends AbstractOAAnnotation
 
     @Override
     protected OAAnnotationPage getObjectRepresentation(String str, MediaType contentType) throws Exception {
-        throw new UnsupportedOperationException(String.format("Conversion from Content Type [%s] to [%s] is not supported", contentType, W3CAnnotationPage.class));
+        throw new UnsupportedOperationException(String.format("Conversion from Content Type [%s] to [%s] is not supported", contentType, OAAnnotationPage.class));
     }
 }

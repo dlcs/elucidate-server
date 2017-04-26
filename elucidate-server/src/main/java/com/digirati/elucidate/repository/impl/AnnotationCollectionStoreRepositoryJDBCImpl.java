@@ -25,7 +25,7 @@ public class AnnotationCollectionStoreRepositoryJDBCImpl extends AbstractReposit
     @Override
     @Transactional(readOnly = true)
     public W3CAnnotationCollection getAnnotationCollectionById(String collectionId) {
-        String sql = "SELECT * from annotation_collection_get WHERE collectionid = ? AND deleted = ?";
+        String sql = "SELECT * FROM annotation_collection_get WHERE collectionid = ? AND deleted = ?";
         Object[] params = {collectionId, false};
         int[] sqlTypes = {Types.VARCHAR, Types.BOOLEAN};
 

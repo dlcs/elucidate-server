@@ -5,7 +5,6 @@ import java.util.Collections;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -37,8 +36,7 @@ public abstract class AbstractAnnotationWriteController<A extends AbstractAnnota
     private AbstractAnnotationService<A> annotationService;
     private AbstractAnnotationCollectionService<A, C> annotationCollectionService;
 
-    @Autowired
-    public AbstractAnnotationWriteController(AbstractAnnotationService<A> annotationService, AbstractAnnotationCollectionService<A, C> annotationCollectionService) {
+    protected AbstractAnnotationWriteController(AbstractAnnotationService<A> annotationService, AbstractAnnotationCollectionService<A, C> annotationCollectionService) {
         this.annotationService = annotationService;
         this.annotationCollectionService = annotationCollectionService;
     }

@@ -1,6 +1,5 @@
 package com.digirati.elucidate.service.search.impl;
 
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,7 +25,7 @@ public abstract class AbstractAnnotationSearchServiceImpl<A extends AbstractAnno
 
     private AnnotationSearchRepository annotationSearchRepository;
 
-    public AbstractAnnotationSearchServiceImpl(AnnotationSearchRepository annotationSearchRepository) {
+    protected AbstractAnnotationSearchServiceImpl(AnnotationSearchRepository annotationSearchRepository) {
         this.annotationSearchRepository = annotationSearchRepository;
     }
 

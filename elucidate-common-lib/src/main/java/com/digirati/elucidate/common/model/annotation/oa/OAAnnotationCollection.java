@@ -7,8 +7,4 @@ import com.digirati.elucidate.common.model.annotation.AbstractAnnotationCollecti
 @SuppressWarnings("serial")
 public class OAAnnotationCollection extends AbstractAnnotationCollection implements Serializable {
 
-    @Override
-    public String toString() {
-        return "OAAnnotationCollection [getCollectionId()=" + getCollectionId() + ", getCacheKey()=" + getCacheKey() + ", getPk()=" + getPk() + ", getJsonMap()=" + getJsonMap() + ", isDeleted()=" + isDeleted() + ", getCreatedDateTime()=" + getCreatedDateTime() + ", getModifiedDateTime()=" + getModifiedDateTime() + "]";
-    }
 }

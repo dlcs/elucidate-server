@@ -18,6 +18,10 @@ import com.digirati.elucidate.web.converter.oa.annotationcontainer.annotationcol
 import com.digirati.elucidate.web.converter.oa.annotationcontainer.annotationcollection.TurtleOAAnnotationCollectionMessageConverter;
 import com.digirati.elucidate.web.converter.oa.annotationcontainer.annotationpage.JSONLDOAAnnotationPageMessageConverter;
 import com.digirati.elucidate.web.converter.oa.annotationcontainer.annotationpage.TurtleOAAnnotationPageMessageConverter;
+import com.digirati.elucidate.web.converter.oa.bulkupdate.JSONLDOABatchOperationMessageConverter;
+import com.digirati.elucidate.web.converter.oa.bulkupdate.TurtleOABatchOperationMessageConverter;
+import com.digirati.elucidate.web.converter.oa.statisticspage.JSONLDOAStatisticsPageMessageConverter;
+import com.digirati.elucidate.web.converter.oa.statisticspage.TurtleOAStatisticsPageMessageConverter;
 import com.digirati.elucidate.web.converter.validationerror.JSONLDValidationErrorMessageConverter;
 import com.digirati.elucidate.web.converter.w3c.annotation.JSONLDW3CAnnotationMessageConverter;
 import com.digirati.elucidate.web.converter.w3c.annotation.TurtleW3CAnnotationMessageConverter;
@@ -25,6 +29,10 @@ import com.digirati.elucidate.web.converter.w3c.annotationcontainer.annotationco
 import com.digirati.elucidate.web.converter.w3c.annotationcontainer.annotationcollection.TurtleW3CAnnotationCollectionMessageConverter;
 import com.digirati.elucidate.web.converter.w3c.annotationcontainer.annotationpage.JSONLDW3CAnnotationPageMessageConverter;
 import com.digirati.elucidate.web.converter.w3c.annotationcontainer.annotationpage.TurtleW3CAnnotationPageMessageConverter;
+import com.digirati.elucidate.web.converter.w3c.bulkupdate.JSONLDW3CBatchOperationMessageConverter;
+import com.digirati.elucidate.web.converter.w3c.bulkupdate.TurtleW3CBatchOperationMessageConverter;
+import com.digirati.elucidate.web.converter.w3c.statisticspage.JSONLDW3CStatisticsPageMessageConverter;
+import com.digirati.elucidate.web.converter.w3c.statisticspage.TurtleW3CStatisticsPageMessageConverter;
 
 @EnableWebMvc
 @Configuration
@@ -49,6 +57,14 @@ public class MVCConfig extends WebMvcConfigurerAdapter {
     @Autowired
     private TurtleW3CAnnotationPageMessageConverter turtleW3CAnnotationPageMessageConverter;
     @Autowired
+    private JSONLDW3CStatisticsPageMessageConverter jsonLdW3CStatisticsPageMessageConverter;
+    @Autowired
+    private TurtleW3CStatisticsPageMessageConverter turtleW3CStatisticsPageMessageConverter;
+    @Autowired
+    private JSONLDW3CBatchOperationMessageConverter jsonLdW3CBatchOperationMessageConverter;
+    @Autowired
+    private TurtleW3CBatchOperationMessageConverter turtleW3CBatchOperationMessageConverter;
+    @Autowired
     private JSONLDOAAnnotationMessageConverter jsonLdOAAnnotationMessageConverter;
     @Autowired
     private TurtleOAAnnotationMessageConverter turtleOAAnnotationMessageConverter;
@@ -60,6 +76,14 @@ public class MVCConfig extends WebMvcConfigurerAdapter {
     private JSONLDOAAnnotationPageMessageConverter jsonLdOAAnnotationPageMessageConverter;
     @Autowired
     private TurtleOAAnnotationPageMessageConverter turtleOAAnnotationPageMessageConverter;
+    @Autowired
+    private JSONLDOAStatisticsPageMessageConverter jsonLdOAStatisticsPageMessageConverter;
+    @Autowired
+    private TurtleOAStatisticsPageMessageConverter turtleOAStatisticsPageMessageConverter;
+    @Autowired
+    private JSONLDOABatchOperationMessageConverter jsonLdOABatchOperationMessageConverter;
+    @Autowired
+    private TurtleOABatchOperationMessageConverter turtleOABatchOperationMessageConverter;
     @Autowired
     private JSONLDValidationErrorMessageConverter jsonLdValidationErrorMessageConverter;
 
@@ -77,12 +101,20 @@ public class MVCConfig extends WebMvcConfigurerAdapter {
         converters.add(turtleW3CAnnotationCollectionMessageConverter);
         converters.add(jsonLdW3CAnnotationPageMessageConverter);
         converters.add(turtleW3CAnnotationPageMessageConverter);
+        converters.add(jsonLdW3CStatisticsPageMessageConverter);
+        converters.add(turtleW3CStatisticsPageMessageConverter);
+        converters.add(jsonLdW3CBatchOperationMessageConverter);
+        converters.add(turtleW3CBatchOperationMessageConverter);
         converters.add(jsonLdOAAnnotationMessageConverter);
         converters.add(turtleOAAnnotationMessageConverter);
         converters.add(jsonLdOAAnnotationCollectionMessageConverter);
         converters.add(turtleOAAnnotationCollectionMessageConverter);
         converters.add(jsonLdOAAnnotationPageMessageConverter);
         converters.add(turtleOAAnnotationPageMessageConverter);
+        converters.add(jsonLdOAStatisticsPageMessageConverter);
+        converters.add(turtleOAStatisticsPageMessageConverter);
+        converters.add(jsonLdOABatchOperationMessageConverter);
+        converters.add(turtleOABatchOperationMessageConverter);
         converters.add(jsonLdValidationErrorMessageConverter);
     }
 

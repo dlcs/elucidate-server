@@ -117,9 +117,4 @@ public class AnnotationAgent extends AbstractObject implements Serializable {
     public void setHomepageJsonMaps(List<Map<String, Object>> homepageJsonMaps) {
         this.homepageJsonMaps = homepageJsonMaps;
     }
-
-    @Override
-    public String toString() {
-        return "AnnotationAgent [getAgentIri()=" + getAgentIri() + ", getTypes()=" + getTypes() + ", getTypesJsonList()=" + getTypesJsonList() + ", getNames()=" + getNames() + ", getNameJsonMaps()=" + getNameJsonMaps() + ", getNickname()=" + getNickname() + ", getEmails()=" + getEmails() + ", getEmailJsonMaps()=" + getEmailJsonMaps() + ", getEmailSha1s()=" + getEmailSha1s() + ", getEmailSha1JsonMaps()=" + getEmailSha1JsonMaps() + ", getHomepages()=" + getHomepages() + ", getHomepageJsonMaps()=" + getHomepageJsonMaps() + ", getPk()=" + getPk() + ", getJsonMap()=" + getJsonMap() + ", isDeleted()=" + isDeleted() + ", getCreatedDateTime()=" + getCreatedDateTime() + ", getModifiedDateTime()=" + getModifiedDateTime() + "]";
-    }
 }

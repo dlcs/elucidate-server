@@ -288,7 +288,7 @@ All search results are returned as Annotation Containers.
 
 ### Search By `body`
 
-Base URL: `GET http://example.org/w3c/search/body HTTP/1.1`
+Base URL: `GET http://example.org/w3c/services/search/body HTTP/1.1`
 
 | Parameter | Mandatory | Valid Values                                                                        | Description                                                                                                                                                 |
 | --------- | --------- | ----------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -301,7 +301,7 @@ Base URL: `GET http://example.org/w3c/search/body HTTP/1.1`
 
 ### Search by `target`
 
-Base URL: `GET http://example.org/w3c/search/target HTTP/1.1`
+Base URL: `GET http://example.org/w3c/services/search/target HTTP/1.1`
 
 | Parameter | Mandatory | Valid Values           | Description                                                                                                                                                                                                              |
 | --------- | --------- | ----------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -314,10 +314,122 @@ Base URL: `GET http://example.org/w3c/search/target HTTP/1.1`
 
 ### Search by `creator`
 
-Base URL: `GET http://example.org/w3c/search/creator HTTP/1.1`
+Base URL: `GET http://example.org/w3c/services/search/creator HTTP/1.1`
 
-| Parameter | Mandatory | Valid Values                               | Description                                                                          |
-| --------  | --------- | ------------------------------------------ | -------------------------------------------------------------------------------------|
-| `levels`  | Yes       | `annotation`,`body`,`target`               | The level within the annotation against which the search for a creator will be made. |
-| `type`    | Yes       | `id`,`name`,`nickname`,`email`,`emailsha1` | The type of field within the `creator` that will be searched against.                |
-| `value`   | No        | Percent-encoded string                     | The value that the defined `type` will be searched for.                              |
+| Parameter | Mandatory | Valid Values                               | Description                                                                           |
+| --------  | --------- | ------------------------------------------ | ------------------------------------------------------------------------------------- |
+| `levels`  | Yes       | `annotation`,`body`,`target`               | The levels within the annotation against which the search for a creator will be made. |
+| `type`    | Yes       | `id`,`name`,`nickname`,`email`,`emailsha1` | The type of field within the `creator` that will be searched against.                 |
+| `value`   | Yes       | Percent-encoded string                     | The value that the defined `type` will be searched for.                               |
+
+## Statistics
+
+Provides the ability for clients to view the total number of times in which a specific `id` or `source` appears within `body`'s or `target`'s. All statistics queries are returned as simplified Annotation Pages.
+
+### Body Statistics
+
+Base URL: `GET http://example.org/w3c/services/stats/body HTTP/1.1`
+
+| Parameter | Mandatory  | Valid Values  | Description                                                     |
+| --------- | ---------- | ------------- | --------------------------------------------------------------- |
+| `field`   | Yes        | `id`,`source` | The field within the `body` that IRI's will be counted against. |
+
+### Target Statistics
+
+Base URL: `GET http://example.org/w3c/services/stats/target HTTP/1.1`
+
+| Parameter | Mandatory  | Valid Values  | Description                                                       |
+| --------- | ---------- | ------------- | ----------------------------------------------------------------- |
+| `field`   | Yes        | `id`,`source` | The field within the `target` that IRI's will be counted against. |
+
+## Batch Operations
+
+Batch operations provide the ability to update the `id` or the `source` of `body`'s and `target`'s in an many Annotations with a single request, or delete many Annotations with a single request based on the `id` or the `source` of the `body`'s and `target`'s contained with the Annotation.
+
+Multiple batch operations can be specified in a single request by utilising multiple `body`, `target` and `source` objects using standard JSON arrays.
+
+### Batch Update
+
+#### Request
+
+```
+POST http://example.org/w3c/services/batch/update HTTP/1.1
+
+Accept: application/ld+json; profile="http://www.w3.org/ns/anno.jsonld"
+Content-Type: application/ld+json; profile="http://www.w3.org/ns/anno.jsonld"
+
+{
+  "@context": "http://www.w3.org/ns/anno.jsonld",
+  "body": {
+    "id": "http://example.com/old.html"
+    "oa:isReplacedBy": "http://example.com/new.html",
+    "source": {
+      "id": "http://example.com/old.html"
+      "oa:isReplacedBy": "http://example.com/new.html"
+    }
+  }
+}
+```
+
+#### Response
+
+```
+HTTP/1.1 200 OK
+
+Content-Type: application/ld+json;charset=UTF-8
+
+{
+  "@context": "http://www.w3.org/ns/anno.jsonld",
+  "body": {
+    "id": "http://example.com/old.html"
+    "oa:isReplacedBy": "http://example.com/new.html",
+    "total": 526,
+    "source": {
+      "id": "http://example.com/old.html"
+      "oa:isReplacedBy": "http://example.com/new.html",
+      "total": 183
+    }
+  }
+}
+```
+
+### Batch Delete
+
+#### Request
+
+```
+POST http://example.org/w3c/services/batch/delete HTTP/1.1
+
+Accept: application/ld+json; profile="http://www.w3.org/ns/anno.jsonld"
+Content-Type: application/ld+json; profile="http://www.w3.org/ns/anno.jsonld"
+
+{
+  "@context": "http://www.w3.org/ns/anno.jsonld",
+  "body": {
+    "id": "http://example.com/index.html",
+    "source": {
+      "id": "http://example.com/index.html"
+    }
+  }
+}
+```
+
+#### Response
+
+```
+HTTP/1.1 200 OK
+
+Content-Type: application/ld+json;charset=UTF-8
+
+{
+  "@context": "http://www.w3.org/ns/anno.jsonld",
+  "body": {
+    "id": "http://example.com/index.html"
+    "total": 526,
+    "source": {
+      "id": "http://example.com/index.html"
+      "total": 183
+    }
+  }
+}
+```

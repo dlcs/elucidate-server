@@ -34,7 +34,7 @@ $BODY$
                     LEFT JOIN annotation_selector AS asl ON asl.targetid = at.id
                     LEFT JOIN annotation_agent AS ag ON ag.targetid = at.id
             WHERE
-                CASE _searchids
+                (CASE _searchids
                     WHEN true THEN
                         (
                             CASE _strict
@@ -59,7 +59,7 @@ $BODY$
                         )
                     ELSE
                         false
-                END
+                END)
                 AND CASE ((_start IS NOT NULL AND _end IS NOT NULL) OR (_x IS NOT NULL AND _y IS NOT NULL AND _w IS NOT NULL AND _h IS NOT NULL))
                     WHEN true THEN
                         (
@@ -112,7 +112,8 @@ $BODY$
                     ELSE
                         true
                 END
-                AND a.deleted = false;
+                AND a.deleted = false
+                AND at.deleted = false;
     END;
 $BODY$
 LANGUAGE plpgsql VOLATILE COST 100 ROWS 1000;

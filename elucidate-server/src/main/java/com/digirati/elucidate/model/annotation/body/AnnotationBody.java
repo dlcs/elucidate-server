@@ -25,9 +25,4 @@ public class AnnotationBody extends AbstractAnnotation implements Serializable {
     public void setSourceIri(String sourceIri) {
         this.sourceIri = sourceIri;
     }
-
-    @Override
-    public String toString() {
-        return "AnnotationBody [getBodyIri()=" + getBodyIri() + ", getSourceIri()=" + getSourceIri() + ", getAnnotationId()=" + getAnnotationId() + ", getCollectionId()=" + getCollectionId() + ", getCacheKey()=" + getCacheKey() + ", getPk()=" + getPk() + ", getJsonMap()=" + getJsonMap() + ", isDeleted()=" + isDeleted() + ", getCreatedDateTime()=" + getCreatedDateTime() + ", getModifiedDateTime()=" + getModifiedDateTime() + "]";
-    }
 }

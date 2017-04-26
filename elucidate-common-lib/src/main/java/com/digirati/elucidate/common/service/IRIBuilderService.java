@@ -22,6 +22,8 @@ public interface IRIBuilderService {
 
     public String buildW3CPageCreatorSearchIri(List<String> levels, String type, String value, int page, boolean embeddedDescriptions);
 
+    public String buildW3CStatisticsPageBodyIri(String field, int page);
+
     public String buildOAAnnotationIri(String collectionId, String annotationId);
 
     public String buildOACollectionIri(String collectionId);
@@ -39,4 +41,6 @@ public interface IRIBuilderService {
     public String buildOACollectionCreatorSearchIri(List<String> levels, String type, String value);
 
     public String buildOAPageCreatorSearchIri(List<String> levels, String type, String value, int page, boolean embeddedDescriptions);
+
+    public String buildOAStatisticsPageBodyIri(String field, int page);
 }

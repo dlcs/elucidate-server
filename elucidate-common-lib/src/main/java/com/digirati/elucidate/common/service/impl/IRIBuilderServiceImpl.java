@@ -211,6 +211,17 @@ public class IRIBuilderServiceImpl implements IRIBuilderService {
     }
 
     @Override
+    @SuppressWarnings("serial")
+    public String buildW3CStatisticsPageBodyIri(String field, int page) {
+        return buildIri("w3c/stats/body", new HashMap<String, Object>() {
+            {
+                put(URLConstants.PARAM_FIELD, field);
+                put(URLConstants.PARAM_PAGE, page);
+            }
+        });
+    }
+
+    @Override
     public String buildOAAnnotationIri(String collectionId, String annotationId) {
         return buildIri(String.format("oa/%s/%s", collectionId, annotationId), null);
     }
@@ -382,6 +393,17 @@ public class IRIBuilderServiceImpl implements IRIBuilderService {
                 } else {
                     put(URLConstants.PARAM_IRIS, 1);
                 }
+            }
+        });
+    }
+
+    @Override
+    @SuppressWarnings("serial")
+    public String buildOAStatisticsPageBodyIri(String field, int page) {
+        return buildIri("oa/stats/body", new HashMap<String, Object>() {
+            {
+                put(URLConstants.PARAM_FIELD, field);
+                put(URLConstants.PARAM_PAGE, page);
             }
         });
     }

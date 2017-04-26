@@ -20,9 +20,4 @@ public class TFragmentSelector {
     public void setEnd(Integer end) {
         this.end = end;
     }
-
-    @Override
-    public String toString() {
-        return "TFragmentSelector [getStart()=" + getStart() + ", getEnd()=" + getEnd() + "]";
-    }
 }

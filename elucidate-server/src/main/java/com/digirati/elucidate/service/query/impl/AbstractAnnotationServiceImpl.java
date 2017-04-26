@@ -27,7 +27,7 @@ public abstract class AbstractAnnotationServiceImpl<A extends AbstractAnnotation
     private AnnotationStoreRepository annotationStoreRepository;
     private IDGenerator idGenerator;
 
-    public AbstractAnnotationServiceImpl(AnnotationStoreRepository annotationStoreRepository, IDGenerator idGenerator) {
+    protected AbstractAnnotationServiceImpl(AnnotationStoreRepository annotationStoreRepository, IDGenerator idGenerator) {
         this.annotationStoreRepository = annotationStoreRepository;
         this.idGenerator = idGenerator;
     }

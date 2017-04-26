@@ -11,7 +11,7 @@ import org.springframework.jdbc.core.RowMapper;
 
 public abstract class AbstractRepositoryJDBCImpl {
 
-    protected final Logger LOGGER = Logger.getLogger(AbstractRepositoryJDBCImpl.class);
+    protected final Logger LOGGER = Logger.getLogger(getClass());
 
     private JdbcTemplate jdbcTemplate;
 
