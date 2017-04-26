@@ -316,11 +316,11 @@ Base URL: `GET http://example.org/w3c/search/target HTTP/1.1`
 
 Base URL: `GET http://example.org/w3c/search/creator HTTP/1.1`
 
-| Parameter | Mandatory | Valid Values                               | Description                                                                          |
-| --------  | --------- | ------------------------------------------ | -------------------------------------------------------------------------------------|
-| `levels`  | Yes       | `annotation`,`body`,`target`               | The level within the annotation against which the search for a creator will be made. |
-| `type`    | Yes       | `id`,`name`,`nickname`,`email`,`emailsha1` | The type of field within the `creator` that will be searched against.                |
-| `value`   | No        | Percent-encoded string                     | The value that the defined `type` will be searched for.                              |
+| Parameter | Mandatory | Valid Values                               | Description                                                                           |
+| --------  | --------- | ------------------------------------------ | ------------------------------------------------------------------------------------- |
+| `levels`  | Yes       | `annotation`,`body`,`target`               | The levels within the annotation against which the search for a creator will be made. |
+| `type`    | Yes       | `id`,`name`,`nickname`,`email`,`emailsha1` | The type of field within the `creator` that will be searched against.                 |
+| `value`   | Yes       | Percent-encoded string                     | The value that the defined `type` will be searched for.                               |
 
 ## Statistics
 
@@ -330,7 +330,7 @@ Provides the ability for clients to view the total number of times in which a sp
 
 Base URL: `GET http://example.org/w3c/stats/body HTTP/1.1`
 
-| Parameter | Mandatory | Valid Values   | Description                                                     |
+| Parameter | Mandatory  | Valid Values  | Description                                                     |
 | --------- | ---------- | ------------- | --------------------------------------------------------------- |
 | `field`   | Yes        | `id`,`source` | The field within the `body` that IRI's will be counted against. |
 
@@ -338,6 +338,6 @@ Base URL: `GET http://example.org/w3c/stats/body HTTP/1.1`
 
 Base URL: `GET http://example.org/w3c/stats/target HTTP/1.1`
 
-| Parameter | Mandatory | Valid Values   | Description                                                     |
-| --------- | ---------- | ------------- | --------------------------------------------------------------- |
+| Parameter | Mandatory  | Valid Values  | Description                                                       |
+| --------- | ---------- | ------------- | ----------------------------------------------------------------- |
 | `field`   | Yes        | `id`,`source` | The field within the `target` that IRI's will be counted against. |
