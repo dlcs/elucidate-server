@@ -97,9 +97,9 @@ public abstract class AbstractAnnotationBatchDeleteServiceImpl<A extends Abstrac
             for (A annotation : annotations) {
                 annotationService.deleteAnnotation(annotation.getCollectionId(), annotation.getAnnotationId(), annotation.getCacheKey());
             }
+            return annotations.size();
         }
-
-        return annotations.size();
+        return 0;
     }
 
     @SuppressWarnings("serial")
