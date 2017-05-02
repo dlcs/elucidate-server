@@ -78,7 +78,7 @@ public class AnnotationExtractorServiceImpl implements AnnotationExtractorServic
 
     @Override
     public void processAnnotationDelete(W3CAnnotation w3cAnnotation) {
-        LOGGER.info(String.format("Processing DELETE for W3CAnnotation", w3cAnnotation));
+        LOGGER.info(String.format("Processing DELETE for W3CAnnotation [%s]", w3cAnnotation));
 
         deleteAnnotationCreators(w3cAnnotation);
 

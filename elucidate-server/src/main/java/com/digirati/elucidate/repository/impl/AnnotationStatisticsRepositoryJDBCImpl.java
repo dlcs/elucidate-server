@@ -57,7 +57,7 @@ public class AnnotationStatisticsRepositoryJDBCImpl extends AbstractRepositoryJD
         return queryForList(sql, null, null, new CountRowMapper());
     }
 
-    private class CountRowMapper implements RowMapper<Pair<String, Integer>> {
+    private static class CountRowMapper implements RowMapper<Pair<String, Integer>> {
 
         @Override
         public Pair<String, Integer> mapRow(ResultSet rs, int rowNum) throws SQLException {
