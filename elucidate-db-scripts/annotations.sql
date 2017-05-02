@@ -2,8 +2,4 @@
 
 -- DROP DATABASE annotations;
 
-CREATE DATABASE annotations
-    WITH OWNER = postgres
-        ENCODING = 'UTF8'
-        TABLESPACE = pg_default
-        CONNECTION LIMIT = -1;
+CREATE DATABASE annotations WITH OWNER = postgres ENCODING = 'UTF8' TABLESPACE = pg_default CONNECTION LIMIT = -1;

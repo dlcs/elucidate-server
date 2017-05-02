@@ -6,8 +6,9 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
-import com.digirati.elucidate.common.infrastructure.rowmapper.W3CAnnotationRowMapper;
+import com.digirati.elucidate.common.infrastructure.database.rowmapper.W3CAnnotationRowMapper;
 import com.digirati.elucidate.common.model.annotation.w3c.W3CAnnotation;
 import com.digirati.elucidate.common.repository.impl.AbstractRepositoryJDBCImpl;
 import com.digirati.elucidate.repository.AnnotationStoreRepository;
@@ -23,6 +24,7 @@ public class AnnotationStoreRepositoryJDBCImpl extends AbstractRepositoryJDBCImp
     }
 
     @Override
+    @Transactional(readOnly = true)
     public W3CAnnotation getAnnotationByCollectionIdAndAnnotationId(String collectionId, String annotationId) {
         String sql = "SELECT * FROM annotation_get WHERE collectionid = ? AND annotationid = ? AND deleted = ?";
         Object[] params = {collectionId, annotationId, false};
@@ -32,6 +34,7 @@ public class AnnotationStoreRepositoryJDBCImpl extends AbstractRepositoryJDBCImp
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<W3CAnnotation> getAnnotationsByCollectionId(String collectionId) {
         String sql = "SELECT * FROM annotation_get WHERE collectionid = ? AND deleted = ? ORDER BY COALESCE(modifieddatetime, createddatetime)";
         Object[] params = {collectionId, false};
@@ -41,6 +44,7 @@ public class AnnotationStoreRepositoryJDBCImpl extends AbstractRepositoryJDBCImp
     }
 
     @Override
+    @Transactional(readOnly = false)
     public W3CAnnotation createAnnotation(String collectionId, String annotationId, String annotationJson) {
         String sql = "SELECT * FROM annotation_create(?, ?, ?)";
         Object[] params = {collectionId, annotationId, annotationJson};
@@ -50,6 +54,7 @@ public class AnnotationStoreRepositoryJDBCImpl extends AbstractRepositoryJDBCImp
     }
 
     @Override
+    @Transactional(readOnly = false)
     public W3CAnnotation updateAnnotation(String collectionId, String annotationId, String annotationJson) {
         String sql = "SELECT * FROM annotation_update(?, ?, ?)";
         Object[] params = {collectionId, annotationId, annotationJson};
@@ -59,6 +64,7 @@ public class AnnotationStoreRepositoryJDBCImpl extends AbstractRepositoryJDBCImp
     }
 
     @Override
+    @Transactional(readOnly = false)
     public W3CAnnotation deleteAnnotation(String collectionId, String annotationId) {
         String sql = "SELECT * FROM annotation_delete(?, ?)";
         Object[] params = {collectionId, annotationId};
@@ -68,6 +74,7 @@ public class AnnotationStoreRepositoryJDBCImpl extends AbstractRepositoryJDBCImp
     }
 
     @Override
+    @Transactional(readOnly = true)
     public int countDeletedAnnotations(String collectionId, String annotationId) {
         String sql = "SELECT COUNT(1) FROM annotation_get WHERE collectionid = ? AND annotationid = ? AND deleted = ?";
         Object[] params = {collectionId, annotationId, true};

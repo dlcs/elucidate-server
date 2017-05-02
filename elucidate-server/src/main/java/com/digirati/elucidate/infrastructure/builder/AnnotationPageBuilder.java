@@ -37,7 +37,7 @@ public class AnnotationPageBuilder<A extends AbstractAnnotation, P extends Abstr
         annotations = annotations.subList(from, to);
 
         Map<String, Object> jsonMap = new HashMap<String, Object>();
-        jsonMap.put(JSONLDConstants.ATTRBUTE_TYPE, new ArrayList<String>() {
+        jsonMap.put(JSONLDConstants.ATTRIBUTE_TYPE, new ArrayList<String>() {
             {
                 add(ActivityStreamConstants.URI_ORDERED_COLLECTION_PAGE);
             }
@@ -59,7 +59,7 @@ public class AnnotationPageBuilder<A extends AbstractAnnotation, P extends Abstr
             {
                 add(new HashMap<String, Object>() {
                     {
-                        put(JSONLDConstants.ATTRBUTE_TYPE, XMLSchemaConstants.URI_NON_NEGATIVE_INTEGER);
+                        put(JSONLDConstants.ATTRIBUTE_TYPE, XMLSchemaConstants.URI_NON_NEGATIVE_INTEGER);
                         put(JSONLDConstants.ATTRIBUTE_VALUE, from);
                     }
                 });

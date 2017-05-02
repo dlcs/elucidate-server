@@ -6,7 +6,6 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,8 +27,9 @@ import com.digirati.elucidate.service.search.AbstractAnnotationSearchService;
 
 public abstract class AbstractAnnotationSearchController<A extends AbstractAnnotation, P extends AbstractAnnotationPage, C extends AbstractAnnotationCollection> {
 
-    private static final String REQUEST_PATH_BODY = "/search/body";
-    private static final String REQUEST_PATH_TARGET = "/search/target";
+    private static final String REQUEST_PATH_BODY = "/services/search/body";
+    private static final String REQUEST_PATH_TARGET = "/services/search/target";
+    private static final String REQUEST_PATH_CREATOR = "/services/search/creator";
     private static final String PREFER_MINIMAL_CONTAINER = "http://www.w3.org/ns/ldp#preferminimalcontainer";
     private static final String PREFER_CONTAINED_IRIS = "http://www.w3.org/ns/oa#prefercontainediris";
     private static final String PREFER_CONTAINED_DESCRIPTIONS = "http://www.w3.org/ns/oa#prefercontaineddescriptions";
@@ -38,25 +38,24 @@ public abstract class AbstractAnnotationSearchController<A extends AbstractAnnot
     private AbstractAnnotationPageSearchService<A, P> annotationPageSearchService;
     private AbstractAnnotationCollectionSearchService<C> annotationCollectionSearchService;
 
-    @Autowired
-    public AbstractAnnotationSearchController(AbstractAnnotationSearchService<A> annotationSearchService, AbstractAnnotationPageSearchService<A, P> annotationPageSearchService, AbstractAnnotationCollectionSearchService<C> annotationCollectionSearchService) {
+    protected AbstractAnnotationSearchController(AbstractAnnotationSearchService<A> annotationSearchService, AbstractAnnotationPageSearchService<A, P> annotationPageSearchService, AbstractAnnotationCollectionSearchService<C> annotationCollectionSearchService) {
         this.annotationSearchService = annotationSearchService;
         this.annotationPageSearchService = annotationPageSearchService;
         this.annotationCollectionSearchService = annotationCollectionSearchService;
     }
 
     @RequestMapping(value = REQUEST_PATH_BODY, method = RequestMethod.GET)
-    public ResponseEntity<?> getSearchBody(@RequestParam(value = URLConstants.PARAM_FIELDS, required = true) List<String> fields, @RequestParam(value = URLConstants.PARAM_VALUE, required = true) String value, @RequestParam(value = URLConstants.PARAM_STRICT, required = false, defaultValue = "false") boolean strict, @RequestParam(value = URLConstants.PARAM_PAGE, required = false) Integer page, @RequestParam(value = URLConstants.PARAM_IRIS, required = false, defaultValue = "false") boolean iris, @RequestParam(value = URLConstants.PARAM_DESC, required = false, defaultValue = "false") boolean descriptions, HttpServletRequest request) {
+    public ResponseEntity<?> getSearchBody(@RequestParam(value = URLConstants.PARAM_FIELDS, required = true) List<String> fields, @RequestParam(value = URLConstants.PARAM_VALUE, required = true) String value, @RequestParam(value = URLConstants.PARAM_STRICT, required = false, defaultValue = "false") boolean strict, @RequestParam(value = URLConstants.PARAM_XYWH, required = false) String xywh, @RequestParam(value = URLConstants.PARAM_T, required = false) String t, @RequestParam(value = URLConstants.PARAM_CREATOR, required = false) String creatorIri, @RequestParam(value = URLConstants.PARAM_PAGE, required = false) Integer page, @RequestParam(value = URLConstants.PARAM_IRIS, required = false, defaultValue = "false") boolean iris, @RequestParam(value = URLConstants.PARAM_DESC, required = false, defaultValue = "false") boolean descriptions, HttpServletRequest request) {
         if (page == null) {
 
-            AnnotationCollectionSearch<C> annotationCollectionSearch = (ClientPreference clientPref) -> annotationCollectionSearchService.searchAnnotationCollectionByBody(fields, value, strict, clientPref);
+            AnnotationCollectionSearch<C> annotationCollectionSearch = (ClientPreference clientPref) -> annotationCollectionSearchService.searchAnnotationCollectionByBody(fields, value, strict, xywh, t, creatorIri, clientPref);
 
             return processCollectionSearchRequest(annotationCollectionSearch, request);
         } else {
 
             AnnotationPageSearch<P> annotationPageSearch = (boolean embeddedDescriptions) -> {
 
-                ServiceResponse<List<A>> serviceResponse = annotationSearchService.searchAnnotationsByBody(fields, value, strict);
+                ServiceResponse<List<A>> serviceResponse = annotationSearchService.searchAnnotationsByBody(fields, value, strict, xywh, t, creatorIri);
                 Status status = serviceResponse.getStatus();
 
                 if (!status.equals(Status.OK)) {
@@ -65,7 +64,7 @@ public abstract class AbstractAnnotationSearchController<A extends AbstractAnnot
 
                 List<A> annotations = serviceResponse.getObj();
 
-                return annotationPageSearchService.buildAnnotationPageByBody(annotations, fields, value, strict, page, embeddedDescriptions);
+                return annotationPageSearchService.buildAnnotationPageByBody(annotations, fields, value, strict, xywh, t, creatorIri, page, embeddedDescriptions);
             };
 
             return processPageSearchRequest(annotationPageSearch, iris, descriptions);
@@ -73,16 +72,16 @@ public abstract class AbstractAnnotationSearchController<A extends AbstractAnnot
     }
 
     @RequestMapping(value = REQUEST_PATH_TARGET, method = RequestMethod.GET)
-    public ResponseEntity<?> getSearchTarget(@RequestParam(value = URLConstants.PARAM_FIELDS, required = true) List<String> fields, @RequestParam(value = URLConstants.PARAM_VALUE, required = true) String value, @RequestParam(value = URLConstants.PARAM_STRICT, required = false, defaultValue = "false") boolean strict, @RequestParam(value = URLConstants.PARAM_XYWH, required = false) String xywh, @RequestParam(value = URLConstants.PARAM_T, required = false) String t, @RequestParam(value = URLConstants.PARAM_PAGE, required = false) Integer page, @RequestParam(value = URLConstants.PARAM_IRIS, required = false, defaultValue = "false") boolean iris, @RequestParam(value = URLConstants.PARAM_DESC, required = false, defaultValue = "false") boolean descriptions, HttpServletRequest request) {
+    public ResponseEntity<?> getSearchTarget(@RequestParam(value = URLConstants.PARAM_FIELDS, required = true) List<String> fields, @RequestParam(value = URLConstants.PARAM_VALUE, required = true) String value, @RequestParam(value = URLConstants.PARAM_STRICT, required = false, defaultValue = "false") boolean strict, @RequestParam(value = URLConstants.PARAM_XYWH, required = false) String xywh, @RequestParam(value = URLConstants.PARAM_T, required = false) String t, @RequestParam(value = URLConstants.PARAM_CREATOR, required = false) String creatorIri, @RequestParam(value = URLConstants.PARAM_PAGE, required = false) Integer page, @RequestParam(value = URLConstants.PARAM_IRIS, required = false, defaultValue = "false") boolean iris, @RequestParam(value = URLConstants.PARAM_DESC, required = false, defaultValue = "false") boolean descriptions, HttpServletRequest request) {
         if (page == null) {
 
-            AnnotationCollectionSearch<C> annotationCollectionSearch = (ClientPreference clientPref) -> annotationCollectionSearchService.searchAnnotationCollectionByTarget(fields, value, strict, xywh, t, clientPref);
+            AnnotationCollectionSearch<C> annotationCollectionSearch = (ClientPreference clientPref) -> annotationCollectionSearchService.searchAnnotationCollectionByTarget(fields, value, strict, xywh, t, creatorIri, clientPref);
 
             return processCollectionSearchRequest(annotationCollectionSearch, request);
         } else {
             AnnotationPageSearch<P> annotationPageSearch = (boolean embeddedDescriptions) -> {
 
-                ServiceResponse<List<A>> serviceResponse = annotationSearchService.searchAnnotationsByTarget(fields, value, strict, xywh, t);
+                ServiceResponse<List<A>> serviceResponse = annotationSearchService.searchAnnotationsByTarget(fields, value, strict, xywh, t, creatorIri);
                 Status status = serviceResponse.getStatus();
 
                 if (!status.equals(Status.OK)) {
@@ -91,14 +90,40 @@ public abstract class AbstractAnnotationSearchController<A extends AbstractAnnot
 
                 List<A> annotations = serviceResponse.getObj();
 
-                return annotationPageSearchService.buildAnnotationPageByTarget(annotations, fields, value, strict, xywh, t, page, embeddedDescriptions);
+                return annotationPageSearchService.buildAnnotationPageByTarget(annotations, fields, value, strict, xywh, t, creatorIri, page, embeddedDescriptions);
             };
 
             return processPageSearchRequest(annotationPageSearch, iris, descriptions);
         }
     }
 
-    private ResponseEntity<?> processCollectionSearchRequest(AnnotationCollectionSearch<C> annotationCollectionSearch, HttpServletRequest request) {
+    @RequestMapping(value = REQUEST_PATH_CREATOR, method = RequestMethod.GET)
+    public ResponseEntity<?> getSearchCreator(@RequestParam(value = URLConstants.PARAM_LEVELS, required = true) List<String> levels, @RequestParam(value = URLConstants.PARAM_TYPE, required = true) String type, @RequestParam(value = URLConstants.PARAM_VALUE, required = true) String value, @RequestParam(value = URLConstants.PARAM_PAGE, required = false) Integer page, @RequestParam(value = URLConstants.PARAM_IRIS, required = false, defaultValue = "false") boolean iris, @RequestParam(value = URLConstants.PARAM_DESC, required = false, defaultValue = "false") boolean descriptions, HttpServletRequest request) {
+        if (page == null) {
+
+            AnnotationCollectionSearch<C> annotationCollectionSearch = (ClientPreference clientPref) -> annotationCollectionSearchService.searchAnnotationCollectionByCreator(levels, type, value, clientPref);
+
+            return processCollectionSearchRequest(annotationCollectionSearch, request);
+        } else {
+            AnnotationPageSearch<P> annotationPageSearch = (boolean embeddedDescriptions) -> {
+
+                ServiceResponse<List<A>> serviceResponse = annotationSearchService.searchAnnotationsByCreator(levels, type, value);
+                Status status = serviceResponse.getStatus();
+
+                if (!status.equals(Status.OK)) {
+                    return new ServiceResponse<P>(status, null);
+                }
+
+                List<A> annotations = serviceResponse.getObj();
+
+                return annotationPageSearchService.buildAnnotationPageByCreator(annotations, levels, type, value, page, embeddedDescriptions);
+            };
+
+            return processPageSearchRequest(annotationPageSearch, iris, descriptions);
+        }
+    }
+
+    private ResponseEntity<C> processCollectionSearchRequest(AnnotationCollectionSearch<C> annotationCollectionSearch, HttpServletRequest request) {
 
         ClientPreference clientPref = determineClientPreference(request);
         if (clientPref == null) {
@@ -108,6 +133,10 @@ public abstract class AbstractAnnotationSearchController<A extends AbstractAnnot
         ServiceResponse<C> serviceResponse = annotationCollectionSearch.searchAnnotationCollection(clientPref);
         Status status = serviceResponse.getStatus();
 
+        if (status.equals(Status.NON_CONFORMANT)) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        }
+
         if (status.equals(Status.NOT_FOUND)) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
@@ -115,7 +144,7 @@ public abstract class AbstractAnnotationSearchController<A extends AbstractAnnot
         return ResponseEntity.ok(serviceResponse.getObj());
     }
 
-    private ResponseEntity<?> processPageSearchRequest(AnnotationPageSearch<P> annotationPageSearch, boolean iris, boolean descs) {
+    private ResponseEntity<P> processPageSearchRequest(AnnotationPageSearch<P> annotationPageSearch, boolean iris, boolean descs) {
 
         if (iris && descs) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
@@ -128,6 +157,10 @@ public abstract class AbstractAnnotationSearchController<A extends AbstractAnnot
             serviceResponse = annotationPageSearch.searchAnnotationPage(false);
         }
         Status status = serviceResponse.getStatus();
+
+        if (status.equals(Status.NON_CONFORMANT)) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        }
 
         if (status.equals(Status.NOT_FOUND)) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);

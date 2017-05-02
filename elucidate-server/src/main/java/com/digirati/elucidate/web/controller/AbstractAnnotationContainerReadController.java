@@ -6,7 +6,6 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -37,8 +36,7 @@ public abstract class AbstractAnnotationContainerReadController<A extends Abstra
     private AbstractAnnotationPageService<A, P> annotationPageService;
     private AbstractAnnotationCollectionService<A, C> annotationCollectionService;
 
-    @Autowired
-    public AbstractAnnotationContainerReadController(AbstractAnnotationService<A> annotationService, AbstractAnnotationPageService<A, P> annotationPageService, AbstractAnnotationCollectionService<A, C> annotationCollectionService) {
+    protected AbstractAnnotationContainerReadController(AbstractAnnotationService<A> annotationService, AbstractAnnotationPageService<A, P> annotationPageService, AbstractAnnotationCollectionService<A, C> annotationCollectionService) {
         this.annotationService = annotationService;
         this.annotationPageService = annotationPageService;
         this.annotationCollectionService = annotationCollectionService;
@@ -53,7 +51,7 @@ public abstract class AbstractAnnotationContainerReadController<A extends Abstra
         }
     }
 
-    private ResponseEntity<?> processCollectionRequest(String collectionId, HttpServletRequest request) {
+    private ResponseEntity<C> processCollectionRequest(String collectionId, HttpServletRequest request) {
 
         ClientPreference clientPref = determineClientPreference(request);
         if (clientPref == null) {
@@ -74,7 +72,7 @@ public abstract class AbstractAnnotationContainerReadController<A extends Abstra
         return ResponseEntity.ok(serviceResponse.getObj());
     }
 
-    private ResponseEntity<?> processPageRequest(String collectionId, int page, boolean iris, boolean descs) {
+    private ResponseEntity<P> processPageRequest(String collectionId, int page, boolean iris, boolean descs) {
 
         if (iris && descs) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);

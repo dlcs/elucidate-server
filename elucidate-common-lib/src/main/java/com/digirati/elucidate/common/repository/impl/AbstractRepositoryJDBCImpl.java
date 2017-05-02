@@ -6,12 +6,12 @@ import java.util.List;
 import org.apache.log4j.Logger;
 import org.springframework.dao.IncorrectResultSizeDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
-
-import com.digirati.elucidate.common.infrastructure.rowmapper.AbstractRowMapper;
+import org.springframework.jdbc.core.ResultSetExtractor;
+import org.springframework.jdbc.core.RowMapper;
 
 public abstract class AbstractRepositoryJDBCImpl {
 
-    protected final Logger LOGGER = Logger.getLogger(AbstractRepositoryJDBCImpl.class);
+    protected final Logger LOGGER = Logger.getLogger(getClass());
 
     private JdbcTemplate jdbcTemplate;
 
@@ -24,7 +24,7 @@ public abstract class AbstractRepositoryJDBCImpl {
         return jdbcTemplate.queryForObject(sql, params, sqlTypes, clazz);
     }
 
-    protected <T> T queryForObject(String sql, Object[] params, int[] sqlTypes, AbstractRowMapper<T> rowMapper) {
+    protected <T> T queryForObject(String sql, Object[] params, int[] sqlTypes, RowMapper<T> rowMapper) {
         List<T> results = queryForList(sql, params, sqlTypes, rowMapper);
         if (results.isEmpty()) {
             return null;
@@ -35,7 +35,12 @@ public abstract class AbstractRepositoryJDBCImpl {
         }
     }
 
-    protected <T> List<T> queryForList(String sql, Object[] params, int[] sqlTypes, AbstractRowMapper<T> rowMapper) {
+    protected <T> T queryForObject(String sql, Object[] params, int[] sqlTypes, ResultSetExtractor<T> resultSetExtractor) {
+        LOGGER.info(String.format("Executing SQL query [%s] with parameters [%s] and SQL type [%s] using result set extractor [%s]", sql, Arrays.toString(params), Arrays.toString(sqlTypes), resultSetExtractor));
+        return jdbcTemplate.query(sql, params, sqlTypes, resultSetExtractor);
+    }
+
+    protected <T> List<T> queryForList(String sql, Object[] params, int[] sqlTypes, RowMapper<T> rowMapper) {
         LOGGER.info(String.format("Executing SQL query [%s] with parameters [%s] and SQL type [%s] using row mapper [%s]", sql, Arrays.toString(params), Arrays.toString(sqlTypes), rowMapper));
         return jdbcTemplate.query(sql, params, sqlTypes, rowMapper);
     }

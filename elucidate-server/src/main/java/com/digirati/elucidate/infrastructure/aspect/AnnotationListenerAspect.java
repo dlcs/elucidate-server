@@ -11,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
+import org.springframework.core.Ordered;
+import org.springframework.core.annotation.Order;
 import org.springframework.core.task.TaskExecutor;
 import org.springframework.stereotype.Component;
 
@@ -18,6 +20,7 @@ import com.digirati.elucidate.common.infrastructure.listener.RegisteredListener;
 import com.digirati.elucidate.common.model.annotation.w3c.W3CAnnotation;
 
 @Aspect
+@Order(Ordered.LOWEST_PRECEDENCE - 1)
 @Component(AnnotationListenerAspect.COMPONENT_NAME)
 public class AnnotationListenerAspect {
 

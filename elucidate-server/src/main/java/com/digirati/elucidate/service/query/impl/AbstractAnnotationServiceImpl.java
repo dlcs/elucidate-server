@@ -8,7 +8,6 @@ import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.digirati.elucidate.common.infrastructure.constants.JSONLDConstants;
 import com.digirati.elucidate.common.infrastructure.constants.OAConstants;
@@ -28,7 +27,7 @@ public abstract class AbstractAnnotationServiceImpl<A extends AbstractAnnotation
     private AnnotationStoreRepository annotationStoreRepository;
     private IDGenerator idGenerator;
 
-    public AbstractAnnotationServiceImpl(AnnotationStoreRepository annotationStoreRepository, IDGenerator idGenerator) {
+    protected AbstractAnnotationServiceImpl(AnnotationStoreRepository annotationStoreRepository, IDGenerator idGenerator) {
         this.annotationStoreRepository = annotationStoreRepository;
         this.idGenerator = idGenerator;
     }
@@ -40,7 +39,6 @@ public abstract class AbstractAnnotationServiceImpl<A extends AbstractAnnotation
     protected abstract String buildAnnotationIri(String collectionId, String annotationId);
 
     @Override
-    @Transactional(readOnly = true)
     public ServiceResponse<A> getAnnotation(String collectionId, String annotationId) {
 
         W3CAnnotation w3cAnnotation = annotationStoreRepository.getAnnotationByCollectionIdAndAnnotationId(collectionId, annotationId);
@@ -62,7 +60,6 @@ public abstract class AbstractAnnotationServiceImpl<A extends AbstractAnnotation
     }
 
     @Override
-    @Transactional(readOnly = true)
     public ServiceResponse<List<A>> getAnnotations(String collectionId) {
 
         List<W3CAnnotation> w3cAnnotations = annotationStoreRepository.getAnnotationsByCollectionId(collectionId);
@@ -79,7 +76,6 @@ public abstract class AbstractAnnotationServiceImpl<A extends AbstractAnnotation
 
     @Override
     @SuppressWarnings("serial")
-    @Transactional(readOnly = false)
     public ServiceResponse<A> createAnnotation(String collectionId, String annotationId, A annotation) {
 
         if (StringUtils.isBlank(annotationId)) {
@@ -113,7 +109,7 @@ public abstract class AbstractAnnotationServiceImpl<A extends AbstractAnnotation
 
         String annotationJson;
         try {
-            annotationJson = JsonUtils.toPrettyString(annotationMap);
+            annotationJson = JsonUtils.toString(annotationMap);
         } catch (IOException e) {
             LOGGER.debug(String.format("Detected invalid JSON in Annotation Map [%s]", annotationMap), e);
             return new ServiceResponse<A>(Status.NON_CONFORMANT, null);
@@ -126,7 +122,6 @@ public abstract class AbstractAnnotationServiceImpl<A extends AbstractAnnotation
     }
 
     @Override
-    @Transactional(readOnly = false)
     public ServiceResponse<A> updateAnnotation(String collectionId, String annotationId, A annotation, String cacheKey) {
 
         ServiceResponse<A> existingAnnotationServiceResponse = getAnnotation(collectionId, annotationId);
@@ -163,7 +158,7 @@ public abstract class AbstractAnnotationServiceImpl<A extends AbstractAnnotation
 
         String annotationJson;
         try {
-            annotationJson = JsonUtils.toPrettyString(annotationMap);
+            annotationJson = JsonUtils.toString(annotationMap);
         } catch (IOException e) {
             LOGGER.debug(String.format("Detected invalid JSON in Annotation Map [%s]", annotationMap), e);
             return new ServiceResponse<A>(Status.NON_CONFORMANT, null);
@@ -176,7 +171,6 @@ public abstract class AbstractAnnotationServiceImpl<A extends AbstractAnnotation
     }
 
     @Override
-    @Transactional(readOnly = false)
     public ServiceResponse<Void> deleteAnnotation(String collectionId, String annotationId, String cacheKey) {
 
         ServiceResponse<A> existingAnnotationServiceResponse = getAnnotation(collectionId, annotationId);

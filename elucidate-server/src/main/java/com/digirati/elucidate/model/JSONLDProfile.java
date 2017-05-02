@@ -27,9 +27,4 @@ public class JSONLDProfile {
     public void setFormats(List<Format> formats) {
         this.formats = formats;
     }
-
-    @Override
-    public String toString() {
-        return "JsonLdProfile [contexts=" + contexts + ", formats=" + formats + "]";
-    }
 }

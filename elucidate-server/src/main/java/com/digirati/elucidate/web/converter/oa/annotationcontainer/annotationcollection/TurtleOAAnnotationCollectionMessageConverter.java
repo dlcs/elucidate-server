@@ -6,7 +6,6 @@ import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 
 import com.digirati.elucidate.common.model.annotation.oa.OAAnnotationCollection;
-import com.digirati.elucidate.common.model.annotation.w3c.W3CAnnotationCollection;
 import com.github.jsonldjava.core.JsonLdProcessor;
 import com.github.jsonldjava.impl.TurtleTripleCallback;
 
@@ -28,6 +27,6 @@ public class TurtleOAAnnotationCollectionMessageConverter extends AbstractOAAnno
 
     @Override
     protected OAAnnotationCollection getObjectRepresentation(String str, MediaType contentType) throws Exception {
-        throw new UnsupportedOperationException(String.format("Conversion from Content Type [%s] to [%s] is not supported", contentType, W3CAnnotationCollection.class));
+        throw new UnsupportedOperationException(String.format("Conversion from Content Type [%s] to [%s] is not supported", contentType, OAAnnotationCollection.class));
     }
 }
