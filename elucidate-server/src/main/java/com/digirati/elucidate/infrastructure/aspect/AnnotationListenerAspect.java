@@ -76,6 +76,7 @@ public class AnnotationListenerAspect {
             taskExecutor.execute(() -> {
                 LOGGER.info(String.format("Notifying listener [%s] of CREATE on W3CAnnotation [%s]", registeredListener, w3cAnnotation));
                 registeredListener.notifyCreate(w3cAnnotation);
+                LOGGER.info(String.format("Listener [%s] has finished processing CREATE on W3CAnnotation [%s]", registeredListener, w3cAnnotation));
             });
         }
     }
@@ -86,6 +87,7 @@ public class AnnotationListenerAspect {
             taskExecutor.execute(() -> {
                 LOGGER.info(String.format("Notifying listener [%s] of UPDATE on W3CAnnotation [%s]", registeredListener, w3cAnnotation));
                 registeredListener.notifyUpdate(w3cAnnotation);
+                LOGGER.info(String.format("Listener [%s] has finished processing UPDATE on W3CAnnotation [%s]", registeredListener, w3cAnnotation));
             });
         }
     }
@@ -96,6 +98,7 @@ public class AnnotationListenerAspect {
             taskExecutor.execute(() -> {
                 LOGGER.info(String.format("Notifying listener [%s] of DELETE on W3CAnnotation [%s]", registeredListener, w3cAnnotation));
                 registeredListener.notifyDelete(w3cAnnotation);
+                LOGGER.info(String.format("Listener [%s] has finished processing DELETE on W3CAnnotation [%s]", registeredListener, w3cAnnotation));
             });
         }
     }

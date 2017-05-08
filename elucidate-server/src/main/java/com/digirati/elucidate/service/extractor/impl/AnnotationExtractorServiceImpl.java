@@ -64,8 +64,9 @@ public class AnnotationExtractorServiceImpl implements AnnotationExtractorServic
             createAnnotationBodies(w3cAnnotation);
             createAnnotationTargets(w3cAnnotation);
             createAnnotationCreators(w3cAnnotation);
-        } catch (IOException e) {
-            LOGGER.info(String.format("An error occurred processing `target`'s for W3CAnnotation [%s]", w3cAnnotation), e);
+            LOGGER.info(String.format("Completed processing CREATE for W3CAnnotation [%s]", w3cAnnotation));
+        } catch (Exception e) {
+            LOGGER.error(String.format("An error occurred processing W3CAnnotation [%s]", w3cAnnotation), e);
         }
     }
 
@@ -101,13 +102,17 @@ public class AnnotationExtractorServiceImpl implements AnnotationExtractorServic
         int annotationPk = w3cAnnotation.getPk();
         Map<String, Object> jsonMap = w3cAnnotation.getJsonMap();
 
+        LOGGER.info(String.format("Processing `body` values for W3CAnnotation [%s]", w3cAnnotation));
         List<AnnotationBody> annotationBodies = new AnnotationBodyExtractor().extractBodies(jsonMap);
+        LOGGER.info(String.format("Got [%s] `body` values for W3CAnnotation [%s]", w3cAnnotation));
         for (AnnotationBody annotationBody : annotationBodies) {
 
             String bodyIri = annotationBody.getBodyIri();
             String sourceIri = annotationBody.getSourceIri();
             String bodyJson = JsonUtils.toString(annotationBody.getJsonMap());
+            LOGGER.info(String.format("Preparing to create `body` with ID [%s], source IRI [%s] and JSON [%s]", bodyIri, sourceIri, bodyJson));
             annotationBody = annotationBodyStoreRepository.createAnnotationBody(annotationPk, bodyIri, sourceIri, bodyJson);
+            LOGGER.info(String.format("Created AnnotationBody [%s] in repository", annotationBody));
 
             int bodyPk = annotationBody.getPk();
             Map<String, Object> bodyJsonMap = annotationBody.getJsonMap();
@@ -120,13 +125,17 @@ public class AnnotationExtractorServiceImpl implements AnnotationExtractorServic
         int annotationPk = w3cAnnotation.getPk();
         Map<String, Object> jsonMap = w3cAnnotation.getJsonMap();
 
+        LOGGER.info(String.format("Processing `target` values for W3CAnnotation [%s]", w3cAnnotation));
         List<AnnotationTarget> annotationTargets = new AnnotationTargetExtractor().extractTargets(jsonMap);
+        LOGGER.info(String.format("Got [%s] `target` values for W3CAnnotation [%s]", w3cAnnotation));
         for (AnnotationTarget annotationTarget : annotationTargets) {
 
             String targetIri = annotationTarget.getTargetIri();
             String sourceIri = annotationTarget.getSourceIri();
             String targetJson = JsonUtils.toString(annotationTarget.getJsonMap());
+            LOGGER.info(String.format("Preparing to create `target` with ID [%s], source IRI [%s] and JSON [%s]", targetIri, sourceIri, targetJson));
             annotationTarget = annotationTargetStoreRepository.createAnnotationTarget(annotationPk, targetIri, sourceIri, targetJson);
+            LOGGER.info(String.format("Created AnnotationTarget [%s] in repository", annotationTarget));
 
             int targetPk = annotationTarget.getPk();
             Map<String, Object> targetJsonMap = annotationTarget.getJsonMap();
