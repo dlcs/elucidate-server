@@ -104,7 +104,7 @@ public class AnnotationExtractorServiceImpl implements AnnotationExtractorServic
 
         LOGGER.info(String.format("Processing `body` values for W3CAnnotation [%s]", w3cAnnotation));
         List<AnnotationBody> annotationBodies = new AnnotationBodyExtractor().extractBodies(jsonMap);
-        LOGGER.info(String.format("Got [%s] `body` values for W3CAnnotation [%s]", w3cAnnotation));
+        LOGGER.info(String.format("Got [%s] `body` values for W3CAnnotation [%s]", annotationBodies.size(), w3cAnnotation));
         for (AnnotationBody annotationBody : annotationBodies) {
 
             String bodyIri = annotationBody.getBodyIri();
@@ -127,7 +127,7 @@ public class AnnotationExtractorServiceImpl implements AnnotationExtractorServic
 
         LOGGER.info(String.format("Processing `target` values for W3CAnnotation [%s]", w3cAnnotation));
         List<AnnotationTarget> annotationTargets = new AnnotationTargetExtractor().extractTargets(jsonMap);
-        LOGGER.info(String.format("Got [%s] `target` values for W3CAnnotation [%s]", w3cAnnotation));
+        LOGGER.info(String.format("Got [%s] `target` values for W3CAnnotation [%s]", annotationTargets.size(), w3cAnnotation));
         for (AnnotationTarget annotationTarget : annotationTargets) {
 
             String targetIri = annotationTarget.getTargetIri();
