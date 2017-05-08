@@ -112,7 +112,7 @@ $BODY$
                     ELSE
                         true
                 END
-                AND at.deleted = false
+                AND ab.deleted = false
                 AND a.deleted = false;
     END;
 $BODY$
