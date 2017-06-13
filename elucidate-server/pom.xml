@@ -9,7 +9,7 @@
 	<parent>
 		<groupId>com.digirati.elucidate</groupId>
 		<artifactId>elucidate-parent</artifactId>
-		<version>1.2.0</version>
+		<version>1.2.1-SNAPSHOT</version>
 	</parent>
 
 	<build>
@@ -31,12 +31,12 @@
 		<dependency>
 			<groupId>com.digirati.elucidate</groupId>
 			<artifactId>elucidate-common-lib</artifactId>
-			<version>1.2.0</version>
+			<version>1.2.1-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>com.digirati.elucidate</groupId>
 			<artifactId>elucidate-converter</artifactId>
-			<version>1.2.0</version>
+			<version>1.2.1-SNAPSHOT</version>
 		</dependency>
 		<!-- JSON-LD Dependencies -->
 		<dependency>
