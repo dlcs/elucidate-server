@@ -30,7 +30,7 @@ public class AbstractMessageConverterTest {
     @Test
     public void testGetJsonLdProfile() {
 	Map <String,String> map = new HashMap<>();
-	map.put("profile", "\"http://iiif.io/api/presentation/2/context.json\",\"http://iiif.io/api/search/1/context.json\"");
+	map.put("profile", "\"http://iiif.io/api/presentation/2/context.json\" \"http://iiif.io/api/search/1/context.json\"");
 	MediaType contentType = new MediaType(MediaType.APPLICATION_JSON, map);
 	 
 	JSONLDProfile profile = abstractMessageconverter.getJsonLdProfile(contentType, null);
