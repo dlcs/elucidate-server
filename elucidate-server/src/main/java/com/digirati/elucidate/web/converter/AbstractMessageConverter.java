@@ -61,8 +61,14 @@ public abstract class AbstractMessageConverter<T> extends AbstractHttpMessageCon
         JSONLDProfile jsonLdProfile = new JSONLDProfile();
 
         String profile = contentType.getParameter("profile");
+ 
         if (StringUtils.isNotBlank(profile)) {
-            defaultContexts = new String[] {profile};
+            if(profile.indexOf(",") > 0){
+        	String[] profiles = profile.split("[,]");
+        	defaultContexts = profiles;
+            }else{
+        	defaultContexts = new String[] {profile};
+            }
         }
 
         List<Format> formats = new ArrayList<Format>();
