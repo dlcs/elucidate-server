@@ -63,7 +63,7 @@ public abstract class AbstractMessageConverter<T> extends AbstractHttpMessageCon
         String profile = contentType.getParameter("profile");
  
         if (StringUtils.isNotBlank(profile)) {
-            defaultContexts = StringUtils.split(profile, ",");
+            defaultContexts = StringUtils.split(profile, " ");
         }
 
         List<Format> formats = new ArrayList<Format>();
