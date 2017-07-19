@@ -14,6 +14,7 @@ public class URLConstants {
     public static final String PARAM_LEVELS = "levels";
     public static final String PARAM_TYPE = "type";
     public static final String PARAM_FIELD = "field";
+    public static final String PARAM_GENERATOR = "generator";
 
     private URLConstants() {}
 }
