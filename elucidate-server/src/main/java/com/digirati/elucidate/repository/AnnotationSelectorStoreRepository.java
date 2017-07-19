@@ -1,7 +1,5 @@
 package com.digirati.elucidate.repository;
 
-import java.util.List;
-
 import com.digirati.elucidate.model.annotation.selector.css.AnnotationCSSSelector;
 import com.digirati.elucidate.model.annotation.selector.dataposition.AnnotationDataPositionSelector;
 import com.digirati.elucidate.model.annotation.selector.fragment.AnnotationFragmentSelector;
@@ -9,6 +7,8 @@ import com.digirati.elucidate.model.annotation.selector.svg.AnnotationSVGSelecto
 import com.digirati.elucidate.model.annotation.selector.textposition.AnnotationTextPositionSelector;
 import com.digirati.elucidate.model.annotation.selector.textquote.AnnotationTextQuoteSelector;
 import com.digirati.elucidate.model.annotation.selector.xpath.AnnotationXPathSelector;
+
+import java.util.List;
 
 public interface AnnotationSelectorStoreRepository {
 

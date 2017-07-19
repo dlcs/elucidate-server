@@ -1,8 +1,8 @@
 package com.digirati.elucidate.repository;
 
-import java.util.List;
-
 import org.apache.commons.lang3.tuple.Pair;
+
+import java.util.List;
 
 public interface AnnotationStatisticsRepository {
 
