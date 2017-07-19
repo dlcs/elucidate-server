@@ -1,6 +1,6 @@
--- Function: public.annotation_search_by_target(boolean, boolean, character varying, boolean, integer, integer, integer, integer, integer, integer, character varying)
+-- Function: public.annotation_search_by_target(boolean, boolean, character varying, boolean, integer, integer, integer, integer, integer, integer, character varying, character varying)
 
--- DROP FUNCTION public.annotation_search_by_target(boolean, boolean, character varying, boolean, integer, integer, integer, integer, integer, integer, character varying);
+-- DROP FUNCTION public.annotation_search_by_target(boolean, boolean, character varying, boolean, integer, integer, integer, integer, integer, integer, character varying, character varying);
 
 CREATE OR REPLACE FUNCTION public.annotation_search_by_target(
     _searchids boolean,
@@ -13,8 +13,9 @@ CREATE OR REPLACE FUNCTION public.annotation_search_by_target(
     _h integer,
     _start integer,
     _end integer,
-    _creatoriri character varying)
-RETURNS SETOF annotation_get AS
+    _creatoriri character varying,
+    _generatoriri character varying)
+  RETURNS SETOF annotation_get AS
 $BODY$
     BEGIN
         RETURN QUERY
@@ -32,7 +33,8 @@ $BODY$
                     LEFT JOIN annotation_collection AS ac ON a.collectionid = ac.id
                     LEFT JOIN annotation_target AS at ON at.annotationid = a.id
                     LEFT JOIN annotation_selector AS asl ON asl.targetid = at.id
-                    LEFT JOIN annotation_agent AS ag ON ag.targetid = at.id
+                    LEFT JOIN annotation_agent AS agc ON agc.targetid = at.id
+                    LEFT JOIN annotation_agent AS agg ON agg.targetid = at.id
             WHERE
                 (CASE _searchids
                     WHEN true THEN
@@ -41,7 +43,7 @@ $BODY$
                                 WHEN true THEN
                                     at.targetiri = _value
                                 ELSE
-                                    at.targetiri LIKE (_value || '%') 
+                                    at.targetiri LIKE (_value || '%')
                             END
                         )
                     ELSE
@@ -101,14 +103,19 @@ $BODY$
                                     END
                             )
                         )
-                        
+
                     ELSE
                         true
                 END
                 AND CASE (_creatoriri IS NOT NULL)
                     WHEN true THEN
-                        ag.agentiri = _creatoriri
-                        AND ag.relationshiptype = 'CREATOR'
+                        (agc.agentiri = _creatoriri AND agc.relationshiptype = 'CREATOR')
+                    ELSE
+                        true
+                END
+                AND CASE (_generatoriri IS NOT NULL)
+                    WHEN true THEN
+                        (agg.agentiri = _generatoriri AND agg.relationshiptype = 'GENERATOR')
                     ELSE
                         true
                 END
@@ -118,7 +125,7 @@ $BODY$
 $BODY$
 LANGUAGE plpgsql VOLATILE COST 100 ROWS 1000;
 
-ALTER FUNCTION public.annotation_search_by_target(boolean, boolean, character varying, boolean, integer, integer, integer, integer, integer, integer, character varying) OWNER TO postgres;
-GRANT EXECUTE ON FUNCTION public.annotation_search_by_target(boolean, boolean, character varying, boolean, integer, integer, integer, integer, integer, integer, character varying) TO postgres;
-GRANT EXECUTE ON FUNCTION public.annotation_search_by_target(boolean, boolean, character varying, boolean, integer, integer, integer, integer, integer, integer, character varying) TO annotations_role;
-REVOKE ALL ON FUNCTION public.annotation_search_by_target(boolean, boolean, character varying, boolean, integer, integer, integer, integer, integer, integer, character varying) FROM public;
+ALTER FUNCTION public.annotation_search_by_target(boolean, boolean, character varying, boolean, integer, integer, integer, integer, integer, integer, character varying, character varying) OWNER TO postgres;
+GRANT EXECUTE ON FUNCTION public.annotation_search_by_target(boolean, boolean, character varying, boolean, integer, integer, integer, integer, integer, integer, character varying, character varying) TO postgres;
+GRANT EXECUTE ON FUNCTION public.annotation_search_by_target(boolean, boolean, character varying, boolean, integer, integer, integer, integer, integer, integer, character varying, character varying) TO annotations_role;
+REVOKE ALL ON FUNCTION public.annotation_search_by_target(boolean, boolean, character varying, boolean, integer, integer, integer, integer, integer, integer, character varying, character varying) FROM public;

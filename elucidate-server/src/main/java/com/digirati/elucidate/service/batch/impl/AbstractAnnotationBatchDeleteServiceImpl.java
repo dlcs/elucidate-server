@@ -40,12 +40,12 @@ public abstract class AbstractAnnotationBatchDeleteServiceImpl<A extends Abstrac
         Map<String, Object> jsonMap = batchOperation.getJsonMap();
 
         processBatchDeletes(jsonMap, OAConstants.URI_HAS_BODY, (List<String> _searchFields, String _searchValue) -> {
-            ServiceResponse<List<A>> serviceResponse = annotationSearchService.searchAnnotationsByBody(_searchFields, _searchValue, true, null, null, null);
+            ServiceResponse<List<A>> serviceResponse = annotationSearchService.searchAnnotationsByBody(_searchFields, _searchValue, true, null, null, null, null);
             return serviceResponse.getObj();
         });
 
         processBatchDeletes(jsonMap, OAConstants.URI_HAS_TARGET, (List<String> _searchFields, String _searchValue) -> {
-            ServiceResponse<List<A>> serviceResponse = annotationSearchService.searchAnnotationsByTarget(_searchFields, _searchValue, true, null, null, null);
+            ServiceResponse<List<A>> serviceResponse = annotationSearchService.searchAnnotationsByTarget(_searchFields, _searchValue, true, null, null, null, null);
             return serviceResponse.getObj();
         });
 
