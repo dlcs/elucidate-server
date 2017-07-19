@@ -82,13 +82,9 @@ public abstract class AbstractConverter {
 
     private ArrayNode processArrayNode(JsonNode arrayNode) {
 
-        arrayNode = arrayNode;
-
         ArrayNode convertedArrayNode = JsonNodeFactory.instance.arrayNode();
 
-        Iterator<JsonNode> arrayNodeIterator = arrayNode.iterator();
-        while (arrayNodeIterator.hasNext()) {
-            JsonNode node = arrayNodeIterator.next();
+        for (JsonNode node : arrayNode) {
             convertedArrayNode.add(processNode(node));
         }
 
@@ -97,15 +93,11 @@ public abstract class AbstractConverter {
 
     private TextNode processTextNode(JsonNode textNode) {
 
-        textNode = textNode;
-
         String value = translateType(textNode.asText());
         return JsonNodeFactory.instance.textNode(value);
     }
 
     private NumericNode processNumericNode(JsonNode numericNode) {
-
-        numericNode = numericNode;
 
         int value = numericNode.asInt();
         return JsonNodeFactory.instance.numberNode(value);

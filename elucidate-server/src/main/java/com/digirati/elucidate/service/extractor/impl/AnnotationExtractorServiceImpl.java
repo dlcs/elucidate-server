@@ -83,6 +83,7 @@ public class AnnotationExtractorServiceImpl implements AnnotationExtractorServic
             int bodyPk = annotationBody.getPk();
             deleteAnnotationSelectors(bodyPk, null);
             deleteAnnotationCreators(null, bodyPk, null);
+            deleteAnnotationGenerators(null, bodyPk, null);
         }
 
         List<AnnotationTarget> annotationTargets = deleteTargets(w3cAnnotation);
@@ -90,6 +91,7 @@ public class AnnotationExtractorServiceImpl implements AnnotationExtractorServic
             int targetPk = annotationTarget.getPk();
             deleteAnnotationSelectors(null, targetPk);
             deleteAnnotationCreators(null, null, targetPk);
+            deleteAnnotationGenerators(null, null, targetPk);
         }
     }
 

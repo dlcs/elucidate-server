@@ -58,20 +58,20 @@ public abstract class AbstractMessageConverter<T> extends AbstractHttpMessageCon
         JSONLDProfile jsonLdProfile = new JSONLDProfile();
 
         String profile = contentType.getParameter("profile");
- 
+
         if (StringUtils.isNotBlank(profile)) {
             defaultContexts = StringUtils.split(profile, " ");
         }
 
         List<Format> formats = new ArrayList<Format>();
-        for (int i = 0; i < defaultContexts.length; i++) {
-            formats.add(extractFormat(defaultContexts[i]));
+        for (String defaultContext : defaultContexts) {
+            formats.add(extractFormat(defaultContext));
         }
         jsonLdProfile.setFormats(formats);
 
         List<String> contexts = new ArrayList<String>();
-        for (int i = 0; i < defaultContexts.length; i++) {
-            contexts.add(prepareContext(defaultContexts[i]));
+        for (String defaultContext : defaultContexts) {
+            contexts.add(prepareContext(defaultContext));
         }
 
         jsonLdProfile.setContexts(new HashMap<String, List<String>>() {
@@ -109,9 +109,7 @@ public abstract class AbstractMessageConverter<T> extends AbstractHttpMessageCon
 
             ArrayNode jsonArray = JsonNodeFactory.instance.arrayNode();
 
-            Iterator<ProcessingMessage> iterator = processingReport.iterator();
-            while (iterator.hasNext()) {
-                ProcessingMessage processingMessage = iterator.next();
+            for (ProcessingMessage processingMessage : processingReport) {
                 jsonArray.add(processingMessage.asJson());
             }
 

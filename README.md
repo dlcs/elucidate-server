@@ -62,7 +62,7 @@ See [`USAGE.md`](USAGE.md) for some sample requests.
 ## Built With
 
 * [Spring Framework](https://projects.spring.io/spring-framework/)
-* [Jackson](http://wiki.fasterxml.com/JacksonHome) 
+* [Jackson](http://wiki.fasterxml.com/JacksonHome)
 * [JSONLD-JAVA](https://github.com/jsonld-java/jsonld-java)
 * [JSON Schema Validator](https://github.com/daveclayton/json-schema-validator)
 
@@ -70,11 +70,11 @@ See [`USAGE.md`](USAGE.md) for some sample requests.
 
 Please read [`CONTRIBUTING.md`](CONTRIBUTING.md) for details on our code of conduct, and the process for submitting pull requests to us.
 
-Contributors should ensure that their code is formatted in a style that is as close to the existing style as possible. For contributors who use the Eclipse IDE, we have included the [`eclipse-java-digirati-style.xml`](eclipse-java-digirati-style.xml).
+Contributors should ensure that their code is formatted in a style that is as close to the existing style as possible.
 
 ## Versioning
 
-We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/dlcs/elucidate-server/tags). 
+We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/dlcs/elucidate-server/tags).
 
 ## License
 
