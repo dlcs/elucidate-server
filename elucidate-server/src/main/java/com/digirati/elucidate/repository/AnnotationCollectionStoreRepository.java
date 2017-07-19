@@ -4,7 +4,7 @@ import com.digirati.elucidate.common.model.annotation.w3c.W3CAnnotationCollectio
 
 public interface AnnotationCollectionStoreRepository {
 
-    public W3CAnnotationCollection getAnnotationCollectionById(String collectionId);
+    W3CAnnotationCollection getAnnotationCollectionById(String collectionId);
 
-    public W3CAnnotationCollection createAnnotationCollection(String collectionId, String annotationCollectionJson);
+    W3CAnnotationCollection createAnnotationCollection(String collectionId, String annotationCollectionJson);
 }

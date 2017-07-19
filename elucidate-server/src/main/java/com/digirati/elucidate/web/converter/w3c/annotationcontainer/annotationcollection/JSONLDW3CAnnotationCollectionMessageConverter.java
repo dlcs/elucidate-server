@@ -81,7 +81,7 @@ public class JSONLDW3CAnnotationCollectionMessageConverter extends AbstractW3CAn
     @SuppressWarnings("unchecked")
     protected W3CAnnotationCollection getObjectRepresentation(String jsonStr, MediaType contentType) throws Exception {
         Map<String, Object> jsonMap = (Map<String, Object>) JsonUtils.fromString(jsonStr);
-        List<Object> jsonList = (List<Object>) JsonLdProcessor.expand(jsonMap, jsonLdOptions);
+        List<Object> jsonList = JsonLdProcessor.expand(jsonMap, jsonLdOptions);
         jsonMap = (Map<String, Object>) jsonList.get(0);
 
         W3CAnnotationCollection w3cAnnotationCollection = new W3CAnnotationCollection();

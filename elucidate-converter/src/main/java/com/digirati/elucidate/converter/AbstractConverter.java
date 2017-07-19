@@ -58,7 +58,7 @@ public abstract class AbstractConverter {
 
     private ObjectNode processObjectNode(JsonNode objectNode) {
 
-        objectNode = (ObjectNode) objectNode;
+        objectNode = objectNode;
 
         ObjectNode oaObjectNode = JsonNodeFactory.instance.objectNode();
 
@@ -82,7 +82,7 @@ public abstract class AbstractConverter {
 
     private ArrayNode processArrayNode(JsonNode arrayNode) {
 
-        arrayNode = (ArrayNode) arrayNode;
+        arrayNode = arrayNode;
 
         ArrayNode convertedArrayNode = JsonNodeFactory.instance.arrayNode();
 
@@ -97,7 +97,7 @@ public abstract class AbstractConverter {
 
     private TextNode processTextNode(JsonNode textNode) {
 
-        textNode = (TextNode) textNode;
+        textNode = textNode;
 
         String value = translateType(textNode.asText());
         return JsonNodeFactory.instance.textNode(value);
@@ -105,7 +105,7 @@ public abstract class AbstractConverter {
 
     private NumericNode processNumericNode(JsonNode numericNode) {
 
-        numericNode = (NumericNode) numericNode;
+        numericNode = numericNode;
 
         int value = numericNode.asInt();
         return JsonNodeFactory.instance.numberNode(value);

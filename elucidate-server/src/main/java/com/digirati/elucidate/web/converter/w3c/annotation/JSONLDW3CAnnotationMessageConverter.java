@@ -1,21 +1,22 @@
 package com.digirati.elucidate.web.converter.w3c.annotation;
 
-import java.io.IOException;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-
+import com.digirati.elucidate.common.model.annotation.w3c.W3CAnnotation;
+import com.digirati.elucidate.common.service.IRIBuilderService;
+import com.digirati.elucidate.model.JSONLDProfile;
+import com.digirati.elucidate.model.JSONLDProfile.Format;
+import com.digirati.elucidate.service.history.W3CAnnotationHistoryService;
+import com.github.jsonldjava.core.JsonLdProcessor;
+import com.github.jsonldjava.utils.JsonUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.web.HttpMediaTypeNotSupportedException;
 
-import com.digirati.elucidate.common.model.annotation.w3c.W3CAnnotation;
-import com.digirati.elucidate.model.JSONLDProfile;
-import com.digirati.elucidate.model.JSONLDProfile.Format;
-import com.github.jsonldjava.core.JsonLdProcessor;
-import com.github.jsonldjava.utils.JsonUtils;
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
 
 @Component
 public class JSONLDW3CAnnotationMessageConverter extends AbstractW3CAnnotationMessageConverter {
@@ -23,8 +24,8 @@ public class JSONLDW3CAnnotationMessageConverter extends AbstractW3CAnnotationMe
     private String[] defaultContexts;
 
     @Autowired
-    public JSONLDW3CAnnotationMessageConverter(@Value("${annotation.w3c.contexts}") String[] defaultContexts) throws IOException {
-        super(APPLICATION_JSON_LD);
+    public JSONLDW3CAnnotationMessageConverter(IRIBuilderService iriBuilderService, W3CAnnotationHistoryService w3cAnnotationHistoryService, @Value("${annotation.w3c.contexts}") String[] defaultContexts) throws IOException {
+        super(iriBuilderService, w3cAnnotationHistoryService, APPLICATION_JSON_LD);
         this.defaultContexts = Arrays.copyOf(defaultContexts, defaultContexts.length);
     }
 
@@ -81,7 +82,7 @@ public class JSONLDW3CAnnotationMessageConverter extends AbstractW3CAnnotationMe
     @SuppressWarnings("unchecked")
     protected W3CAnnotation getObjectRepresentation(String jsonStr, MediaType contentType) throws Exception {
         Map<String, Object> jsonMap = (Map<String, Object>) JsonUtils.fromString(jsonStr);
-        List<Object> jsonList = (List<Object>) JsonLdProcessor.expand(jsonMap, jsonLdOptions);
+        List<Object> jsonList = JsonLdProcessor.expand(jsonMap, jsonLdOptions);
         jsonMap = (Map<String, Object>) jsonList.get(0);
 
         W3CAnnotation w3cAnnotation = new W3CAnnotation();

@@ -1,30 +1,8 @@
 package com.digirati.elucidate.web.converter;
 
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.nio.charset.Charset;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-
-import org.apache.commons.collections.map.ListOrderedMap;
-import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.http.HttpInputMessage;
-import org.springframework.http.HttpOutputMessage;
-import org.springframework.http.MediaType;
-import org.springframework.http.converter.AbstractHttpMessageConverter;
-import org.springframework.http.converter.HttpMessageNotReadableException;
-import org.springframework.http.converter.HttpMessageNotWritableException;
-
 import com.digirati.elucidate.common.infrastructure.constants.JSONLDConstants;
 import com.digirati.elucidate.model.JSONLDProfile;
 import com.digirati.elucidate.model.JSONLDProfile.Format;
-import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
@@ -36,9 +14,28 @@ import com.github.fge.jsonschema.main.JsonSchemaFactory;
 import com.github.fge.jsonschema.main.JsonValidator;
 import com.github.jsonldjava.core.JsonLdOptions;
 import com.github.jsonldjava.utils.JsonUtils;
+import org.apache.commons.collections.map.ListOrderedMap;
+import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.http.HttpInputMessage;
+import org.springframework.http.HttpOutputMessage;
+import org.springframework.http.MediaType;
+import org.springframework.http.converter.AbstractHttpMessageConverter;
+import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.http.converter.HttpMessageNotWritableException;
+
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.nio.charset.Charset;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 public abstract class AbstractMessageConverter<T> extends AbstractHttpMessageConverter<T> {
 
+    protected static final DateFormat MEMENTO_DATE_FORMAT = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss zzz");
     protected static final MediaType APPLICATION_JSON_LD = MediaType.valueOf("application/ld+json");
     protected static final MediaType APPLICATION_TURTLE = MediaType.valueOf("application/x-turtle");
 
@@ -102,7 +99,7 @@ public abstract class AbstractMessageConverter<T> extends AbstractHttpMessageCon
         return orderedJsonMap;
     }
 
-    protected String validate(String jsonStr, JsonNode validationSchema) throws ProcessingException, JsonGenerationException, IOException {
+    protected String validate(String jsonStr, JsonNode validationSchema) throws ProcessingException, IOException {
 
         JsonNode json = JsonLoader.fromString(jsonStr);
 

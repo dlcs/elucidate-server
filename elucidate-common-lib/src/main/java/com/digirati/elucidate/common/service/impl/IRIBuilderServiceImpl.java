@@ -1,20 +1,19 @@
 package com.digirati.elucidate.common.service.impl;
 
-import java.net.URISyntaxException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-
+import com.digirati.elucidate.common.infrastructure.constants.URLConstants;
+import com.digirati.elucidate.common.infrastructure.exception.InvalidIRIException;
+import com.digirati.elucidate.common.service.IRIBuilderService;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.client.utils.URIBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import com.digirati.elucidate.common.infrastructure.constants.URLConstants;
-import com.digirati.elucidate.common.infrastructure.exception.InvalidIRIException;
-import com.digirati.elucidate.common.service.IRIBuilderService;
+import java.net.URISyntaxException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 @Service(IRIBuilderServiceImpl.SERVICE_NAME)
 public class IRIBuilderServiceImpl implements IRIBuilderService {
@@ -222,6 +221,11 @@ public class IRIBuilderServiceImpl implements IRIBuilderService {
     }
 
     @Override
+    public String buildW3CAnnotationHistoryIri(String collectionId, String annotationId, int version) {
+        return buildIri(String.format("w3c/services/history/%s/%s/%s", collectionId, annotationId, version), null);
+    }
+
+    @Override
     public String buildOAAnnotationIri(String collectionId, String annotationId) {
         return buildIri(String.format("oa/%s/%s", collectionId, annotationId), null);
     }
@@ -246,21 +250,6 @@ public class IRIBuilderServiceImpl implements IRIBuilderService {
                 }
             }
         });
-    }
-
-    private String buildIri(String id, Map<String, Object> params) {
-        try {
-            URIBuilder builder = new URIBuilder(baseUrl);
-            builder.setPath(String.format("%s/%s", builder.getPath(), id));
-            if (params != null && !params.isEmpty()) {
-                for (Entry<String, Object> param : params.entrySet()) {
-                    builder.addParameter(param.getKey(), String.valueOf(param.getValue()));
-                }
-            }
-            return builder.toString();
-        } catch (URISyntaxException e) {
-            throw new InvalidIRIException(String.format("An error occurred building IRI with base URL [%s] with ID [%s] and parameters [%s]", baseUrl, id, params), e);
-        }
     }
 
     @Override
@@ -406,5 +395,25 @@ public class IRIBuilderServiceImpl implements IRIBuilderService {
                 put(URLConstants.PARAM_PAGE, page);
             }
         });
+    }
+
+    @Override
+    public String buildOAAnnotationHistoryIri(String collectionId, String annotationId, int version) {
+        return buildIri(String.format("oa/services/history/%s/%s/%s", collectionId, annotationId, version), null);
+    }
+
+    private String buildIri(String id, Map<String, Object> params) {
+        try {
+            URIBuilder builder = new URIBuilder(baseUrl);
+            builder.setPath(String.format("%s/%s", builder.getPath(), id));
+            if (params != null && !params.isEmpty()) {
+                for (Entry<String, Object> param : params.entrySet()) {
+                    builder.addParameter(param.getKey(), String.valueOf(param.getValue()));
+                }
+            }
+            return builder.toString();
+        } catch (URISyntaxException e) {
+            throw new InvalidIRIException(String.format("An error occurred building IRI with base URL [%s] with ID [%s] and parameters [%s]", baseUrl, id, params), e);
+        }
     }
 }

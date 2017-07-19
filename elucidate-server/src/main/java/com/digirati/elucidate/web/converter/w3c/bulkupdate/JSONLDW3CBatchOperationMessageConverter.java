@@ -81,7 +81,7 @@ public class JSONLDW3CBatchOperationMessageConverter extends AbstractW3CBatchOpe
     @SuppressWarnings("unchecked")
     protected W3CBatchOperation getObjectRepresentation(String jsonStr, MediaType contentType) throws Exception {
         Map<String, Object> jsonMap = (Map<String, Object>) JsonUtils.fromString(jsonStr);
-        List<Object> jsonList = (List<Object>) JsonLdProcessor.expand(jsonMap, jsonLdOptions);
+        List<Object> jsonList = JsonLdProcessor.expand(jsonMap, jsonLdOptions);
         jsonMap = (Map<String, Object>) jsonList.get(0);
 
         W3CBatchOperation w3cBatchOperation = new W3CBatchOperation();

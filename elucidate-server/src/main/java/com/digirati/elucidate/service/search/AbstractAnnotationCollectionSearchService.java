@@ -6,11 +6,11 @@ import com.digirati.elucidate.common.model.annotation.AbstractAnnotationCollecti
 import com.digirati.elucidate.model.ServiceResponse;
 import com.digirati.elucidate.model.enumeration.ClientPreference;
 
-public abstract interface AbstractAnnotationCollectionSearchService<C extends AbstractAnnotationCollection> {
+public interface AbstractAnnotationCollectionSearchService<C extends AbstractAnnotationCollection> {
 
-    public ServiceResponse<C> searchAnnotationCollectionByBody(List<String> fields, String value, boolean strict, String xywh, String t, String creatorIri, ClientPreference clientPref);
+    ServiceResponse<C> searchAnnotationCollectionByBody(List<String> fields, String value, boolean strict, String xywh, String t, String creatorIri, ClientPreference clientPref);
 
-    public ServiceResponse<C> searchAnnotationCollectionByTarget(List<String> fields, String value, boolean strict, String xywh, String t, String creatorIri, ClientPreference clientPref);
+    ServiceResponse<C> searchAnnotationCollectionByTarget(List<String> fields, String value, boolean strict, String xywh, String t, String creatorIri, ClientPreference clientPref);
 
-    public ServiceResponse<C> searchAnnotationCollectionByCreator(List<String> levels, String type, String value, ClientPreference clientPref);
+    ServiceResponse<C> searchAnnotationCollectionByCreator(List<String> levels, String type, String value, ClientPreference clientPref);
 }

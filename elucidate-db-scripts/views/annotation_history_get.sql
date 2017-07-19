@@ -9,7 +9,9 @@ CREATE OR REPLACE VIEW public.annotation_history_get AS
         ac.collectionid,
         ah.json,
         ah.version,
-        ah.createddatetime
+        ah.createddatetime,
+        ah.modifieddatetime,
+        ah.deleted
     FROM
         annotation_history ah
             LEFT JOIN annotation a ON ah.annotationid = a.id

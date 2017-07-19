@@ -5,5 +5,5 @@ import com.digirati.elucidate.common.model.annotation.AbstractAnnotationCollecti
 @FunctionalInterface
 public interface AnnotationCollectionConverter<C extends AbstractAnnotationCollection> {
 
-    public C convertToAnnotationCollection();
+    C convertToAnnotationCollection();
 }
