@@ -318,22 +318,23 @@ Base URL: `GET http://example.org/w3c/services/search/target HTTP/1.1`
 
 Base URL: `GET http://example.org/w3c/services/search/creator HTTP/1.1`
 
-| Parameter | Mandatory | Valid Values                               | Description                                                                             |
-|-----------|-----------|--------------------------------------------|-----------------------------------------------------------------------------------------|
-| `levels`  | Yes       | `annotation`,`body`,`target`               | The levels within the annotation against which the search for a `creator` will be made. |
-| `type`    | Yes       | `id`,`name`,`nickname`,`email`,`emailsha1` | The type of field within the `creator` that will be searched against.                   |
-| `value`   | Yes       | Percent-encoded string                     | The value that the defined `type` will be searched for.                                 |
+| Parameter | Mandatory | Valid Values                               | Description                                                                                                                                               |
+|-----------|-----------|--------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `levels`  | Yes       | `annotation`,`body`,`target`               | The levels within the annotation against which the search for a `creator` will be made.                                                                   |
+| `type`    | Yes       | `id`,`name`,`nickname`,`email`,`emailsha1` | The type of field within the `creator` that will be searched against.                                                                                     |
+| `value`   | Yes       | Percent-encoded string                     | The value that the defined `type` will be searched for.                                                                                                   |
+| `strict`  | No        | `true`,`false`                             | If `true`, the defined `value` must match the defined `type` exactly. Otherwise, the `value` is treated as a prefix. If unspecified, defaults to `false`. |
 
 ### Search by `generator`
 
 Base URL: `GET http://example.org/w3c/services/search/generator HTTP/1.1`
 
-| Parameter | Mandatory | Valid Values                               | Description                                                                               |
-|-----------|-----------|--------------------------------------------|-------------------------------------------------------------------------------------------|
-| `levels`  | Yes       | `annotation`,`body`,`target`               | The levels within the annotation against which the search for a `generator` will be made. |
-| `type`    | Yes       | `id`,`name`,`nickname`,`email`,`emailsha1` | The type of field within the `generator` that will be searched against.                   |
-| `value`   | Yes       | Percent-encoded string                     | The value that the defined `type` will be searched for.                                   |
-
+| Parameter | Mandatory | Valid Values                               | Description                                                                                                                                               |
+|-----------|-----------|--------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `levels`  | Yes       | `annotation`,`body`,`target`               | The levels within the annotation against which the search for a `generator` will be made.                                                                 |
+| `type`    | Yes       | `id`,`name`,`nickname`,`email`,`emailsha1` | The type of field within the `generator` that will be searched against.                                                                                   |
+| `value`   | Yes       | Percent-encoded string                     | The value that the defined `type` will be searched for.                                                                                                   |
+| `strict`  | No        | `true`,`false`                             | If `true`, the defined `value` must match the defined `type` exactly. Otherwise, the `value` is treated as a prefix. If unspecified, defaults to `false`. |
 
 ## Statistics
 

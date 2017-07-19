@@ -51,28 +51,28 @@ public abstract class AbstractAnnotationPageSearchServiceImpl<A extends Abstract
     protected abstract String buildTargetSearchPageIri(List<String> fields, String value, boolean strict, String xywh, String t, String creatorIri, String generatorIri, int page, boolean embeddedDescriptions);
 
     @Override
-    public ServiceResponse<P> buildAnnotationPageByCreator(List<A> annotations, List<String> levels, String type, String value, int page, boolean embeddedDescriptions) {
+    public ServiceResponse<P> buildAnnotationPageByCreator(List<A> annotations, List<String> levels, String type, String value, boolean strict, int page, boolean embeddedDescriptions) {
 
-        AnnotationCollectionIRIBuilder annotationCollectionIriBuilder = () -> buildCreatorSearchCollectionIri(levels, type, value);
-        AnnotationPageIRIBuilder annotationPageIriBuilder = (int _page, boolean _embeddedDescriptions) -> buildCreatorSearchPageIri(levels, type, value, page, embeddedDescriptions);
+        AnnotationCollectionIRIBuilder annotationCollectionIriBuilder = () -> buildCreatorSearchCollectionIri(levels, type, value, strict);
+        AnnotationPageIRIBuilder annotationPageIriBuilder = (int _page, boolean _embeddedDescriptions) -> buildCreatorSearchPageIri(levels, type, value, strict, page, embeddedDescriptions);
 
         return new AnnotationPageBuilder<A, P>(this::convertToAnnotationPage, annotationCollectionIriBuilder, annotationPageIriBuilder).buildAnnotationPage(annotations, page, embeddedDescriptions, pageSize);
     }
 
-    protected abstract String buildCreatorSearchCollectionIri(List<String> levels, String type, String value);
+    protected abstract String buildCreatorSearchCollectionIri(List<String> levels, String type, String value, boolean strict);
 
-    protected abstract String buildCreatorSearchPageIri(List<String> levels, String type, String value, int page, boolean embeddedDescriptions);
+    protected abstract String buildCreatorSearchPageIri(List<String> levels, String type, String value, boolean strict, int page, boolean embeddedDescriptions);
 
     @Override
-    public ServiceResponse<P> buildAnnotationPageByGenerator(List<A> annotations, List<String> levels, String type, String value, int page, boolean embeddedDescriptions) {
+    public ServiceResponse<P> buildAnnotationPageByGenerator(List<A> annotations, List<String> levels, String type, String value, boolean strict, int page, boolean embeddedDescriptions) {
 
-        AnnotationCollectionIRIBuilder annotationCollectionIriBuilder = () -> buildGeneratorSearchCollectionIri(levels, type, value);
-        AnnotationPageIRIBuilder annotationPageIriBuilder = (int _page, boolean _embeddedDescriptions) -> buildGeneratorSearchPageIri(levels, type, value, page, embeddedDescriptions);
+        AnnotationCollectionIRIBuilder annotationCollectionIriBuilder = () -> buildGeneratorSearchCollectionIri(levels, type, value, strict);
+        AnnotationPageIRIBuilder annotationPageIriBuilder = (int _page, boolean _embeddedDescriptions) -> buildGeneratorSearchPageIri(levels, type, value, strict, page, embeddedDescriptions);
 
         return new AnnotationPageBuilder<A, P>(this::convertToAnnotationPage, annotationCollectionIriBuilder, annotationPageIriBuilder).buildAnnotationPage(annotations, page, embeddedDescriptions, pageSize);
     }
 
-    protected abstract String buildGeneratorSearchCollectionIri(List<String> levels, String type, String value);
+    protected abstract String buildGeneratorSearchCollectionIri(List<String> levels, String type, String value, boolean strict);
 
-    protected abstract String buildGeneratorSearchPageIri(List<String> levels, String type, String value, int page, boolean embeddedDescriptions);
+    protected abstract String buildGeneratorSearchPageIri(List<String> levels, String type, String value, boolean strict, int page, boolean embeddedDescriptions);
 }

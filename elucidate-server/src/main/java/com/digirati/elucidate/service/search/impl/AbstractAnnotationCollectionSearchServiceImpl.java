@@ -94,12 +94,12 @@ public abstract class AbstractAnnotationCollectionSearchServiceImpl<A extends Ab
     protected abstract String buildTargetSearchPageIri(List<String> fields, String value, boolean strict, String xywh, String t, String creatorIri, String generatorIri, int page, boolean embeddedDescriptions);
 
     @Override
-    public ServiceResponse<C> searchAnnotationCollectionByCreator(List<String> levels, String type, String value, ClientPreference clientPref) {
+    public ServiceResponse<C> searchAnnotationCollectionByCreator(List<String> levels, String type, String value, boolean strict, ClientPreference clientPref) {
 
         W3CAnnotationCollection w3cAnnotationCollection = new W3CAnnotationCollection();
         w3cAnnotationCollection.setJsonMap(new HashMap<String, Object>());
 
-        ServiceResponse<List<A>> serviceResponse = annotationSearchService.searchAnnotationsByCreator(levels, type, value);
+        ServiceResponse<List<A>> serviceResponse = annotationSearchService.searchAnnotationsByCreator(levels, type, value, strict);
         Status status = serviceResponse.getStatus();
 
         if (!status.equals(Status.OK)) {
@@ -110,26 +110,26 @@ public abstract class AbstractAnnotationCollectionSearchServiceImpl<A extends Ab
         List<A> annotations = serviceResponse.getObj();
 
         AnnotationCollectionConverter<C> annotationCollectionConverter = () -> convertToAnnotationCollection(w3cAnnotationCollection);
-        AnnotationCollectionIRIBuilder annotationCollectionIriBuilder = () -> buildCreatorSearchCollectionIri(levels, type, value);
-        AnnotationPageIRIBuilder annotationPageIriBuilder = (int _page, boolean _embeddedDescriptions) -> buildCreatorSearchPageIri(levels, type, value, _page, _embeddedDescriptions);
-        FirstAnnotationPageBuilder<P> firstAnnotationPageBuilder = () -> buildCreatorSearchFirstAnnotationPage(annotations, levels, type, value, clientPref);
+        AnnotationCollectionIRIBuilder annotationCollectionIriBuilder = () -> buildCreatorSearchCollectionIri(levels, type, value, strict);
+        AnnotationPageIRIBuilder annotationPageIriBuilder = (int _page, boolean _embeddedDescriptions) -> buildCreatorSearchPageIri(levels, type, value, strict, _page, _embeddedDescriptions);
+        FirstAnnotationPageBuilder<P> firstAnnotationPageBuilder = () -> buildCreatorSearchFirstAnnotationPage(annotations, levels, type, value, strict, clientPref);
 
         return new AnnotationCollectionBuilder<A, P, C>(annotationCollectionConverter, annotationCollectionIriBuilder, annotationPageIriBuilder, firstAnnotationPageBuilder).buildAnnotationCollection(w3cAnnotationCollection, annotations, pageSize, clientPref);
     }
 
-    protected abstract ServiceResponse<P> buildCreatorSearchFirstAnnotationPage(List<A> annotations, List<String> levels, String type, String value, ClientPreference clientPref);
+    protected abstract ServiceResponse<P> buildCreatorSearchFirstAnnotationPage(List<A> annotations, List<String> levels, String type, String value, boolean strict, ClientPreference clientPref);
 
-    protected abstract String buildCreatorSearchCollectionIri(List<String> levels, String type, String value);
+    protected abstract String buildCreatorSearchCollectionIri(List<String> levels, String type, String value, boolean strict);
 
-    protected abstract String buildCreatorSearchPageIri(List<String> levels, String type, String value, int page, boolean embeddedDescriptions);
+    protected abstract String buildCreatorSearchPageIri(List<String> levels, String type, String value, boolean strict, int page, boolean embeddedDescriptions);
 
     @Override
-    public ServiceResponse<C> searchAnnotationCollectionByGenerator(List<String> levels, String type, String value, ClientPreference clientPref) {
+    public ServiceResponse<C> searchAnnotationCollectionByGenerator(List<String> levels, String type, String value, boolean strict, ClientPreference clientPref) {
 
         W3CAnnotationCollection w3cAnnotationCollection = new W3CAnnotationCollection();
         w3cAnnotationCollection.setJsonMap(new HashMap<String, Object>());
 
-        ServiceResponse<List<A>> serviceResponse = annotationSearchService.searchAnnotationsByGenerator(levels, type, value);
+        ServiceResponse<List<A>> serviceResponse = annotationSearchService.searchAnnotationsByGenerator(levels, type, value, strict);
         Status status = serviceResponse.getStatus();
 
         if (!status.equals(Status.OK)) {
@@ -140,16 +140,16 @@ public abstract class AbstractAnnotationCollectionSearchServiceImpl<A extends Ab
         List<A> annotations = serviceResponse.getObj();
 
         AnnotationCollectionConverter<C> annotationCollectionConverter = () -> convertToAnnotationCollection(w3cAnnotationCollection);
-        AnnotationCollectionIRIBuilder annotationCollectionIriBuilder = () -> buildGeneratorSearchCollectionIri(levels, type, value);
-        AnnotationPageIRIBuilder annotationPageIriBuilder = (int _page, boolean _embeddedDescriptions) -> buildGeneratorSearchPageIri(levels, type, value, _page, _embeddedDescriptions);
-        FirstAnnotationPageBuilder<P> firstAnnotationPageBuilder = () -> buildGeneratorSearchFirstAnnotationPage(annotations, levels, type, value, clientPref);
+        AnnotationCollectionIRIBuilder annotationCollectionIriBuilder = () -> buildGeneratorSearchCollectionIri(levels, type, value, strict);
+        AnnotationPageIRIBuilder annotationPageIriBuilder = (int _page, boolean _embeddedDescriptions) -> buildGeneratorSearchPageIri(levels, type, value, strict, _page, _embeddedDescriptions);
+        FirstAnnotationPageBuilder<P> firstAnnotationPageBuilder = () -> buildGeneratorSearchFirstAnnotationPage(annotations, levels, type, value, strict, clientPref);
 
         return new AnnotationCollectionBuilder<A, P, C>(annotationCollectionConverter, annotationCollectionIriBuilder, annotationPageIriBuilder, firstAnnotationPageBuilder).buildAnnotationCollection(w3cAnnotationCollection, annotations, pageSize, clientPref);
     }
 
-    protected abstract ServiceResponse<P> buildGeneratorSearchFirstAnnotationPage(List<A> annotations, List<String> levels, String type, String value, ClientPreference clientPref);
+    protected abstract ServiceResponse<P> buildGeneratorSearchFirstAnnotationPage(List<A> annotations, List<String> levels, String type, String value, boolean strict, ClientPreference clientPref);
 
-    protected abstract String buildGeneratorSearchCollectionIri(List<String> levels, String type, String value);
+    protected abstract String buildGeneratorSearchCollectionIri(List<String> levels, String type, String value, boolean strict);
 
-    protected abstract String buildGeneratorSearchPageIri(List<String> levels, String type, String value, int page, boolean embeddedDescriptions);
+    protected abstract String buildGeneratorSearchPageIri(List<String> levels, String type, String value, boolean strict, int page, boolean embeddedDescriptions);
 }

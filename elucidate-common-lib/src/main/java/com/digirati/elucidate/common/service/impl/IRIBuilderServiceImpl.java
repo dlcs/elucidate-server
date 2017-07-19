@@ -193,24 +193,30 @@ public class IRIBuilderServiceImpl implements IRIBuilderService {
 
     @Override
     @SuppressWarnings("serial")
-    public String buildW3CCollectionCreatorSearchIri(List<String> levels, String type, String value) {
+    public String buildW3CCollectionCreatorSearchIri(List<String> levels, String type, String value, boolean strict) {
         return buildIri("w3c/services/search/creator", new HashMap<String, Object>() {
             {
                 put(URLConstants.PARAM_LEVELS, StringUtils.join(levels, ","));
                 put(URLConstants.PARAM_TYPE, type);
                 put(URLConstants.PARAM_VALUE, value);
+                if (strict) {
+                    put(URLConstants.PARAM_STRICT, strict);
+                }
             }
         });
     }
 
     @Override
     @SuppressWarnings("serial")
-    public String buildW3CPageCreatorSearchIri(List<String> levels, String type, String value, int page, boolean embeddedDescriptions) {
+    public String buildW3CPageCreatorSearchIri(List<String> levels, String type, String value, boolean strict, int page, boolean embeddedDescriptions) {
         return buildIri("w3c/services/search/creator", new HashMap<String, Object>() {
             {
                 put(URLConstants.PARAM_LEVELS, StringUtils.join(levels, ","));
                 put(URLConstants.PARAM_TYPE, type);
                 put(URLConstants.PARAM_VALUE, value);
+                if (strict) {
+                    put(URLConstants.PARAM_STRICT, strict);
+                }
                 put(URLConstants.PARAM_PAGE, page);
                 if (embeddedDescriptions) {
                     put(URLConstants.PARAM_DESC, 1);
@@ -222,23 +228,29 @@ public class IRIBuilderServiceImpl implements IRIBuilderService {
     }
 
     @Override
-    public String buildW3CCollectionGeneratorSearchIri(List<String> levels, String type, String value) {
+    public String buildW3CCollectionGeneratorSearchIri(List<String> levels, String type, String value, boolean strict) {
         return buildIri("w3c/services/search/generator", new HashMap<String, Object>() {
             {
                 put(URLConstants.PARAM_LEVELS, StringUtils.join(levels, ","));
                 put(URLConstants.PARAM_TYPE, type);
                 put(URLConstants.PARAM_VALUE, value);
+                if (strict) {
+                    put(URLConstants.PARAM_STRICT, strict);
+                }
             }
         });
     }
 
     @Override
-    public String buildW3CPageGeneratorSearchIri(List<String> levels, String type, String value, int page, boolean embeddedDescriptions) {
+    public String buildW3CPageGeneratorSearchIri(List<String> levels, String type, String value, boolean strict, int page, boolean embeddedDescriptions) {
         return buildIri("w3c/services/search/generator", new HashMap<String, Object>() {
             {
                 put(URLConstants.PARAM_LEVELS, StringUtils.join(levels, ","));
                 put(URLConstants.PARAM_TYPE, type);
                 put(URLConstants.PARAM_VALUE, value);
+                if (strict) {
+                    put(URLConstants.PARAM_STRICT, strict);
+                }
                 put(URLConstants.PARAM_PAGE, page);
                 if (embeddedDescriptions) {
                     put(URLConstants.PARAM_DESC, 1);
@@ -410,24 +422,30 @@ public class IRIBuilderServiceImpl implements IRIBuilderService {
 
     @Override
     @SuppressWarnings("serial")
-    public String buildOACollectionCreatorSearchIri(List<String> levels, String type, String value) {
+    public String buildOACollectionCreatorSearchIri(List<String> levels, String type, String value, boolean strict) {
         return buildIri("oa/services/search/creator", new HashMap<String, Object>() {
             {
                 put(URLConstants.PARAM_LEVELS, StringUtils.join(levels, ","));
                 put(URLConstants.PARAM_TYPE, type);
                 put(URLConstants.PARAM_VALUE, value);
+                if (strict) {
+                    put(URLConstants.PARAM_STRICT, strict);
+                }
             }
         });
     }
 
     @Override
     @SuppressWarnings("serial")
-    public String buildOAPageCreatorSearchIri(List<String> levels, String type, String value, int page, boolean embeddedDescriptions) {
+    public String buildOAPageCreatorSearchIri(List<String> levels, String type, String value, boolean strict, int page, boolean embeddedDescriptions) {
         return buildIri("oa/services/search/creator", new HashMap<String, Object>() {
             {
                 put(URLConstants.PARAM_LEVELS, StringUtils.join(levels, ","));
                 put(URLConstants.PARAM_TYPE, type);
                 put(URLConstants.PARAM_VALUE, value);
+                if (strict) {
+                    put(URLConstants.PARAM_STRICT, strict);
+                }
                 put(URLConstants.PARAM_PAGE, page);
                 if (embeddedDescriptions) {
                     put(URLConstants.PARAM_DESC, 1);
@@ -439,23 +457,29 @@ public class IRIBuilderServiceImpl implements IRIBuilderService {
     }
 
     @Override
-    public String buildOACollectionGeneratorSearchIri(List<String> levels, String type, String value) {
+    public String buildOACollectionGeneratorSearchIri(List<String> levels, String type, String value, boolean strict) {
         return buildIri("oa/services/search/generator", new HashMap<String, Object>() {
             {
                 put(URLConstants.PARAM_LEVELS, StringUtils.join(levels, ","));
                 put(URLConstants.PARAM_TYPE, type);
                 put(URLConstants.PARAM_VALUE, value);
+                if (strict) {
+                    put(URLConstants.PARAM_STRICT, strict);
+                }
             }
         });
     }
 
     @Override
-    public String buildOAPageGeneratorSearchIri(List<String> levels, String type, String value, int page, boolean embeddedDescriptions) {
+    public String buildOAPageGeneratorSearchIri(List<String> levels, String type, String value, boolean strict, int page, boolean embeddedDescriptions) {
         return buildIri("oa/services/search/generator", new HashMap<String, Object>() {
             {
                 put(URLConstants.PARAM_LEVELS, StringUtils.join(levels, ","));
                 put(URLConstants.PARAM_TYPE, type);
                 put(URLConstants.PARAM_VALUE, value);
+                if (strict) {
+                    put(URLConstants.PARAM_STRICT, strict);
+                }
                 put(URLConstants.PARAM_PAGE, page);
                 if (embeddedDescriptions) {
                     put(URLConstants.PARAM_DESC, 1);

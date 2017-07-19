@@ -105,7 +105,7 @@ public abstract class AbstractAnnotationSearchServiceImpl<A extends AbstractAnno
     }
 
     @Override
-    public ServiceResponse<List<A>> searchAnnotationsByCreator(List<String> levels, String type, String value) {
+    public ServiceResponse<List<A>> searchAnnotationsByCreator(List<String> levels, String type, String value, boolean strict) {
 
         boolean searchAnnotations = levels.contains(SearchConstants.LEVEL_ANNOTATION);
         boolean searchBodies = levels.contains(SearchConstants.LEVEL_BODY);
@@ -121,8 +121,8 @@ public abstract class AbstractAnnotationSearchServiceImpl<A extends AbstractAnno
             return new ServiceResponse<List<A>>(Status.NON_CONFORMANT, null);
         }
 
-        LOGGER.info(String.format("Searching for Annotations by `creator` using levels [%s] with field [%s] against value [%s]", levels, type, value));
-        List<W3CAnnotation> w3cAnnotations = annotationSearchRepository.getAnnotationsByCreator(searchAnnotations, searchBodies, searchTargets, type, value);
+        LOGGER.info(String.format("Searching for Annotations by `creator` using levels [%s] with field [%s] against value [%s] using strict [%s]", levels, type, value, strict));
+        List<W3CAnnotation> w3cAnnotations = annotationSearchRepository.getAnnotationsByCreator(searchAnnotations, searchBodies, searchTargets, type, value, strict);
 
         List<A> annotations = convertAnnotations(w3cAnnotations);
         LOGGER.info(String.format("Seaching for Annotations by `creator` got [%s] hits", annotations.size()));
@@ -130,7 +130,7 @@ public abstract class AbstractAnnotationSearchServiceImpl<A extends AbstractAnno
     }
 
     @Override
-    public ServiceResponse<List<A>> searchAnnotationsByGenerator(List<String> levels, String type, String value) {
+    public ServiceResponse<List<A>> searchAnnotationsByGenerator(List<String> levels, String type, String value, boolean strict) {
 
         boolean searchAnnotations = levels.contains(SearchConstants.LEVEL_ANNOTATION);
         boolean searchBodies = levels.contains(SearchConstants.LEVEL_BODY);
@@ -146,8 +146,8 @@ public abstract class AbstractAnnotationSearchServiceImpl<A extends AbstractAnno
             return new ServiceResponse<List<A>>(Status.NON_CONFORMANT, null);
         }
 
-        LOGGER.info(String.format("Searching for Annotations by `generator` using levels [%s] with field [%s] against value [%s]", levels, type, value));
-        List<W3CAnnotation> w3cAnnotations = annotationSearchRepository.getAnnotationsByGenerator(searchAnnotations, searchBodies, searchTargets, type, value);
+        LOGGER.info(String.format("Searching for Annotations by `generator` using levels [%s] with field [%s] against value [%s] using strict [%s]", levels, type, value, strict));
+        List<W3CAnnotation> w3cAnnotations = annotationSearchRepository.getAnnotationsByGenerator(searchAnnotations, searchBodies, searchTargets, type, value, strict);
 
         List<A> annotations = convertAnnotations(w3cAnnotations);
         LOGGER.info(String.format("Seaching for Annotations by `generator` got [%s] hits", annotations.size()));

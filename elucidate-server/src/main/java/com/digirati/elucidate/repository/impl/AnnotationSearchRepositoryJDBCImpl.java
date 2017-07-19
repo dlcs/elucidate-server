@@ -44,20 +44,20 @@ public class AnnotationSearchRepositoryJDBCImpl extends AbstractRepositoryJDBCIm
 
     @Override
     @Transactional(readOnly = true)
-    public List<W3CAnnotation> getAnnotationsByCreator(boolean searchAnnotations, boolean searchBodies, boolean searchTargets, String type, String value) {
-        String sql = "SELECT * FROM annotation_search_by_creator(?, ?, ?, ?, ?)";
-        Object[] params = {searchAnnotations, searchBodies, searchTargets, type, value};
-        int[] sqlTypes = {Types.BOOLEAN, Types.BOOLEAN, Types.BOOLEAN, Types.VARCHAR, Types.VARCHAR};
+    public List<W3CAnnotation> getAnnotationsByCreator(boolean searchAnnotations, boolean searchBodies, boolean searchTargets, String type, String value, boolean strict) {
+        String sql = "SELECT * FROM annotation_search_by_creator(?, ?, ?, ?, ?, ?)";
+        Object[] params = {searchAnnotations, searchBodies, searchTargets, type, value, strict};
+        int[] sqlTypes = {Types.BOOLEAN, Types.BOOLEAN, Types.BOOLEAN, Types.VARCHAR, Types.VARCHAR, Types.BOOLEAN};
 
         return queryForList(sql, params, sqlTypes, new W3CAnnotationRowMapper());
     }
 
     @Override
     @Transactional(readOnly = true)
-    public List<W3CAnnotation> getAnnotationsByGenerator(boolean searchAnnotations, boolean searchBodies, boolean searchTargets, String type, String value) {
-        String sql = "SELECT * FROM annotation_search_by_generator(?, ?, ?, ?, ?)";
-        Object[] params = {searchAnnotations, searchBodies, searchTargets, type, value};
-        int[] sqlTypes = {Types.BOOLEAN, Types.BOOLEAN, Types.BOOLEAN, Types.VARCHAR, Types.VARCHAR};
+    public List<W3CAnnotation> getAnnotationsByGenerator(boolean searchAnnotations, boolean searchBodies, boolean searchTargets, String type, String value, boolean strict) {
+        String sql = "SELECT * FROM annotation_search_by_generator(?, ?, ?, ?, ?, ?)";
+        Object[] params = {searchAnnotations, searchBodies, searchTargets, type, value, strict};
+        int[] sqlTypes = {Types.BOOLEAN, Types.BOOLEAN, Types.BOOLEAN, Types.VARCHAR, Types.VARCHAR, Types.BOOLEAN};
 
         return queryForList(sql, params, sqlTypes, new W3CAnnotationRowMapper());
     }
