@@ -53,22 +53,22 @@ public class W3CAnnotationPageSearchServiceImpl extends AbstractAnnotationPageSe
     }
 
     @Override
-    protected String buildCreatorSearchCollectionIri(List<String> levels, String type, String value) {
-        return iriBuilderService.buildW3CCollectionCreatorSearchIri(levels, type, value);
+    protected String buildCreatorSearchCollectionIri(List<String> levels, String type, String value, boolean strict) {
+        return iriBuilderService.buildW3CCollectionCreatorSearchIri(levels, type, value, strict);
     }
 
     @Override
-    protected String buildCreatorSearchPageIri(List<String> levels, String type, String value, int page, boolean embeddedDescriptions) {
-        return iriBuilderService.buildW3CPageCreatorSearchIri(levels, type, value, page, embeddedDescriptions);
+    protected String buildCreatorSearchPageIri(List<String> levels, String type, String value, boolean strict, int page, boolean embeddedDescriptions) {
+        return iriBuilderService.buildW3CPageCreatorSearchIri(levels, type, value, strict, page, embeddedDescriptions);
     }
 
     @Override
-    protected String buildGeneratorSearchCollectionIri(List<String> levels, String type, String value) {
-        return iriBuilderService.buildW3CCollectionGeneratorSearchIri(levels, type, value);
+    protected String buildGeneratorSearchCollectionIri(List<String> levels, String type, String value, boolean strict) {
+        return iriBuilderService.buildW3CCollectionGeneratorSearchIri(levels, type, value, strict);
     }
 
     @Override
-    protected String buildGeneratorSearchPageIri(List<String> levels, String type, String value, int page, boolean embeddedDescriptions) {
-        return iriBuilderService.buildW3CPageGeneratorSearchIri(levels, type, value, page, embeddedDescriptions);
+    protected String buildGeneratorSearchPageIri(List<String> levels, String type, String value, boolean strict, int page, boolean embeddedDescriptions) {
+        return iriBuilderService.buildW3CPageGeneratorSearchIri(levels, type, value, strict, page, embeddedDescriptions);
     }
 }

@@ -1,13 +1,14 @@
--- Function: public.annotation_search_by_generator(boolean, boolean, boolean, character varying, character varying)
+-- Function: public.annotation_search_by_generator(boolean, boolean, boolean, character varying, character varying, boolean)
 
--- DROP FUNCTION public.annotation_search_by_generator(boolean, boolean, boolean, character varying, character varying);
+-- DROP FUNCTION public.annotation_search_by_generator(boolean, boolean, boolean, character varying, character varying, boolean);
 
 CREATE OR REPLACE FUNCTION public.annotation_search_by_generator(
     _searchannotations boolean,
     _searchbodies boolean,
     _searchtargets boolean,
     _type character varying,
-    _value character varying)
+    _value character varying,
+    _strict boolean)
 RETURNS SETOF annotation_get AS
 $BODY$
     BEGIN
@@ -43,15 +44,50 @@ $BODY$
                             WHEN true THEN
                                 CASE
                                     WHEN _type = 'id' THEN
-                                        aa.agentiri = _value
+                                        (
+                                            CASE _strict
+                                                WHEN true THEN
+                                                    aa.agentiri = _value
+                                                ELSE
+                                                    aa.agentiri LIKE (_value || '%')
+                                            END
+                                        )
                                     WHEN _type = 'name' THEN
-                                        aan.name = _value
+                                        (
+                                            CASE _strict
+                                                WHEN true THEN
+                                                    aan.name = _value
+                                                ELSE
+                                                    aan.name LIKE (_value || '%')
+                                            END
+                                        )
                                     WHEN _type = 'nickname' THEN
-                                        aa.nickname = _value
+                                        (
+                                            CASE _strict
+                                                WHEN true THEN
+                                                    aa.nickname = _value
+                                                ELSE
+                                                    aa.nickname LIKE (_value || '%')
+                                            END
+                                        )
                                     WHEN _type = 'email' THEN
-                                        aae.email = _value
+                                        (
+                                            CASE _strict
+                                                WHEN true THEN
+                                                    aae.email = _value
+                                                ELSE
+                                                    aae.email LIKE (_value || '%')
+                                            END
+                                        )
                                     WHEN _type = 'emailsha1' THEN
-                                        aaes.emailsha1 = _value
+                                        (
+                                            CASE _strict
+                                                WHEN true THEN
+                                                    aaes.emailsha1 = _value
+                                                ELSE
+                                                    aaes.emailsha1 LIKE (_value || '%')
+                                            END
+                                        )
                                 END
                             ELSE
                                 (false)
@@ -74,15 +110,50 @@ $BODY$
                             WHEN true THEN
                                 CASE
                                     WHEN _type = 'id' THEN
-                                        aa.agentiri = _value
+                                        (
+                                            CASE _strict
+                                                WHEN true THEN
+                                                    aa.agentiri = _value
+                                                ELSE
+                                                    aa.agentiri LIKE (_value || '%')
+                                            END
+                                        )
                                     WHEN _type = 'name' THEN
-                                        aan.name = _value
+                                        (
+                                            CASE _strict
+                                                WHEN true THEN
+                                                    aan.name = _value
+                                                ELSE
+                                                    aan.name LIKE (_value || '%')
+                                            END
+                                        )
                                     WHEN _type = 'nickname' THEN
-                                        aa.nickname = _value
+                                        (
+                                            CASE _strict
+                                                WHEN true THEN
+                                                    aa.nickname = _value
+                                                ELSE
+                                                    aa.nickname LIKE (_value || '%')
+                                            END
+                                        )
                                     WHEN _type = 'email' THEN
-                                        aae.email = _value
+                                        (
+                                            CASE _strict
+                                                WHEN true THEN
+                                                    aae.email = _value
+                                                ELSE
+                                                    aae.email LIKE (_value || '%')
+                                            END
+                                        )
                                     WHEN _type = 'emailsha1' THEN
-                                        aaes.emailsha1 = _value
+                                        (
+                                            CASE _strict
+                                                WHEN true THEN
+                                                    aaes.emailsha1 = _value
+                                                ELSE
+                                                    aaes.emailsha1 LIKE (_value || '%')
+                                            END
+                                        )
                                 END
                             ELSE
                                 (false)
@@ -105,15 +176,50 @@ $BODY$
                             WHEN true THEN
                                 CASE
                                     WHEN _type = 'id' THEN
-                                        aa.agentiri = _value
+                                        (
+                                            CASE _strict
+                                                WHEN true THEN
+                                                    aa.agentiri = _value
+                                                ELSE
+                                                    aa.agentiri LIKE (_value || '%')
+                                            END
+                                        )
                                     WHEN _type = 'name' THEN
-                                        aan.name = _value
+                                        (
+                                            CASE _strict
+                                                WHEN true THEN
+                                                    aan.name = _value
+                                                ELSE
+                                                    aan.name LIKE (_value || '%')
+                                            END
+                                        )
                                     WHEN _type = 'nickname' THEN
-                                        aa.nickname = _value
+                                        (
+                                            CASE _strict
+                                                WHEN true THEN
+                                                    aa.nickname = _value
+                                                ELSE
+                                                    aa.nickname LIKE (_value || '%')
+                                            END
+                                        )
                                     WHEN _type = 'email' THEN
-                                        aae.email = _value
+                                        (
+                                            CASE _strict
+                                                WHEN true THEN
+                                                    aae.email = _value
+                                                ELSE
+                                                    aae.email LIKE (_value || '%')
+                                            END
+                                        )
                                     WHEN _type = 'emailsha1' THEN
-                                        aaes.emailsha1 = _value
+                                        (
+                                            CASE _strict
+                                                WHEN true THEN
+                                                    aaes.emailsha1 = _value
+                                                ELSE
+                                                    aaes.emailsha1 LIKE (_value || '%')
+                                            END
+                                        )
                                 END
                             ELSE
                                 (false)
@@ -123,7 +229,7 @@ END;
 $BODY$
 LANGUAGE plpgsql VOLATILE COST 100 ROWS 1000;
 
-ALTER FUNCTION public.annotation_search_by_generator(boolean, boolean, boolean, character varying, character varying) OWNER TO postgres;
-GRANT EXECUTE ON FUNCTION public.annotation_search_by_generator(boolean, boolean, boolean, character varying, character varying) TO postgres;
-GRANT EXECUTE ON FUNCTION public.annotation_search_by_generator(boolean, boolean, boolean, character varying, character varying) TO annotations_role;
-REVOKE ALL ON FUNCTION public.annotation_search_by_generator(boolean, boolean, boolean, character varying, character varying) FROM public;
+ALTER FUNCTION public.annotation_search_by_generator(boolean, boolean, boolean, character varying, character varying, boolean) OWNER TO postgres;
+GRANT EXECUTE ON FUNCTION public.annotation_search_by_generator(boolean, boolean, boolean, character varying, character varying, boolean) TO postgres;
+GRANT EXECUTE ON FUNCTION public.annotation_search_by_generator(boolean, boolean, boolean, character varying, character varying, boolean) TO annotations_role;
+REVOKE ALL ON FUNCTION public.annotation_search_by_generator(boolean, boolean, boolean, character varying, character varying, boolean) FROM public;

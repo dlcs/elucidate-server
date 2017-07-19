@@ -74,40 +74,40 @@ public class W3CAnnotationCollectionSearchServiceImpl extends AbstractAnnotation
     }
 
     @Override
-    protected ServiceResponse<W3CAnnotationPage> buildCreatorSearchFirstAnnotationPage(List<W3CAnnotation> w3cAnnotations, List<String> levels, String type, String value, ClientPreference clientPref) {
+    protected ServiceResponse<W3CAnnotationPage> buildCreatorSearchFirstAnnotationPage(List<W3CAnnotation> w3cAnnotations, List<String> levels, String type, String value, boolean strict, ClientPreference clientPref) {
         if (clientPref.equals(ClientPreference.CONTAINED_IRIS)) {
-            return w3cAnnotationPageSearchService.buildAnnotationPageByCreator(w3cAnnotations, levels, type, value, 0, false);
+            return w3cAnnotationPageSearchService.buildAnnotationPageByCreator(w3cAnnotations, levels, type, value, strict, 0, false);
         } else {
-            return w3cAnnotationPageSearchService.buildAnnotationPageByCreator(w3cAnnotations, levels, type, value, 0, true);
+            return w3cAnnotationPageSearchService.buildAnnotationPageByCreator(w3cAnnotations, levels, type, value, strict, 0, true);
         }
     }
 
     @Override
-    protected String buildCreatorSearchCollectionIri(List<String> levels, String type, String value) {
-        return iriBuilderService.buildW3CCollectionCreatorSearchIri(levels, type, value);
+    protected String buildCreatorSearchCollectionIri(List<String> levels, String type, String value, boolean strict) {
+        return iriBuilderService.buildW3CCollectionCreatorSearchIri(levels, type, value, strict);
     }
 
     @Override
-    protected String buildCreatorSearchPageIri(List<String> levels, String type, String value, int page, boolean embeddedDescriptions) {
-        return iriBuilderService.buildW3CPageCreatorSearchIri(levels, type, value, page, embeddedDescriptions);
+    protected String buildCreatorSearchPageIri(List<String> levels, String type, String value, boolean strict, int page, boolean embeddedDescriptions) {
+        return iriBuilderService.buildW3CPageCreatorSearchIri(levels, type, value, strict, page, embeddedDescriptions);
     }
 
     @Override
-    protected ServiceResponse<W3CAnnotationPage> buildGeneratorSearchFirstAnnotationPage(List<W3CAnnotation> w3cAnnotations, List<String> levels, String type, String value, ClientPreference clientPref) {
+    protected ServiceResponse<W3CAnnotationPage> buildGeneratorSearchFirstAnnotationPage(List<W3CAnnotation> w3cAnnotations, List<String> levels, String type, String value, boolean strict, ClientPreference clientPref) {
         if (clientPref.equals(ClientPreference.CONTAINED_IRIS)) {
-            return w3cAnnotationPageSearchService.buildAnnotationPageByGenerator(w3cAnnotations, levels, type, value, 0, false);
+            return w3cAnnotationPageSearchService.buildAnnotationPageByGenerator(w3cAnnotations, levels, type, value, strict, 0, false);
         } else {
-            return w3cAnnotationPageSearchService.buildAnnotationPageByGenerator(w3cAnnotations, levels, type, value, 0, true);
+            return w3cAnnotationPageSearchService.buildAnnotationPageByGenerator(w3cAnnotations, levels, type, value, strict, 0, true);
         }
     }
 
     @Override
-    protected String buildGeneratorSearchCollectionIri(List<String> levels, String type, String value) {
-        return iriBuilderService.buildW3CCollectionGeneratorSearchIri(levels, type, value);
+    protected String buildGeneratorSearchCollectionIri(List<String> levels, String type, String value, boolean strict) {
+        return iriBuilderService.buildW3CCollectionGeneratorSearchIri(levels, type, value, strict);
     }
 
     @Override
-    protected String buildGeneratorSearchPageIri(List<String> levels, String type, String value, int page, boolean embeddedDescriptions) {
-        return iriBuilderService.buildW3CPageGeneratorSearchIri(levels, type, value, page, embeddedDescriptions);
+    protected String buildGeneratorSearchPageIri(List<String> levels, String type, String value, boolean strict, int page, boolean embeddedDescriptions) {
+        return iriBuilderService.buildW3CPageGeneratorSearchIri(levels, type, value, strict, page, embeddedDescriptions);
     }
 }

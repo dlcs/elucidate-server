@@ -18,13 +18,13 @@ public interface IRIBuilderService {
 
     public String buildW3CPageTargetSearchIri(List<String> fields, String value, boolean strict, String xywh, String t, String creatorIri, String generatorIri, int page, boolean embeddedDescriptions);
 
-    public String buildW3CCollectionCreatorSearchIri(List<String> levels, String type, String value);
+    public String buildW3CCollectionCreatorSearchIri(List<String> levels, String type, String value, boolean strict);
 
-    public String buildW3CPageCreatorSearchIri(List<String> levels, String type, String value, int page, boolean embeddedDescriptions);
+    public String buildW3CPageCreatorSearchIri(List<String> levels, String type, String value, boolean strict, int page, boolean embeddedDescriptions);
 
-    public String buildW3CCollectionGeneratorSearchIri(List<String> levels, String type, String value);
+    public String buildW3CCollectionGeneratorSearchIri(List<String> levels, String type, String value, boolean strict);
 
-    public String buildW3CPageGeneratorSearchIri(List<String> levels, String type, String value, int page, boolean embeddedDescriptions);
+    public String buildW3CPageGeneratorSearchIri(List<String> levels, String type, String value, boolean strict, int page, boolean embeddedDescriptions);
 
     public String buildW3CStatisticsPageBodyIri(String field, int page);
 
@@ -44,13 +44,13 @@ public interface IRIBuilderService {
 
     public String buildOAPageTargetSearchIri(List<String> fields, String value, boolean strict, String xywh, String t, String creatorIri, String generatorIri, int page, boolean embeddedDescriptions);
 
-    public String buildOACollectionCreatorSearchIri(List<String> levels, String type, String value);
+    public String buildOACollectionCreatorSearchIri(List<String> levels, String type, String value, boolean strict);
 
-    public String buildOAPageCreatorSearchIri(List<String> levels, String type, String value, int page, boolean embeddedDescriptions);
+    public String buildOAPageCreatorSearchIri(List<String> levels, String type, String value, boolean strict, int page, boolean embeddedDescriptions);
 
-    public String buildOACollectionGeneratorSearchIri(List<String> levels, String type, String value);
+    public String buildOACollectionGeneratorSearchIri(List<String> levels, String type, String value, boolean strict);
 
-    public String buildOAPageGeneratorSearchIri(List<String> levels, String type, String value, int page, boolean embeddedDescriptions);
+    public String buildOAPageGeneratorSearchIri(List<String> levels, String type, String value, boolean strict, int page, boolean embeddedDescriptions);
 
     public String buildOAStatisticsPageBodyIri(String field, int page);
 

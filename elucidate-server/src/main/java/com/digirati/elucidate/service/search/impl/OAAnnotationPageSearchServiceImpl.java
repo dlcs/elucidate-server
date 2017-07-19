@@ -62,22 +62,22 @@ public class OAAnnotationPageSearchServiceImpl extends AbstractAnnotationPageSea
     }
 
     @Override
-    protected String buildCreatorSearchCollectionIri(List<String> levels, String type, String value) {
-        return iriBuilderService.buildOACollectionCreatorSearchIri(levels, type, value);
+    protected String buildCreatorSearchCollectionIri(List<String> levels, String type, String value, boolean strict) {
+        return iriBuilderService.buildOACollectionCreatorSearchIri(levels, type, value, strict);
     }
 
     @Override
-    protected String buildCreatorSearchPageIri(List<String> levels, String type, String value, int page, boolean embeddedDescriptions) {
-        return iriBuilderService.buildOAPageCreatorSearchIri(levels, type, value, page, embeddedDescriptions);
+    protected String buildCreatorSearchPageIri(List<String> levels, String type, String value, boolean strict, int page, boolean embeddedDescriptions) {
+        return iriBuilderService.buildOAPageCreatorSearchIri(levels, type, value, strict, page, embeddedDescriptions);
     }
 
     @Override
-    protected String buildGeneratorSearchCollectionIri(List<String> levels, String type, String value) {
-        return iriBuilderService.buildOACollectionGeneratorSearchIri(levels, type, value);
+    protected String buildGeneratorSearchCollectionIri(List<String> levels, String type, String value, boolean strict) {
+        return iriBuilderService.buildOACollectionGeneratorSearchIri(levels, type, value, strict);
     }
 
     @Override
-    protected String buildGeneratorSearchPageIri(List<String> levels, String type, String value, int page, boolean embeddedDescriptions) {
-        return iriBuilderService.buildOAPageGeneratorSearchIri(levels, type, value, page, embeddedDescriptions);
+    protected String buildGeneratorSearchPageIri(List<String> levels, String type, String value, boolean strict, int page, boolean embeddedDescriptions) {
+        return iriBuilderService.buildOAPageGeneratorSearchIri(levels, type, value, strict, page, embeddedDescriptions);
     }
 }

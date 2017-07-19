@@ -12,7 +12,7 @@ public interface AbstractAnnotationCollectionSearchService<C extends AbstractAnn
 
     public ServiceResponse<C> searchAnnotationCollectionByTarget(List<String> fields, String value, boolean strict, String xywh, String t, String creatorIri, String generatorIri, ClientPreference clientPref);
 
-    public ServiceResponse<C> searchAnnotationCollectionByCreator(List<String> levels, String type, String value, ClientPreference clientPref);
+    public ServiceResponse<C> searchAnnotationCollectionByCreator(List<String> levels, String type, String value, boolean strict, ClientPreference clientPref);
 
-    public ServiceResponse<C> searchAnnotationCollectionByGenerator(List<String> levels, String type, String value, ClientPreference clientPref);
+    public ServiceResponse<C> searchAnnotationCollectionByGenerator(List<String> levels, String type, String value, boolean strict, ClientPreference clientPref);
 }
