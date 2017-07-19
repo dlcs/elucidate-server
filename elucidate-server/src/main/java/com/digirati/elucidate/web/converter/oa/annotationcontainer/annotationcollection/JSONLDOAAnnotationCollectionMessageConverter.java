@@ -81,7 +81,7 @@ public class JSONLDOAAnnotationCollectionMessageConverter extends AbstractOAAnno
     @SuppressWarnings("unchecked")
     protected OAAnnotationCollection getObjectRepresentation(String jsonStr, MediaType contentType) throws Exception {
         Map<String, Object> jsonMap = (Map<String, Object>) JsonUtils.fromString(jsonStr);
-        List<Object> jsonList = (List<Object>) JsonLdProcessor.expand(jsonMap, jsonLdOptions);
+        List<Object> jsonList = JsonLdProcessor.expand(jsonMap, jsonLdOptions);
         jsonMap = (Map<String, Object>) jsonList.get(0);
 
         OAAnnotationCollection oaAnnotationCollection = new OAAnnotationCollection();

@@ -5,7 +5,7 @@ import com.digirati.elucidate.common.model.annotation.AbstractObject;
 import java.io.Serializable;
 
 @SuppressWarnings("serial")
-public class AnnotationHistory extends AbstractObject implements Serializable {
+public abstract class AbstractAnnotationHistory extends AbstractObject implements Serializable {
 
     private String annotationId;
     private String collectionId;

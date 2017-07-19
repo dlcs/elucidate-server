@@ -4,5 +4,5 @@ import com.fasterxml.jackson.databind.JsonNode;
 
 public interface JSONNodeConverter {
 
-    public JsonNode convertJsonNode(JsonNode inputNode);
+    JsonNode convertJsonNode(JsonNode inputNode);
 }

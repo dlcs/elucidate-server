@@ -81,7 +81,7 @@ public class JSONLDOABatchOperationMessageConverter extends AbstractOABatchOpera
     @SuppressWarnings("unchecked")
     protected OABatchOperation getObjectRepresentation(String jsonStr, MediaType contentType) throws Exception {
         Map<String, Object> jsonMap = (Map<String, Object>) JsonUtils.fromString(jsonStr);
-        List<Object> jsonList = (List<Object>) JsonLdProcessor.expand(jsonMap, jsonLdOptions);
+        List<Object> jsonList = JsonLdProcessor.expand(jsonMap, jsonLdOptions);
         jsonMap = (Map<String, Object>) jsonList.get(0);
 
         OABatchOperation oaBatchOperation = new OABatchOperation();

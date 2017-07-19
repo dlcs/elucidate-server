@@ -39,7 +39,9 @@ $BODY$
                 ac.collectionid,
                 ah.json,
                 ah.version,
-                ah.createddatetime
+                ah.createddatetime,
+                ah.modifieddatetime,
+                ah.deleted
             FROM
                 annotation_history ah
                     LEFT JOIN annotation a ON ah.annotationid = a.id

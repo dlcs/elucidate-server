@@ -6,5 +6,5 @@ import com.digirati.elucidate.model.ServiceResponse;
 @FunctionalInterface
 public interface FirstAnnotationPageBuilder<P extends AbstractAnnotationPage> {
 
-    public ServiceResponse<P> buildFirstAnnotationPage();
+    ServiceResponse<P> buildFirstAnnotationPage();
 }

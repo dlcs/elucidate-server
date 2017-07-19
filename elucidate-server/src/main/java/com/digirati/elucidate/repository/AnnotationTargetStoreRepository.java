@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface AnnotationTargetStoreRepository {
 
-    public AnnotationTarget createAnnotationTarget(int annotationPK, String targetIri, String sourceIri, String targetJson);
+    AnnotationTarget createAnnotationTarget(int annotationPK, String targetIri, String sourceIri, String targetJson);
 
-    public List<AnnotationTarget> deleteAnnotationTargets(int annotationPK);
+    List<AnnotationTarget> deleteAnnotationTargets(int annotationPK);
 }
