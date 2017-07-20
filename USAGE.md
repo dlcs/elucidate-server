@@ -41,6 +41,7 @@
 		- [Batch Delete](#batch-delete)
 			- [Request](#request)
 			- [Response](#response)
+	- [Annotation Histories](#annotation-histories)
 
 ## Introduction
 
@@ -501,3 +502,27 @@ Content-Type: application/ld+json;charset=UTF-8
   }
 }
 ```
+
+## Annotation Histories
+
+Every version of an Annotation that is created and subsequently updated in Elucidate is persisted.
+
+Historical versions of Annotations can be accessed through the following endpoint:
+
+`GET http://example.org/w3c/services/history/{collection_id}/{annotation_id}/{version} HTTP/1.1`
+
+Tracking previous and future versions of Annotations is achieved through a basic implementation of [Memento](http://mementoweb.org/guide/howto/). When querying for an Annotation, there are a number of additional headers provided:
+
+- `Memento-Datetime: Thu, 20 Jul 2017 14:47:40 UTC`
+	- Describes the date and time at which the version of the Annotation currently being viewed was created.
+- `Link: <http://example.org/{collection_id}/{annotationId}/{version}>; rel="prev memento"; datetime="Mon, 16 Aug 2004 05:48:58 GMT"`
+	- Provided when there exists a previous version of the Annotation that is currently being queried. The value provided within the angle brackets `<>` is the absolute URL where that previous version can be accessed.
+- `Link: <http://example.org/{collection_id}/{annotationId}/{version}>; rel="next memento"; datetime="Mon, 16 Aug 2004 05:48:58 GMT"`
+	- Provided when there exists a future version of the Annotation that is currently being queried. The value provided within the angle brackets `<>` is the absolute URL where that previous version can be accessed.
+
+Queries to the W3C Annotation Protocol endpoint can expect to always receive the `Memento-Datetime` header, and:
+- If there exists a previous version of the Annotation available, receive a `Link` header with a relationship of `"prev memento"`.
+
+Queries to the historical Annotation service can expect to always receive the `Memento-Datetime` header, and:
+- If there exists a previous version of the Annotation available, receive a `Link` header with a relationship of `"prev memento"` with a link to that previous version.
+- If there exists a future version of the Annotation available, receive a `Link` header with a relationship of `"next memento"` with a link to that future version.
