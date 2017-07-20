@@ -6,6 +6,7 @@ import com.digirati.elucidate.infrastructure.extractor.agent.AnnotationGenerator
 import com.digirati.elucidate.infrastructure.extractor.body.AnnotationBodyExtractor;
 import com.digirati.elucidate.infrastructure.extractor.selector.*;
 import com.digirati.elucidate.infrastructure.extractor.targets.AnnotationTargetExtractor;
+import com.digirati.elucidate.infrastructure.extractor.temportal.AnnotationTemporalExtractor;
 import com.digirati.elucidate.model.annotation.agent.AnnotationAgent;
 import com.digirati.elucidate.model.annotation.body.AnnotationBody;
 import com.digirati.elucidate.model.annotation.selector.css.AnnotationCSSSelector;
@@ -16,10 +17,8 @@ import com.digirati.elucidate.model.annotation.selector.textposition.AnnotationT
 import com.digirati.elucidate.model.annotation.selector.textquote.AnnotationTextQuoteSelector;
 import com.digirati.elucidate.model.annotation.selector.xpath.AnnotationXPathSelector;
 import com.digirati.elucidate.model.annotation.targets.AnnotationTarget;
-import com.digirati.elucidate.repository.AnnotationAgentStoreRepository;
-import com.digirati.elucidate.repository.AnnotationBodyStoreRepository;
-import com.digirati.elucidate.repository.AnnotationSelectorStoreRepository;
-import com.digirati.elucidate.repository.AnnotationTargetStoreRepository;
+import com.digirati.elucidate.model.annotation.temporal.AnnotationTemporal;
+import com.digirati.elucidate.repository.*;
 import com.digirati.elucidate.service.extractor.AnnotationExtractorService;
 import com.github.jsonldjava.utils.JsonUtils;
 import org.apache.log4j.Logger;
@@ -27,6 +26,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -41,13 +41,15 @@ public class AnnotationExtractorServiceImpl implements AnnotationExtractorServic
     private AnnotationTargetStoreRepository annotationTargetStoreRepository;
     private AnnotationSelectorStoreRepository annotationSelectorStoreRepository;
     private AnnotationAgentStoreRepository annotationAgentStoreRepository;
+    private AnnotationTemporalStoreRepository annotationTemporalStoreRepository;
 
     @Autowired
-    public AnnotationExtractorServiceImpl(AnnotationBodyStoreRepository annotationBodyStoreRepository, AnnotationTargetStoreRepository annotationTargetStoreRepository, AnnotationSelectorStoreRepository annotationSelectorStoreRepository, AnnotationAgentStoreRepository annotationAgentStoreRepository) {
+    public AnnotationExtractorServiceImpl(AnnotationBodyStoreRepository annotationBodyStoreRepository, AnnotationTargetStoreRepository annotationTargetStoreRepository, AnnotationSelectorStoreRepository annotationSelectorStoreRepository, AnnotationAgentStoreRepository annotationAgentStoreRepository, AnnotationTemporalStoreRepository annotationTemporalStoreRepository) {
         this.annotationBodyStoreRepository = annotationBodyStoreRepository;
         this.annotationTargetStoreRepository = annotationTargetStoreRepository;
         this.annotationSelectorStoreRepository = annotationSelectorStoreRepository;
         this.annotationAgentStoreRepository = annotationAgentStoreRepository;
+        this.annotationTemporalStoreRepository = annotationTemporalStoreRepository;
     }
 
     @Override
@@ -58,6 +60,7 @@ public class AnnotationExtractorServiceImpl implements AnnotationExtractorServic
             createAnnotationTargets(w3cAnnotation);
             createAnnotationCreators(w3cAnnotation);
             createAnnotationGenerators(w3cAnnotation);
+            createAnnotationTemporals(w3cAnnotation);
             LOGGER.info(String.format("Completed processing CREATE for W3CAnnotation [%s]", w3cAnnotation));
         } catch (Exception e) {
             LOGGER.error(String.format("An error occurred processing W3CAnnotation [%s]", w3cAnnotation), e);
@@ -77,6 +80,7 @@ public class AnnotationExtractorServiceImpl implements AnnotationExtractorServic
 
         deleteAnnotationCreators(w3cAnnotation);
         deleteAnnotationGenerators(w3cAnnotation);
+        deleteAnnotationTemporals(w3cAnnotation);
 
         List<AnnotationBody> annotationBodies = deleteBodies(w3cAnnotation);
         for (AnnotationBody annotationBody : annotationBodies) {
@@ -84,6 +88,7 @@ public class AnnotationExtractorServiceImpl implements AnnotationExtractorServic
             deleteAnnotationSelectors(bodyPk, null);
             deleteAnnotationCreators(null, bodyPk, null);
             deleteAnnotationGenerators(null, bodyPk, null);
+            deleteAnnotationTemporals(null, bodyPk, null);
         }
 
         List<AnnotationTarget> annotationTargets = deleteTargets(w3cAnnotation);
@@ -92,6 +97,7 @@ public class AnnotationExtractorServiceImpl implements AnnotationExtractorServic
             deleteAnnotationSelectors(null, targetPk);
             deleteAnnotationCreators(null, null, targetPk);
             deleteAnnotationGenerators(null, null, targetPk);
+            deleteAnnotationTemporals(null, null, targetPk);
         }
     }
 
@@ -116,6 +122,7 @@ public class AnnotationExtractorServiceImpl implements AnnotationExtractorServic
             createAnnotationSelectors(bodyPk, null, bodyJsonMap);
             createAnnotationCreators(null, bodyPk, null, bodyJsonMap);
             createAnnotationGenerators(null, bodyPk, null, bodyJsonMap);
+            createAnnotationTemporals(null, bodyPk, null, bodyJsonMap);
         }
     }
 
@@ -140,6 +147,7 @@ public class AnnotationExtractorServiceImpl implements AnnotationExtractorServic
             createAnnotationSelectors(null, targetPk, targetJsonMap);
             createAnnotationCreators(null, null, targetPk, targetJsonMap);
             createAnnotationGenerators(null, null, targetPk, targetJsonMap);
+            createAnnotationTemporals(null, null, targetPk, targetJsonMap);
         }
     }
 
@@ -371,6 +379,22 @@ public class AnnotationExtractorServiceImpl implements AnnotationExtractorServic
         }
     }
 
+    private void createAnnotationTemporals(W3CAnnotation w3cAnnotation) throws IOException {
+        int annotationPk = w3cAnnotation.getPk();
+        Map<String, Object> jsonMap = w3cAnnotation.getJsonMap();
+        createAnnotationTemporals(annotationPk, null, null, jsonMap);
+    }
+
+    private void createAnnotationTemporals(Integer annotationPk, Integer bodyPk, Integer targetPk, Map<String, Object> jsonMap) throws IOException {
+        List<AnnotationTemporal> annotationTemporals = new AnnotationTemporalExtractor().extractTemporals(jsonMap);
+        for (AnnotationTemporal annotationTemporal : annotationTemporals) {
+            String type = annotationTemporal.getType();
+            Date value = annotationTemporal.getValue();
+            String temporalJson = JsonUtils.toString(annotationTemporal.getJsonMap());
+            annotationTemporalStoreRepository.createAnnotationTemporal(annotationPk, bodyPk, targetPk, type, value, temporalJson);
+        }
+    }
+
     private List<AnnotationBody> deleteBodies(W3CAnnotation w3cAnnotation) {
         int annotationPk = w3cAnnotation.getPk();
         return annotationBodyStoreRepository.deletedAnnotationBodies(annotationPk);
@@ -435,5 +459,14 @@ public class AnnotationExtractorServiceImpl implements AnnotationExtractorServic
 
     private void deleteAnnotationGenerators(Integer annotationPk, Integer bodyPk, Integer targetPk) {
         annotationAgentStoreRepository.deleteAnnotationGenerators(annotationPk, bodyPk, targetPk);
+    }
+
+    private void deleteAnnotationTemporals(W3CAnnotation w3cAnnotation) {
+        int annotationPk = w3cAnnotation.getPk();
+        deleteAnnotationTemporals(annotationPk, null, null);
+    }
+
+    private void deleteAnnotationTemporals(Integer annotationPk, Integer bodyPk, Integer targetPk) {
+        annotationTemporalStoreRepository.deleteAnnotationTemporals(annotationPk, bodyPk, targetPk);
     }
 }

@@ -15,5 +15,9 @@ public class SearchConstants {
     public static final String TYPE_EMAIL = "email";
     public static final String TYPE_EMAIL_SHA1 = "emailsha1";
 
+    public static final String TYPE_CREATED = "created";
+    public static final String TYPE_MODIFIED = "modified";
+    public static final String TYPE_GENERATED = "generated";
+
     private SearchConstants() {}
 }

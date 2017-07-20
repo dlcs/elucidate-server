@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -79,5 +80,15 @@ public class OAAnnotationPageSearchServiceImpl extends AbstractAnnotationPageSea
     @Override
     protected String buildGeneratorSearchPageIri(List<String> levels, String type, String value, boolean strict, int page, boolean embeddedDescriptions) {
         return iriBuilderService.buildOAPageGeneratorSearchIri(levels, type, value, strict, page, embeddedDescriptions);
+    }
+
+    @Override
+    protected String buildTemporalSearchCollectionIri(List<String> levels, List<String> types, Date since) {
+        return iriBuilderService.buildOACollectionTemporalSearchIri(levels, types, since);
+    }
+
+    @Override
+    protected String buildTemporalSearchPageIri(List<String> levels, List<String> types, Date since, int page, boolean embeddedDescriptions) {
+        return iriBuilderService.buildOAPageTemporalSearchIri(levels, types, since, page, embeddedDescriptions);
     }
 }

@@ -16,6 +16,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public abstract class AbstractAnnotationSearchServiceImpl<A extends AbstractAnnotation> implements AbstractAnnotationSearchService<A> {
@@ -151,6 +152,31 @@ public abstract class AbstractAnnotationSearchServiceImpl<A extends AbstractAnno
 
         List<A> annotations = convertAnnotations(w3cAnnotations);
         LOGGER.info(String.format("Seaching for Annotations by `generator` got [%s] hits", annotations.size()));
+        return new ServiceResponse<List<A>>(Status.OK, annotations);
+    }
+
+    @Override
+    public ServiceResponse<List<A>> searchAnnotationsByTemporal(List<String> levels, List<String> types, Date since) {
+
+        boolean searchAnnotations = levels.contains(SearchConstants.LEVEL_ANNOTATION);
+        boolean searchBodies = levels.contains(SearchConstants.LEVEL_BODY);
+        boolean searchTargets = levels.contains(SearchConstants.LEVEL_TARGET);
+
+        if (!searchAnnotations && !searchBodies && !searchTargets) {
+            LOGGER.warn(String.format("Provided search parameter [%s] with value [%s] is invalid - at least one of [%s], [%s] or [%s] must be provided", URLConstants.PARAM_LEVELS, levels, SearchConstants.LEVEL_ANNOTATION, SearchConstants.LEVEL_BODY, SearchConstants.LEVEL_TARGET));
+            return new ServiceResponse<List<A>>(Status.NON_CONFORMANT, null);
+        }
+
+        if (types.isEmpty() || (!types.contains(SearchConstants.TYPE_CREATED) && !types.contains(SearchConstants.TYPE_MODIFIED) && !types.contains(SearchConstants.TYPE_GENERATED))) {
+            LOGGER.warn(String.format("Provided search parameter [%s] with values [%s] is invalid - one of [%s], [%s], [%s] must be provided", URLConstants.PARAM_TYPE, types, SearchConstants.TYPE_CREATED, SearchConstants.TYPE_MODIFIED, SearchConstants.TYPE_GENERATED));
+            return new ServiceResponse<List<A>>(Status.NON_CONFORMANT, null);
+        }
+
+        LOGGER.info(String.format("Searching for Annotations by `temporal` using levels [%s] with types [%s] since [%s]", levels, types, since));
+        List<W3CAnnotation> w3cAnnotations = annotationSearchRepository.getAnnotationsByTemporal(searchAnnotations, searchBodies, searchTargets, types.toArray(new String[types.size()]), since);
+
+        List<A> annotations = convertAnnotations(w3cAnnotations);
+        LOGGER.info(String.format("Seaching for Annotations by `temporal` got [%s] hits", annotations.size()));
         return new ServiceResponse<List<A>>(Status.OK, annotations);
     }
 

@@ -1,5 +1,49 @@
 # Usage
 
+- [Usage](#usage)
+	- [Introduction](#introduction)
+	- [W3C & OA Conversion](#w3c-oa-conversion)
+	- [Annotation Containers](#annotation-containers)
+		- [Create](#create)
+			- [Request](#request)
+			- [Response](#response)
+		- [Fetch](#fetch)
+			- [Request](#request)
+			- [Response](#response)
+		- [Update](#update)
+		- [Delete](#delete)
+	- [Annotations](#annotations)
+		- [Create](#create)
+			- [Request](#request)
+			- [Response](#response)
+		- [Fetch](#fetch)
+			- [Request](#request)
+			- [Response](#response)
+		- [Update](#update)
+			- [Request](#request)
+			- [Response](#response)
+		- [Delete](#delete)
+			- [Request](#request)
+			- [Response](#response)
+	- [Search](#search)
+		- [Search By `body`](#search-by-body)
+		- [Search by `target`](#search-by-target)
+		- [Search by `creator`](#search-by-creator)
+		- [Search by `generator`](#search-by-generator)
+		- [Search by `created`, `modified`, `generated`](#search-by-created-modified-generated)
+	- [Statistics](#statistics)
+		- [Body Statistics](#body-statistics)
+		- [Target Statistics](#target-statistics)
+	- [Batch Operations](#batch-operations)
+		- [Batch Update](#batch-update)
+			- [Request](#request)
+			- [Response](#response)
+		- [Batch Delete](#batch-delete)
+			- [Request](#request)
+			- [Response](#response)
+
+## Introduction
+
 Elucidate is compliant with the [W3C](https://www.w3.org/TR/annotation-model/) and [OA](http://www.openannotation.org/spec/core/) Web Annotation specifications. As such, any model that complies with these specifications is considered valid by Elucidate.
 
 The W3C Web Annotation specification also provides a [protocol](https://www.w3.org/TR/annotation-protocol/) that defines the interaction between a client and a server. The OA Web Annotation specification provides no such protocol. Instead, Elucidate utilises the same W3C Web Annotation protocol for OA interactions.
@@ -335,6 +379,16 @@ Base URL: `GET http://example.org/w3c/services/search/generator HTTP/1.1`
 | `type`    | Yes       | `id`,`name`,`nickname`,`email`,`emailsha1` | The type of field within the `generator` that will be searched against.                                                                                   |
 | `value`   | Yes       | Percent-encoded string                     | The value that the defined `type` will be searched for.                                                                                                   |
 | `strict`  | No        | `true`,`false`                             | If `true`, the defined `value` must match the defined `type` exactly. Otherwise, the `value` is treated as a prefix. If unspecified, defaults to `false`. |
+
+### Search by `created`, `modified`, `generated`
+
+Base URL: `GET http://example.org/w3c/services/search/temporal HTTP/1.1`
+
+| Parameter | Mandatory | Valid Values                     | Description                                                                                  |
+|-----------|-----------|----------------------------------|----------------------------------------------------------------------------------------------|
+| `levels`  | Yes       | `annotation`,`body`,`target`     | The levels within the annotation against which the search for a temporal value will be made. |
+| `types`   | Yes       | `created`,`modified`,`generated` | The types of temporal fields within that will be searched against.                           |
+| `since`   | Yes       | ISO8601 timestamp                | The timestamp that search results will be returned from.                                     |
 
 ## Statistics
 

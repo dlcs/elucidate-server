@@ -14,6 +14,8 @@ import com.digirati.elucidate.service.search.AbstractAnnotationPageSearchService
 import com.digirati.elucidate.service.search.AbstractAnnotationSearchService;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.format.annotation.DateTimeFormat.ISO;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Date;
 import java.util.List;
 
 public abstract class AbstractAnnotationSearchController<A extends AbstractAnnotation, P extends AbstractAnnotationPage, C extends AbstractAnnotationCollection> {
@@ -29,6 +32,7 @@ public abstract class AbstractAnnotationSearchController<A extends AbstractAnnot
     private static final String REQUEST_PATH_TARGET = "/services/search/target";
     private static final String REQUEST_PATH_CREATOR = "/services/search/creator";
     private static final String REQUEST_PATH_GENERATOR = "/services/search/generator";
+    private static final String REQUEST_PATH_TEMPORAL = "/services/search/temporal";
     private static final String PREFER_MINIMAL_CONTAINER = "http://www.w3.org/ns/ldp#preferminimalcontainer";
     private static final String PREFER_CONTAINED_IRIS = "http://www.w3.org/ns/oa#prefercontainediris";
     private static final String PREFER_CONTAINED_DESCRIPTIONS = "http://www.w3.org/ns/oa#prefercontaineddescriptions";
@@ -142,6 +146,32 @@ public abstract class AbstractAnnotationSearchController<A extends AbstractAnnot
                 List<A> annotations = serviceResponse.getObj();
 
                 return annotationPageSearchService.buildAnnotationPageByGenerator(annotations, levels, type, value, strict, page, embeddedDescriptions);
+            };
+
+            return processPageSearchRequest(annotationPageSearch, iris, descriptions);
+        }
+    }
+
+    @RequestMapping(value = REQUEST_PATH_TEMPORAL, method = RequestMethod.GET)
+    public ResponseEntity<?> getSearchTemporal(@RequestParam(value = URLConstants.PARAM_LEVELS, required = true) List<String> levels, @RequestParam(value = URLConstants.PARAM_TYPES, required = true) List<String> types, @RequestParam(value = URLConstants.PARAM_SINCE, required = true) @DateTimeFormat(iso = ISO.DATE_TIME) Date since, @RequestParam(value = URLConstants.PARAM_PAGE, required = false) Integer page, @RequestParam(value = URLConstants.PARAM_IRIS, required = false, defaultValue = "false") boolean iris, @RequestParam(value = URLConstants.PARAM_DESC, required = false, defaultValue = "false") boolean descriptions, HttpServletRequest request) {
+        if (page == null) {
+
+            AnnotationCollectionSearch<C> annotationCollectionSearch = (ClientPreference clientPref) -> annotationCollectionSearchService.searchAnnotationCollectionByTemporal(levels, types, since, clientPref);
+
+            return processCollectionSearchRequest(annotationCollectionSearch, request);
+        } else {
+            AnnotationPageSearch<P> annotationPageSearch = (boolean embeddedDescriptions) -> {
+
+                ServiceResponse<List<A>> serviceResponse = annotationSearchService.searchAnnotationsByTemporal(levels, types, since);
+                Status status = serviceResponse.getStatus();
+
+                if (!status.equals(Status.OK)) {
+                    return new ServiceResponse<P>(status, null);
+                }
+
+                List<A> annotations = serviceResponse.getObj();
+
+                return annotationPageSearchService.buildAnnotationPageByTemporal(annotations, levels, types, since, page, embeddedDescriptions);
             };
 
             return processPageSearchRequest(annotationPageSearch, iris, descriptions);

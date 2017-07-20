@@ -1,5 +1,6 @@
 package com.digirati.elucidate.common.service;
 
+import java.util.Date;
 import java.util.List;
 
 public interface IRIBuilderService {
@@ -30,6 +31,10 @@ public interface IRIBuilderService {
 
     String buildW3CAnnotationHistoryIri(String collectionId, String annotationId, int version);
 
+    String buildW3CCollectionTemporalSearchIri(List<String> levels, List<String> types, Date since);
+
+    String buildW3CPageTemporalSearchIri(List<String> levels, List<String> types, Date since, int page, boolean embeddedDescriptions);
+
     String buildOAAnnotationIri(String collectionId, String annotationId);
 
     String buildOACollectionIri(String collectionId);
@@ -55,4 +60,8 @@ public interface IRIBuilderService {
     String buildOAStatisticsPageBodyIri(String field, int page);
 
     String buildOAAnnotationHistoryIri(String collectionId, String annotationId, int version);
+
+    String buildOACollectionTemporalSearchIri(List<String> levels, List<String> types, Date since);
+
+    String buildOAPageTemporalSearchIri(List<String> levels, List<String> types, Date since, int page, boolean embeddedDescriptions);
 }
