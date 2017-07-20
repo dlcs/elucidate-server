@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -70,5 +71,15 @@ public class W3CAnnotationPageSearchServiceImpl extends AbstractAnnotationPageSe
     @Override
     protected String buildGeneratorSearchPageIri(List<String> levels, String type, String value, boolean strict, int page, boolean embeddedDescriptions) {
         return iriBuilderService.buildW3CPageGeneratorSearchIri(levels, type, value, strict, page, embeddedDescriptions);
+    }
+
+    @Override
+    protected String buildTemporalSearchCollectionIri(List<String> levels, List<String> types, Date since) {
+        return iriBuilderService.buildW3CCollectionTemporalSearchIri(levels, types, since);
+    }
+
+    @Override
+    protected String buildTemporalSearchPageIri(List<String> levels, List<String> types, Date since, int page, boolean embeddedDescriptions) {
+        return iriBuilderService.buildW3CPageTemporalSearchIri(levels, types, since, page, embeddedDescriptions);
     }
 }

@@ -9,6 +9,7 @@ import com.digirati.elucidate.model.ServiceResponse;
 import com.digirati.elucidate.service.search.AbstractAnnotationPageSearchService;
 import org.apache.log4j.Logger;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -75,4 +76,17 @@ public abstract class AbstractAnnotationPageSearchServiceImpl<A extends Abstract
     protected abstract String buildGeneratorSearchCollectionIri(List<String> levels, String type, String value, boolean strict);
 
     protected abstract String buildGeneratorSearchPageIri(List<String> levels, String type, String value, boolean strict, int page, boolean embeddedDescriptions);
+
+    @Override
+    public ServiceResponse<P> buildAnnotationPageByTemporal(List<A> annotations, List<String> levels, List<String> types, Date since, int page, boolean embeddedDescriptions) {
+
+        AnnotationCollectionIRIBuilder annotationCollectionIriBuilder = () -> buildTemporalSearchCollectionIri(levels, types, since);
+        AnnotationPageIRIBuilder annotationPageIriBuilder = (int _page, boolean _embeddedDescriptions) -> buildTemporalSearchPageIri(levels, types, since, page, embeddedDescriptions);
+
+        return new AnnotationPageBuilder<A, P>(this::convertToAnnotationPage, annotationCollectionIriBuilder, annotationPageIriBuilder).buildAnnotationPage(annotations, page, embeddedDescriptions, pageSize);
+    }
+
+    protected abstract String buildTemporalSearchCollectionIri(List<String> levels, List<String> types, Date since);
+
+    protected abstract String buildTemporalSearchPageIri(List<String> levels, List<String> types, Date since, int page, boolean embeddedDescriptions);
 }

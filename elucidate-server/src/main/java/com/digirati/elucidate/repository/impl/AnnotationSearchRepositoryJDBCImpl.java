@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Types;
+import java.util.Date;
 import java.util.List;
 
 @Repository(AnnotationSearchRepositoryJDBCImpl.REPOSITORY_NAME)
@@ -58,6 +59,16 @@ public class AnnotationSearchRepositoryJDBCImpl extends AbstractRepositoryJDBCIm
         String sql = "SELECT * FROM annotation_search_by_generator(?, ?, ?, ?, ?, ?)";
         Object[] params = {searchAnnotations, searchBodies, searchTargets, type, value, strict};
         int[] sqlTypes = {Types.BOOLEAN, Types.BOOLEAN, Types.BOOLEAN, Types.VARCHAR, Types.VARCHAR, Types.BOOLEAN};
+
+        return queryForList(sql, params, sqlTypes, new W3CAnnotationRowMapper());
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<W3CAnnotation> getAnnotationsByTemporal(boolean searchAnnotations, boolean searchBodies, boolean searchTargets, String[] types, Date since) {
+        String sql = "SELECT * FROM annotation_search_by_temporal(?, ?, ?, string_to_array(upper(?), ','), ?)";
+        Object[] params = {searchAnnotations, searchBodies, searchTargets, String.join(",", types), since};
+        int[] sqlTypes = {Types.BOOLEAN, Types.BOOLEAN, Types.BOOLEAN, Types.VARCHAR, Types.TIMESTAMP};
 
         return queryForList(sql, params, sqlTypes, new W3CAnnotationRowMapper());
     }

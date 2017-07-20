@@ -3,6 +3,7 @@ package com.digirati.elucidate.service.search;
 import com.digirati.elucidate.common.model.annotation.AbstractAnnotation;
 import com.digirati.elucidate.model.ServiceResponse;
 
+import java.util.Date;
 import java.util.List;
 
 public interface AbstractAnnotationSearchService<A extends AbstractAnnotation> {
@@ -14,4 +15,6 @@ public interface AbstractAnnotationSearchService<A extends AbstractAnnotation> {
     ServiceResponse<List<A>> searchAnnotationsByCreator(List<String> levels, String type, String value, boolean strict);
 
     ServiceResponse<List<A>> searchAnnotationsByGenerator(List<String> levels, String type, String value, boolean strict);
+
+    ServiceResponse<List<A>> searchAnnotationsByTemporal(List<String> levels, List<String> types, Date since);
 }

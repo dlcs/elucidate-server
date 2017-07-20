@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 @Service(W3CAnnotationCollectionSearchServiceImpl.SERVICE_NAME)
@@ -109,5 +110,24 @@ public class W3CAnnotationCollectionSearchServiceImpl extends AbstractAnnotation
     @Override
     protected String buildGeneratorSearchPageIri(List<String> levels, String type, String value, boolean strict, int page, boolean embeddedDescriptions) {
         return iriBuilderService.buildW3CPageGeneratorSearchIri(levels, type, value, strict, page, embeddedDescriptions);
+    }
+
+    @Override
+    protected ServiceResponse<W3CAnnotationPage> buildTemporalSearchFirstAnnotationPage(List<W3CAnnotation> w3cAnnotations, List<String> levels, List<String> types, Date since, ClientPreference clientPref) {
+        if (clientPref.equals(ClientPreference.CONTAINED_IRIS)) {
+            return w3cAnnotationPageSearchService.buildAnnotationPageByTemporal(w3cAnnotations, levels, types, since, 0, false);
+        } else {
+            return w3cAnnotationPageSearchService.buildAnnotationPageByTemporal(w3cAnnotations, levels, types, since, 0, true);
+        }
+    }
+
+    @Override
+    protected String buildTemporalSearchCollectionIri(List<String> levels, List<String> types, Date since) {
+        return iriBuilderService.buildW3CCollectionTemporalSearchIri(levels, types, since);
+    }
+
+    @Override
+    protected String buildTemporalSearchPageIri(List<String> levels, List<String> types, Date since, int page, boolean embeddedDescriptions) {
+        return iriBuilderService.buildW3CPageTemporalSearchIri(levels, types, since, page, embeddedDescriptions);
     }
 }

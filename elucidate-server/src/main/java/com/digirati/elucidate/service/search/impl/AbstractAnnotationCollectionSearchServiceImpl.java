@@ -16,6 +16,7 @@ import com.digirati.elucidate.service.search.AbstractAnnotationCollectionSearchS
 import com.digirati.elucidate.service.search.AbstractAnnotationSearchService;
 import org.apache.log4j.Logger;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -152,4 +153,34 @@ public abstract class AbstractAnnotationCollectionSearchServiceImpl<A extends Ab
     protected abstract String buildGeneratorSearchCollectionIri(List<String> levels, String type, String value, boolean strict);
 
     protected abstract String buildGeneratorSearchPageIri(List<String> levels, String type, String value, boolean strict, int page, boolean embeddedDescriptions);
+
+    @Override
+    public ServiceResponse<C> searchAnnotationCollectionByTemporal(List<String> levels, List<String> types, Date since, ClientPreference clientPref) {
+
+        W3CAnnotationCollection w3cAnnotationCollection = new W3CAnnotationCollection();
+        w3cAnnotationCollection.setJsonMap(new HashMap<String, Object>());
+
+        ServiceResponse<List<A>> serviceResponse = annotationSearchService.searchAnnotationsByTemporal(levels, types, since);
+        Status status = serviceResponse.getStatus();
+
+        if (!status.equals(Status.OK)) {
+            LOGGER.warn(String.format("Got unexpected service response code [%s] (expected [%s]", status, Status.OK));
+            return new ServiceResponse<C>(status, null);
+        }
+
+        List<A> annotations = serviceResponse.getObj();
+
+        AnnotationCollectionConverter<C> annotationCollectionConverter = () -> convertToAnnotationCollection(w3cAnnotationCollection);
+        AnnotationCollectionIRIBuilder annotationCollectionIriBuilder = () -> buildTemporalSearchCollectionIri(levels, types, since);
+        AnnotationPageIRIBuilder annotationPageIriBuilder = (int _page, boolean _embeddedDescriptions) -> buildTemporalSearchPageIri(levels, types, since, _page, _embeddedDescriptions);
+        FirstAnnotationPageBuilder<P> firstAnnotationPageBuilder = () -> buildTemporalSearchFirstAnnotationPage(annotations, levels, types, since, clientPref);
+
+        return new AnnotationCollectionBuilder<A, P, C>(annotationCollectionConverter, annotationCollectionIriBuilder, annotationPageIriBuilder, firstAnnotationPageBuilder).buildAnnotationCollection(w3cAnnotationCollection, annotations, pageSize, clientPref);
+    }
+
+    protected abstract ServiceResponse<P> buildTemporalSearchFirstAnnotationPage(List<A> annotations, List<String> levels, List<String> types, Date since, ClientPreference clientPref);
+
+    protected abstract String buildTemporalSearchCollectionIri(List<String> levels, List<String> types, Date since);
+
+    protected abstract String buildTemporalSearchPageIri(List<String> levels, List<String> types, Date since, int page, boolean embeddedDescriptions);
 }

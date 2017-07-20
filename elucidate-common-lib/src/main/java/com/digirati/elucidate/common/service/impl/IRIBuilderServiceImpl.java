@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.net.URISyntaxException;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -278,6 +279,23 @@ public class IRIBuilderServiceImpl implements IRIBuilderService {
     }
 
     @Override
+    public String buildW3CPageTemporalSearchIri(List<String> levels, List<String> types, Date since, int page, boolean embeddedDescriptions) {
+        return buildIri("w3c/services/search/temporal", new HashMap<String, Object>() {
+            {
+                put(URLConstants.PARAM_LEVELS, StringUtils.join(levels, ","));
+                put(URLConstants.PARAM_TYPES, StringUtils.join(types, ","));
+                put(URLConstants.PARAM_SINCE, since);
+                put(URLConstants.PARAM_PAGE, page);
+                if (embeddedDescriptions) {
+                    put(URLConstants.PARAM_DESC, 1);
+                } else {
+                    put(URLConstants.PARAM_IRIS, 1);
+                }
+            }
+        });
+    }
+
+    @Override
     public String buildOAAnnotationIri(String collectionId, String annotationId) {
         return buildIri(String.format("oa/%s/%s", collectionId, annotationId), null);
     }
@@ -504,6 +522,45 @@ public class IRIBuilderServiceImpl implements IRIBuilderService {
     @Override
     public String buildOAAnnotationHistoryIri(String collectionId, String annotationId, int version) {
         return buildIri(String.format("oa/services/history/%s/%s/%s", collectionId, annotationId, version), null);
+    }
+
+    @Override
+    public String buildOACollectionTemporalSearchIri(List<String> levels, List<String> types, Date since) {
+        return buildIri("oa/services/search/temporal", new HashMap<String, Object>() {
+            {
+                put(URLConstants.PARAM_LEVELS, StringUtils.join(levels, ","));
+                put(URLConstants.PARAM_TYPES, StringUtils.join(types, ","));
+                put(URLConstants.PARAM_SINCE, since);
+            }
+        });
+    }
+
+    @Override
+    public String buildOAPageTemporalSearchIri(List<String> levels, List<String> types, Date since, int page, boolean embeddedDescriptions) {
+        return buildIri("oa/services/search/temporal", new HashMap<String, Object>() {
+            {
+                put(URLConstants.PARAM_LEVELS, StringUtils.join(levels, ","));
+                put(URLConstants.PARAM_TYPES, StringUtils.join(types, ","));
+                put(URLConstants.PARAM_SINCE, since);
+                put(URLConstants.PARAM_PAGE, page);
+                if (embeddedDescriptions) {
+                    put(URLConstants.PARAM_DESC, 1);
+                } else {
+                    put(URLConstants.PARAM_IRIS, 1);
+                }
+            }
+        });
+    }
+
+    @Override
+    public String buildW3CCollectionTemporalSearchIri(List<String> levels, List<String> types, Date since) {
+        return buildIri("w3c/services/search/temporal", new HashMap<String, Object>() {
+            {
+                put(URLConstants.PARAM_LEVELS, StringUtils.join(levels, ","));
+                put(URLConstants.PARAM_TYPES, StringUtils.join(types, ","));
+                put(URLConstants.PARAM_SINCE, since);
+            }
+        });
     }
 
     private String buildIri(String id, Map<String, Object> params) {
