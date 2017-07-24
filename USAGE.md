@@ -430,10 +430,10 @@ Content-Type: application/ld+json; profile="http://www.w3.org/ns/anno.jsonld"
 {
   "@context": "http://www.w3.org/ns/anno.jsonld",
   "body": {
-    "id": "http://example.com/old.html"
+    "id": "http://example.com/old.html",
     "oa:isReplacedBy": "http://example.com/new.html",
     "source": {
-      "id": "http://example.com/old.html"
+      "id": "http://example.com/old.html",
       "oa:isReplacedBy": "http://example.com/new.html"
     }
   }
