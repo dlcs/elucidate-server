@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/dlcs/elucidate-server.svg?branch=master)](https://travis-ci.org/dlcs/elucidate-server)
+
 # Elucidate
 
 Elucidate is a Web Annotation server that is compliant with both the [W3C Web Annotation Data Model](https://www.w3.org/TR/annotation-model/) and associated [protocol](https://www.w3.org/TR/annotation-protocol/), and the [Open Annotation (OA) Data Model](http://www.openannotation.org/spec/core/).
