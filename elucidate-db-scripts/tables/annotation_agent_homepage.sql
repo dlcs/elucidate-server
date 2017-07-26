@@ -33,4 +33,3 @@ CREATE INDEX idx_annotation_agent_homepage_annotationagentid ON public.annotatio
 -- DROP INDEX public.idx_annotation_agent_homepage_homepage;
 
 CREATE INDEX idx_annotation_agent_homepage_homepage ON public.annotation_agent_homepage USING btree (homepage);
-

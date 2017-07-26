@@ -48,7 +48,7 @@ public class ServicesConfig {
         threadPoolTaskExecutor.setCorePoolSize(environment.getRequiredProperty("listener.poolSize", Integer.class));
         return threadPoolTaskExecutor;
     }
-    
+
     @Bean(name = "annotationIdGenerator")
     public IDGenerator annotationIdGenerator() throws ClassNotFoundException, InstantiationException, IllegalAccessException {
         Class<?> clazz = Class.forName(environment.getProperty("annotation.id.generator"));

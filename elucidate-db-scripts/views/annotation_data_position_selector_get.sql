@@ -2,7 +2,7 @@
 
 -- DROP VIEW public.annotation_data_position_selector_get;
 
-CREATE OR REPLACE VIEW public.annotation_data_position_selector_get AS 
+CREATE OR REPLACE VIEW public.annotation_data_position_selector_get AS
     SELECT
         asl.id,
         asl.selectoriri,

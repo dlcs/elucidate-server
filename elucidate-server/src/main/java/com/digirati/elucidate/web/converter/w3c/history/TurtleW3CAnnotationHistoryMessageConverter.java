@@ -33,4 +33,3 @@ public class TurtleW3CAnnotationHistoryMessageConverter extends AbstractW3CAnnot
         throw new UnsupportedOperationException(String.format("Conversion from Content Type [%s] to [%s] is not supported", contentType, W3CAnnotationHistory.class));
     }
 }
-

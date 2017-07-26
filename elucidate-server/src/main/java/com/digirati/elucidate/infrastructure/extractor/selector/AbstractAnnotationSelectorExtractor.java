@@ -51,4 +51,3 @@ public abstract class AbstractAnnotationSelectorExtractor<T extends AbstractAnno
         return selectors;
     }
 }
-
