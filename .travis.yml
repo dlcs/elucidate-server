@@ -12,6 +12,7 @@ install:
 
 script:
   - pre-commit run --allow-unstaged-config --all-files --verbose
-  - mvn -f elucidate-common-lib/pom.xml clean test -B
-  - mvn -f elucidate-converter/pom.xml clean test -B
-  - mvn -f elucidate-server/pom.xml clean test -B
+  - mvn -f elucidate-parent/pom.xml clean package install -U -B
+  - mvn -f elucidate-common-lib/pom.xml clean test package install -U -B
+  - mvn -f elucidate-converter/pom.xml clean test package install -U -B
+  - mvn -f elucidate-server/pom.xml clean test package install -U -B
