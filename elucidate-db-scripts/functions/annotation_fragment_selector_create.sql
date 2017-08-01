@@ -1,6 +1,6 @@
--- Function: public.annotation_fragment_selector_create(integer, integer, character varying, text, text, jsonb)
+-- Function: public.annotation_fragment_selector_create(integer, integer, character varying, text, text, integer, integer, integer, integer, integer, integer, jsonb)
 
--- DROP FUNCTION public.annotation_fragment_selector_create(integer, integer, character varying, text, text, jsonb);
+-- DROP FUNCTION public.annotation_fragment_selector_create(integer, integer, character varying, text, text, integer, integer, integer, integer, integer, integer, jsonb);
 
 CREATE OR REPLACE FUNCTION public.annotation_fragment_selector_create(
     _bodyid integer,

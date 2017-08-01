@@ -6,5 +6,5 @@ import com.digirati.elucidate.model.ServiceResponse;
 @FunctionalInterface
 public interface AnnotationPageSearch<P extends AbstractAnnotationPage> {
 
-    public ServiceResponse<P> searchAnnotationPage(boolean embeddedDescriptions);
+    ServiceResponse<P> searchAnnotationPage(boolean embeddedDescriptions);
 }

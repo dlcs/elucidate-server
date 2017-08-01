@@ -2,7 +2,7 @@
 
 -- DROP VIEW public.annotation_target_get;
 
-CREATE OR REPLACE VIEW public.annotation_target_get AS 
+CREATE OR REPLACE VIEW public.annotation_target_get AS
     SELECT
         a.annotationid,
         ac.collectionid,

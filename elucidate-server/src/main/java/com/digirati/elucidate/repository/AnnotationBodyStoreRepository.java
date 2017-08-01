@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface AnnotationBodyStoreRepository {
 
-    public AnnotationBody createAnnotationBody(int annotationPK, String bodyIri, String sourceIri, String bodyJson);
+    AnnotationBody createAnnotationBody(int annotationPK, String bodyIri, String sourceIri, String bodyJson);
 
-    public List<AnnotationBody> deletedAnnotationBodies(int annotationPK);
+    List<AnnotationBody> deletedAnnotationBodies(int annotationPK);
 }

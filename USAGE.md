@@ -1,5 +1,50 @@
 # Usage
 
+- [Usage](#usage)
+	- [Introduction](#introduction)
+	- [W3C & OA Conversion](#w3c-oa-conversion)
+	- [Annotation Containers](#annotation-containers)
+		- [Create](#create)
+			- [Request](#request)
+			- [Response](#response)
+		- [Fetch](#fetch)
+			- [Request](#request)
+			- [Response](#response)
+		- [Update](#update)
+		- [Delete](#delete)
+	- [Annotations](#annotations)
+		- [Create](#create)
+			- [Request](#request)
+			- [Response](#response)
+		- [Fetch](#fetch)
+			- [Request](#request)
+			- [Response](#response)
+		- [Update](#update)
+			- [Request](#request)
+			- [Response](#response)
+		- [Delete](#delete)
+			- [Request](#request)
+			- [Response](#response)
+	- [Search](#search)
+		- [Search By `body`](#search-by-body)
+		- [Search by `target`](#search-by-target)
+		- [Search by `creator`](#search-by-creator)
+		- [Search by `generator`](#search-by-generator)
+		- [Search by `created`, `modified`, `generated`](#search-by-created-modified-generated)
+	- [Statistics](#statistics)
+		- [Body Statistics](#body-statistics)
+		- [Target Statistics](#target-statistics)
+	- [Batch Operations](#batch-operations)
+		- [Batch Update](#batch-update)
+			- [Request](#request)
+			- [Response](#response)
+		- [Batch Delete](#batch-delete)
+			- [Request](#request)
+			- [Response](#response)
+	- [Annotation Histories](#annotation-histories)
+
+## Introduction
+
 Elucidate is compliant with the [W3C](https://www.w3.org/TR/annotation-model/) and [OA](http://www.openannotation.org/spec/core/) Web Annotation specifications. As such, any model that complies with these specifications is considered valid by Elucidate.
 
 The W3C Web Annotation specification also provides a [protocol](https://www.w3.org/TR/annotation-protocol/) that defines the interaction between a client and a server. The OA Web Annotation specification provides no such protocol. Instead, Elucidate utilises the same W3C Web Annotation protocol for OA interactions.
@@ -290,37 +335,61 @@ All search results are returned as Annotation Containers.
 
 Base URL: `GET http://example.org/w3c/services/search/body HTTP/1.1`
 
-| Parameter | Mandatory | Valid Values                                                                        | Description                                                                                                                                                 |
-| --------- | --------- | ----------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `fields`  | Yes       | `id`,`source`                                                                       | The fields within `body` that the `value` parameter is targetting.                                                                                          |
-| `value`   | Yes       | Percent-encoded string                                                              | The value (usually a URI) that the defined `fields` will be searched for.                                                                                   |
-| `strict`  | No        | `true`,`false`                                                                      | If `true`, the defined `value` must match the defined `fields` exactly. Otherwise, the `value` is treated as a prefix. If unspecified, defaults to `false`. |
-| `xywh`    | No        | [Media Fragments](https://www.w3.org/TR/media-frags/#naming-space) spatial selector | If specified, returns only results that intersect with the defined spatial dimensions.                                                                      |
-| `t`       | No        | [Media Fragments](https://www.w3.org/TR/media-frags/#naming-time) temporal selector | If specified, returns only results that intersect with the defined temporal dimensions.                                                                     |
-| `creator` | No        | Percent-encoded string                                                              | If specified, returns only results that where the `target` has a `creator` with the provided IRI.                                                           |
+| Parameter   | Mandatory | Valid Values                                                                        | Description                                                                                                                                                 |
+|-------------|-----------|-------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `fields`    | Yes       | `id`,`source`                                                                       | The fields within `body` that the `value` parameter is targetting.                                                                                          |
+| `value`     | Yes       | Percent-encoded string                                                              | The value (usually a URI) that the defined `fields` will be searched for.                                                                                   |
+| `strict`    | No        | `true`,`false`                                                                      | If `true`, the defined `value` must match the defined `fields` exactly. Otherwise, the `value` is treated as a prefix. If unspecified, defaults to `false`. |
+| `xywh`      | No        | [Media Fragments](https://www.w3.org/TR/media-frags/#naming-space) spatial selector | If specified, returns only results that intersect with the defined spatial dimensions.                                                                      |
+| `t`         | No        | [Media Fragments](https://www.w3.org/TR/media-frags/#naming-time) temporal selector | If specified, returns only results that intersect with the defined temporal dimensions.                                                                     |
+| `creator`   | No        | Percent-encoded string                                                              | If specified, returns only results that where the `body` has a `creator` with the provided IRI.                                                             |
+| `generator` | No        | Percent-encoded string                                                              | If specified, returns only results that where the `body` has a `generator` with the provided IRI.                                                           |
 
 ### Search by `target`
 
 Base URL: `GET http://example.org/w3c/services/search/target HTTP/1.1`
 
-| Parameter | Mandatory | Valid Values           | Description                                                                                                                                                                                                              |
-| --------- | --------- | ----------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `fields`  | Yes       | `id`,`source`                                                                       | The fields within `target` that the `value` parameter is targetting.                                                                                        |
-| `value`   | Yes       | Percent-encoded string                                                              | The value (usually a URI) that the defined `fields` will be searched for.                                                                                   |
-| `strict`  | No        | `true`,`false`                                                                      | If `true`, the defined `value` must match the defined `fields` exactly. Otherwise, the `value` is treated as a prefix. If unspecified, defaults to `false`. |
-| `xywh`    | No        | [Media Fragments](https://www.w3.org/TR/media-frags/#naming-space) spatial selector | If specified, returns only results that intersect with the defined spatial dimensions.                                                                      |
-| `t`       | No        | [Media Fragments](https://www.w3.org/TR/media-frags/#naming-time) temporal selector | If specified, returns only results that intersect with the defined temporal dimensions.                                                                     |
-| `creator` | No        | Percent-encoded string                                                              | If specified, returns only results that where the `target` has a `creator` with the provided IRI.                                                           |
+| Parameter   | Mandatory | Valid Values                                                                        | Description                                                                                                                                                 |
+|-------------|-----------|-------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `fields`    | Yes       | `id`,`source`                                                                       | The fields within `target` that the `value` parameter is targetting.                                                                                        |
+| `value`     | Yes       | Percent-encoded string                                                              | The value (usually a URI) that the defined `fields` will be searched for.                                                                                   |
+| `strict`    | No        | `true`,`false`                                                                      | If `true`, the defined `value` must match the defined `fields` exactly. Otherwise, the `value` is treated as a prefix. If unspecified, defaults to `false`. |
+| `xywh`      | No        | [Media Fragments](https://www.w3.org/TR/media-frags/#naming-space) spatial selector | If specified, returns only results that intersect with the defined spatial dimensions.                                                                      |
+| `t`         | No        | [Media Fragments](https://www.w3.org/TR/media-frags/#naming-time) temporal selector | If specified, returns only results that intersect with the defined temporal dimensions.                                                                     |
+| `creator`   | No        | Percent-encoded string                                                              | If specified, returns only results that where the `target` has a `creator` with the provided IRI.                                                           |
+| `generator` | No        | Percent-encoded string                                                              | If specified, returns only results that where the `target` has a `generator` with the provided IRI.                                                         |
 
 ### Search by `creator`
 
 Base URL: `GET http://example.org/w3c/services/search/creator HTTP/1.1`
 
-| Parameter | Mandatory | Valid Values                               | Description                                                                           |
-| --------  | --------- | ------------------------------------------ | ------------------------------------------------------------------------------------- |
-| `levels`  | Yes       | `annotation`,`body`,`target`               | The levels within the annotation against which the search for a creator will be made. |
-| `type`    | Yes       | `id`,`name`,`nickname`,`email`,`emailsha1` | The type of field within the `creator` that will be searched against.                 |
-| `value`   | Yes       | Percent-encoded string                     | The value that the defined `type` will be searched for.                               |
+| Parameter | Mandatory | Valid Values                               | Description                                                                                                                                               |
+|-----------|-----------|--------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `levels`  | Yes       | `annotation`,`body`,`target`               | The levels within the annotation against which the search for a `creator` will be made.                                                                   |
+| `type`    | Yes       | `id`,`name`,`nickname`,`email`,`emailsha1` | The type of field within the `creator` that will be searched against.                                                                                     |
+| `value`   | Yes       | Percent-encoded string                     | The value that the defined `type` will be searched for.                                                                                                   |
+| `strict`  | No        | `true`,`false`                             | If `true`, the defined `value` must match the defined `type` exactly. Otherwise, the `value` is treated as a prefix. If unspecified, defaults to `false`. |
+
+### Search by `generator`
+
+Base URL: `GET http://example.org/w3c/services/search/generator HTTP/1.1`
+
+| Parameter | Mandatory | Valid Values                               | Description                                                                                                                                               |
+|-----------|-----------|--------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `levels`  | Yes       | `annotation`,`body`,`target`               | The levels within the annotation against which the search for a `generator` will be made.                                                                 |
+| `type`    | Yes       | `id`,`name`,`nickname`,`email`,`emailsha1` | The type of field within the `generator` that will be searched against.                                                                                   |
+| `value`   | Yes       | Percent-encoded string                     | The value that the defined `type` will be searched for.                                                                                                   |
+| `strict`  | No        | `true`,`false`                             | If `true`, the defined `value` must match the defined `type` exactly. Otherwise, the `value` is treated as a prefix. If unspecified, defaults to `false`. |
+
+### Search by `created`, `modified`, `generated`
+
+Base URL: `GET http://example.org/w3c/services/search/temporal HTTP/1.1`
+
+| Parameter | Mandatory | Valid Values                     | Description                                                                                  |
+|-----------|-----------|----------------------------------|----------------------------------------------------------------------------------------------|
+| `levels`  | Yes       | `annotation`,`body`,`target`     | The levels within the annotation against which the search for a temporal value will be made. |
+| `types`   | Yes       | `created`,`modified`,`generated` | The types of temporal fields within that will be searched against.                           |
+| `since`   | Yes       | ISO8601 timestamp                | The timestamp that search results will be returned from.                                     |
 
 ## Statistics
 
@@ -361,10 +430,10 @@ Content-Type: application/ld+json; profile="http://www.w3.org/ns/anno.jsonld"
 {
   "@context": "http://www.w3.org/ns/anno.jsonld",
   "body": {
-    "id": "http://example.com/old.html"
+    "id": "http://example.com/old.html",
     "oa:isReplacedBy": "http://example.com/new.html",
     "source": {
-      "id": "http://example.com/old.html"
+      "id": "http://example.com/old.html",
       "oa:isReplacedBy": "http://example.com/new.html"
     }
   }
@@ -433,3 +502,27 @@ Content-Type: application/ld+json;charset=UTF-8
   }
 }
 ```
+
+## Annotation Histories
+
+Every version of an Annotation that is created and subsequently updated in Elucidate is persisted.
+
+Historical versions of Annotations can be accessed through the following endpoint:
+
+`GET http://example.org/w3c/services/history/{collection_id}/{annotation_id}/{version} HTTP/1.1`
+
+Tracking previous and future versions of Annotations is achieved through a basic implementation of [Memento](http://mementoweb.org/guide/howto/). When querying for an Annotation, there are a number of additional headers provided:
+
+- `Memento-Datetime: Thu, 20 Jul 2017 14:47:40 UTC`
+	- Describes the date and time at which the version of the Annotation currently being viewed was created.
+- `Link: <http://example.org/{collection_id}/{annotationId}/{version}>; rel="prev memento"; datetime="Mon, 16 Aug 2004 05:48:58 GMT"`
+	- Provided when there exists a previous version of the Annotation that is currently being queried. The value provided within the angle brackets `<>` is the absolute URL where that previous version can be accessed.
+- `Link: <http://example.org/{collection_id}/{annotationId}/{version}>; rel="next memento"; datetime="Mon, 16 Aug 2004 05:48:58 GMT"`
+	- Provided when there exists a future version of the Annotation that is currently being queried. The value provided within the angle brackets `<>` is the absolute URL where that previous version can be accessed.
+
+Queries to the W3C Annotation Protocol endpoint can expect to always receive the `Memento-Datetime` header, and:
+- If there exists a previous version of the Annotation available, receive a `Link` header with a relationship of `"prev memento"`.
+
+Queries to the historical Annotation service can expect to always receive the `Memento-Datetime` header, and:
+- If there exists a previous version of the Annotation available, receive a `Link` header with a relationship of `"prev memento"` with a link to that previous version.
+- If there exists a future version of the Annotation available, receive a `Link` header with a relationship of `"next memento"` with a link to that future version.

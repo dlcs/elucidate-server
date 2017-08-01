@@ -1,21 +1,24 @@
 package com.digirati.elucidate.web.converter.oa.annotation;
 
-import java.util.Map;
-
+import com.digirati.elucidate.common.model.annotation.oa.OAAnnotation;
+import com.digirati.elucidate.common.service.IRIBuilderService;
+import com.digirati.elucidate.service.history.OAAnnotationHistoryService;
+import com.github.jsonldjava.core.JsonLdProcessor;
+import com.github.jsonldjava.impl.TurtleTripleCallback;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 
-import com.digirati.elucidate.common.model.annotation.oa.OAAnnotation;
-import com.github.jsonldjava.core.JsonLdProcessor;
-import com.github.jsonldjava.impl.TurtleTripleCallback;
+import java.util.Map;
 
 @Component
 public class TurtleOAAnnotationMessageConverter extends AbstractOAAnnotationMessageConverter {
 
     private TurtleTripleCallback turtleTripleCallback;
 
-    public TurtleOAAnnotationMessageConverter() {
-        super(APPLICATION_TURTLE);
+    @Autowired
+    public TurtleOAAnnotationMessageConverter(IRIBuilderService iriBuilderService, OAAnnotationHistoryService oaAnnotationHistoryService) {
+        super(iriBuilderService, oaAnnotationHistoryService, APPLICATION_TURTLE);
         this.turtleTripleCallback = new TurtleTripleCallback();
     }
 

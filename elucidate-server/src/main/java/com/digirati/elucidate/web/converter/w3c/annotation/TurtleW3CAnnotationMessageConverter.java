@@ -1,21 +1,24 @@
 package com.digirati.elucidate.web.converter.w3c.annotation;
 
-import java.util.Map;
-
+import com.digirati.elucidate.common.model.annotation.w3c.W3CAnnotation;
+import com.digirati.elucidate.common.service.IRIBuilderService;
+import com.digirati.elucidate.service.history.W3CAnnotationHistoryService;
+import com.github.jsonldjava.core.JsonLdProcessor;
+import com.github.jsonldjava.impl.TurtleTripleCallback;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 
-import com.digirati.elucidate.common.model.annotation.w3c.W3CAnnotation;
-import com.github.jsonldjava.core.JsonLdProcessor;
-import com.github.jsonldjava.impl.TurtleTripleCallback;
+import java.util.Map;
 
 @Component
 public class TurtleW3CAnnotationMessageConverter extends AbstractW3CAnnotationMessageConverter {
 
     private TurtleTripleCallback turtleTripleCallback;
 
-    public TurtleW3CAnnotationMessageConverter() {
-        super(APPLICATION_TURTLE);
+    @Autowired
+    public TurtleW3CAnnotationMessageConverter(IRIBuilderService iriBuilderService, W3CAnnotationHistoryService w3cAnnotationHistoryService) {
+        super(iriBuilderService, w3cAnnotationHistoryService, APPLICATION_TURTLE);
         this.turtleTripleCallback = new TurtleTripleCallback();
     }
 

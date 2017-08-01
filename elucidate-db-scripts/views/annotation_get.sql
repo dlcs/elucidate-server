@@ -2,7 +2,7 @@
 
 -- DROP VIEW public.annotation_get;
 
-CREATE OR REPLACE VIEW public.annotation_get AS 
+CREATE OR REPLACE VIEW public.annotation_get AS
     SELECT
         a.annotationid,
         a.cachekey,

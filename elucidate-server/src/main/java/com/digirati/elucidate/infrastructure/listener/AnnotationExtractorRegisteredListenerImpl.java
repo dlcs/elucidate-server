@@ -35,4 +35,9 @@ public class AnnotationExtractorRegisteredListenerImpl implements RegisteredList
         LOGGER.info(String.format("Processing DELETE on W3CAnnotation [%s]", w3cAnnotation));
         annotationExtractorService.processAnnotationDelete(w3cAnnotation);
     }
+
+    @Override
+    public boolean executeInParallel() {
+        return true;
+    }
 }

@@ -1,5 +1,5 @@
 {
-    "@context": "https://raw.githubusercontent.com/dlcs/elucidate-server/master/elucidate-server/src/main/resources/contexts/oa.jsonld", 
+    "@context": "https://raw.githubusercontent.com/dlcs/elucidate-server/master/elucidate-server/src/main/resources/contexts/oa.jsonld",
     "@type": "oa:Annotation",
     "hasBody": "http://www.example.org/body1",
     "hasTarget": "http://www.example.org/target1"

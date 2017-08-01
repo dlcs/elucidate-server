@@ -1,19 +1,6 @@
 package com.digirati.elucidate.service.batch.impl;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
-import org.springframework.stereotype.Service;
-
-import com.digirati.elucidate.common.infrastructure.constants.ActivityStreamConstants;
-import com.digirati.elucidate.common.infrastructure.constants.JSONLDConstants;
-import com.digirati.elucidate.common.infrastructure.constants.OAConstants;
-import com.digirati.elucidate.common.infrastructure.constants.SearchConstants;
-import com.digirati.elucidate.common.infrastructure.constants.XMLSchemaConstants;
+import com.digirati.elucidate.common.infrastructure.constants.*;
 import com.digirati.elucidate.common.model.annotation.AbstractAnnotation;
 import com.digirati.elucidate.infrastructure.batch.function.AnnotationBatchSearch;
 import com.digirati.elucidate.model.ServiceResponse;
@@ -22,13 +9,17 @@ import com.digirati.elucidate.model.batch.AbstractBatchOperation;
 import com.digirati.elucidate.service.batch.AbstractAnnotationBatchUpdateService;
 import com.digirati.elucidate.service.query.AbstractAnnotationService;
 import com.digirati.elucidate.service.search.AbstractAnnotationSearchService;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.log4j.Logger;
 
-@Service(AbstractAnnotationBatchUpdateServiceImpl.SERVICE_NAME)
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 public abstract class AbstractAnnotationBatchUpdateServiceImpl<A extends AbstractAnnotation, B extends AbstractBatchOperation> implements AbstractAnnotationBatchUpdateService<B> {
 
     protected final Logger LOGGER = Logger.getLogger(getClass());
-
-    public static final String SERVICE_NAME = "annotationBulkServiceImpl";
 
     private AbstractAnnotationService<A> annotationService;
     private AbstractAnnotationSearchService<A> annotationSearchService;
@@ -44,12 +35,12 @@ public abstract class AbstractAnnotationBatchUpdateServiceImpl<A extends Abstrac
         Map<String, Object> jsonMap = batchOperation.getJsonMap();
 
         processBatchUpdates(jsonMap, OAConstants.URI_HAS_BODY, (List<String> _searchFields, String _searchValue) -> {
-            ServiceResponse<List<A>> serviceResponse = annotationSearchService.searchAnnotationsByBody(_searchFields, _searchValue, true, null, null, null);
+            ServiceResponse<List<A>> serviceResponse = annotationSearchService.searchAnnotationsByBody(_searchFields, _searchValue, true, null, null, null, null);
             return serviceResponse.getObj();
         });
 
         processBatchUpdates(jsonMap, OAConstants.URI_HAS_TARGET, (List<String> _searchFields, String _searchValue) -> {
-            ServiceResponse<List<A>> serviceResponse = annotationSearchService.searchAnnotationsByTarget(_searchFields, _searchValue, true, null, null, null);
+            ServiceResponse<List<A>> serviceResponse = annotationSearchService.searchAnnotationsByTarget(_searchFields, _searchValue, true, null, null, null, null);
             return serviceResponse.getObj();
         });
 

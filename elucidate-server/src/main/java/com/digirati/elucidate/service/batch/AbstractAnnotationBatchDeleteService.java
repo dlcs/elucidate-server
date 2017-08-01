@@ -5,5 +5,5 @@ import com.digirati.elucidate.model.batch.AbstractBatchOperation;
 
 public interface AbstractAnnotationBatchDeleteService<B extends AbstractBatchOperation> {
 
-    public ServiceResponse<B> processBatchDelete(B batchOperation);
+    ServiceResponse<B> processBatchDelete(B batchOperation);
 }

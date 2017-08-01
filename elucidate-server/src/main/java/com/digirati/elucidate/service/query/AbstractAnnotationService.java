@@ -1,19 +1,19 @@
 package com.digirati.elucidate.service.query;
 
-import java.util.List;
-
 import com.digirati.elucidate.common.model.annotation.AbstractAnnotation;
 import com.digirati.elucidate.model.ServiceResponse;
 
-public abstract interface AbstractAnnotationService<A extends AbstractAnnotation> {
+import java.util.List;
 
-    public ServiceResponse<A> getAnnotation(String collectionId, String annotationId);
+public interface AbstractAnnotationService<A extends AbstractAnnotation> {
 
-    public ServiceResponse<List<A>> getAnnotations(String collectionId);
+    ServiceResponse<A> getAnnotation(String collectionId, String annotationId);
 
-    public ServiceResponse<A> createAnnotation(String collectionId, String annotationId, A annotation);
+    ServiceResponse<List<A>> getAnnotations(String collectionId);
 
-    public ServiceResponse<A> updateAnnotation(String collectionId, String annotationId, A annotation, String cacheKey);
+    ServiceResponse<A> createAnnotation(String collectionId, String annotationId, A annotation);
 
-    public ServiceResponse<Void> deleteAnnotation(String collectionId, String annotationId, String cacheKey);
+    ServiceResponse<A> updateAnnotation(String collectionId, String annotationId, A annotation, String cacheKey);
+
+    ServiceResponse<Void> deleteAnnotation(String collectionId, String annotationId, String cacheKey);
 }
