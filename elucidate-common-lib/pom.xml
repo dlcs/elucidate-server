@@ -9,7 +9,7 @@
 	<parent>
 		<groupId>com.digirati.elucidate</groupId>
 		<artifactId>elucidate-parent</artifactId>
-		<version>1.3.2-SNAPSHOT</version>
+		<version>1.4.0</version>
 	</parent>
 
 	<build>
