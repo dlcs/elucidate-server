@@ -28,7 +28,7 @@ public class AnnotationStatisticsRepositoryJDBCImpl extends AbstractRepositoryJD
     @Override
     @Transactional(readOnly = true)
     public List<Pair<String, Integer>> getBodyIdCounts() {
-        String sql = "SELECT bodyiri AS value, COUNT(1) AS count FROM annotation_body_get WHERE bodyiri IS NOT NULL GROUP BY bodyiri ORDER BY count DESC";
+        String sql = "SELECT bodyiri AS value, COUNT(1) AS count FROM annotation_body_get WHERE bodyiri IS NOT NULL AND deleted = false GROUP BY bodyiri ORDER BY count DESC";
 
         return queryForList(sql, null, null, new CountRowMapper());
     }
@@ -36,7 +36,7 @@ public class AnnotationStatisticsRepositoryJDBCImpl extends AbstractRepositoryJD
     @Override
     @Transactional(readOnly = true)
     public List<Pair<String, Integer>> getBodySourceCounts() {
-        String sql = "SELECT sourceiri AS value, COUNT(1) AS count FROM annotation_body_get WHERE sourceiri IS NOT NULL GROUP BY sourceiri ORDER BY count DESC";
+        String sql = "SELECT sourceiri AS value, COUNT(1) AS count FROM annotation_body_get WHERE sourceiri IS NOT NULL AND deleted = false GROUP BY sourceiri ORDER BY count DESC";
 
         return queryForList(sql, null, null, new CountRowMapper());
     }
@@ -44,7 +44,7 @@ public class AnnotationStatisticsRepositoryJDBCImpl extends AbstractRepositoryJD
     @Override
     @Transactional(readOnly = true)
     public List<Pair<String, Integer>> getTargetIdCounts() {
-        String sql = "SELECT targetiri AS value, COUNT(1) AS count FROM annotation_target_get WHERE targetiri IS NOT NULL GROUP BY targetiri ORDER BY count DESC";
+        String sql = "SELECT targetiri AS value, COUNT(1) AS count FROM annotation_target_get WHERE targetiri IS NOT NULL AND deleted = false GROUP BY targetiri ORDER BY count DESC";
 
         return queryForList(sql, null, null, new CountRowMapper());
     }
@@ -52,7 +52,7 @@ public class AnnotationStatisticsRepositoryJDBCImpl extends AbstractRepositoryJD
     @Override
     @Transactional(readOnly = true)
     public List<Pair<String, Integer>> getTargetSourceCounts() {
-        String sql = "SELECT sourceiri AS value, COUNT(1) AS count FROM annotation_target_get WHERE sourceiri IS NOT NULL GROUP BY sourceiri ORDER BY count DESC";
+        String sql = "SELECT sourceiri AS value, COUNT(1) AS count FROM annotation_target_get WHERE sourceiri IS NOT NULL  AND deleted = false GROUP BY sourceiri ORDER BY count DESC";
 
         return queryForList(sql, null, null, new CountRowMapper());
     }
