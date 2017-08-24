@@ -110,6 +110,8 @@ public abstract class AbstractAnnotationBatchUpdateServiceImpl<A extends Abstrac
 
         for (A annotation : annotations) {
 
+            boolean annotationUpdated = false;
+
             List<Map<String, Object>> jsonMaps = (List<Map<String, Object>>) annotation.getJsonMap().get(jsonSelector);
             if (jsonMaps != null && !jsonMaps.isEmpty()) {
 
@@ -117,9 +119,18 @@ public abstract class AbstractAnnotationBatchUpdateServiceImpl<A extends Abstrac
 
                     if (StringUtils.equalsIgnoreCase((String) jsonMap.get(JSONLDConstants.ATTRIBUTE_ID), oldId)) {
                         jsonMap.put(JSONLDConstants.ATTRIBUTE_ID, newId);
-                        annotationService.updateAnnotation(annotation.getCollectionId(), annotation.getAnnotationId(), annotation, annotation.getCacheKey());
-                        LOGGER.info(String.format("Batch processed [%s] / [%s] Annotations", ++processed, total));
+                        annotationUpdated = true;
                     }
+                }
+            }
+
+            if (annotationUpdated) {
+                ServiceResponse<A> serviceResponse = annotationService.updateAnnotation(annotation.getCollectionId(), annotation.getAnnotationId(), annotation, annotation.getCacheKey());
+                Status status = serviceResponse.getStatus();
+                if (!status.equals(Status.OK)) {
+                    LOGGER.error(String.format("Got unexpected service response during batch update for Annotation [%s]: [%s]", annotation, status));
+                } else {
+                    LOGGER.info(String.format("Batch processed [%s] / [%s] Annotations", ++processed, total));
                 }
             }
         }
@@ -135,6 +146,8 @@ public abstract class AbstractAnnotationBatchUpdateServiceImpl<A extends Abstrac
 
         for (A annotation : annotations) {
 
+            boolean annotationUpdated = false;
+
             List<Map<String, Object>> jsonMaps = (List<Map<String, Object>>) annotation.getJsonMap().get(jsonSelector);
             if (jsonMaps != null && !jsonMaps.isEmpty()) {
 
@@ -147,11 +160,20 @@ public abstract class AbstractAnnotationBatchUpdateServiceImpl<A extends Abstrac
 
                             if (StringUtils.equalsIgnoreCase((String) sourceJsonMap.get(JSONLDConstants.ATTRIBUTE_ID), oldSourceIri)) {
                                 sourceJsonMap.put(JSONLDConstants.ATTRIBUTE_ID, newSourceIri);
-                                annotationService.updateAnnotation(annotation.getCollectionId(), annotation.getAnnotationId(), annotation, annotation.getCacheKey());
-                                LOGGER.info(String.format("Batch processed [%s] / [%s] Annotations", ++processed, total));
+                                annotationUpdated = true;
                             }
                         }
                     }
+                }
+            }
+
+            if (annotationUpdated) {
+                ServiceResponse<A> serviceResponse = annotationService.updateAnnotation(annotation.getCollectionId(), annotation.getAnnotationId(), annotation, annotation.getCacheKey());
+                Status status = serviceResponse.getStatus();
+                if (!status.equals(Status.OK)) {
+                    LOGGER.error(String.format("Got unexpected service response during batch update for Annotation [%s]: [%s]", annotation, status));
+                } else {
+                    LOGGER.info(String.format("Batch processed [%s] / [%s] Annotations", ++processed, total));
                 }
             }
         }
