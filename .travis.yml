@@ -8,7 +8,7 @@ before_install:
   - sudo apt-get install -yqq python3 python3-pip
 
 install:
-  - pip install pre-commit
+  - pip3 install pre-commit
 
 script:
   - pre-commit run --allow-unstaged-config --all-files --verbose
