@@ -48,8 +48,10 @@ $BODY$
                                             CASE _strict
                                                 WHEN true THEN
                                                     aa.agentiri = _value
+                                                    AND aa.deleted = false
                                                 ELSE
                                                     aa.agentiri LIKE (_value || '%')
+                                                    AND aa.deleted = false
                                             END
                                         )
                                     WHEN _type = 'name' THEN
@@ -57,8 +59,10 @@ $BODY$
                                             CASE _strict
                                                 WHEN true THEN
                                                     aan.name = _value
+                                                    AND aan.deleted = false
                                                 ELSE
                                                     aan.name LIKE (_value || '%')
+                                                    AND aan.deleted = false
                                             END
                                         )
                                     WHEN _type = 'nickname' THEN
@@ -66,8 +70,10 @@ $BODY$
                                             CASE _strict
                                                 WHEN true THEN
                                                     aa.nickname = _value
+                                                    AND aa.deleted = false
                                                 ELSE
                                                     aa.nickname LIKE (_value || '%')
+                                                    AND aa.deleted = false
                                             END
                                         )
                                     WHEN _type = 'email' THEN
@@ -75,8 +81,10 @@ $BODY$
                                             CASE _strict
                                                 WHEN true THEN
                                                     aae.email = _value
+                                                    AND aae.deleted = false
                                                 ELSE
                                                     aae.email LIKE (_value || '%')
+                                                    AND aae.deleted = false
                                             END
                                         )
                                     WHEN _type = 'emailsha1' THEN
@@ -84,8 +92,10 @@ $BODY$
                                             CASE _strict
                                                 WHEN true THEN
                                                     aaes.emailsha1 = _value
+                                                    AND aaes.deleted = false
                                                 ELSE
                                                     aaes.emailsha1 LIKE (_value || '%')
+                                                    AND aaes.deleted = false
                                             END
                                         )
                                 END
@@ -114,8 +124,10 @@ $BODY$
                                             CASE _strict
                                                 WHEN true THEN
                                                     aa.agentiri = _value
+                                                    AND aa.deleted = false
                                                 ELSE
                                                     aa.agentiri LIKE (_value || '%')
+                                                    AND aa.deleted = false
                                             END
                                         )
                                     WHEN _type = 'name' THEN
@@ -123,8 +135,10 @@ $BODY$
                                             CASE _strict
                                                 WHEN true THEN
                                                     aan.name = _value
+                                                    AND aan.deleted = false
                                                 ELSE
                                                     aan.name LIKE (_value || '%')
+                                                    AND aan.deleted = false
                                             END
                                         )
                                     WHEN _type = 'nickname' THEN
@@ -132,8 +146,10 @@ $BODY$
                                             CASE _strict
                                                 WHEN true THEN
                                                     aa.nickname = _value
+                                                    AND aa.deleted = false
                                                 ELSE
                                                     aa.nickname LIKE (_value || '%')
+                                                    AND aa.deleted = false
                                             END
                                         )
                                     WHEN _type = 'email' THEN
@@ -141,8 +157,10 @@ $BODY$
                                             CASE _strict
                                                 WHEN true THEN
                                                     aae.email = _value
+                                                    AND aae.deleted = false
                                                 ELSE
                                                     aae.email LIKE (_value || '%')
+                                                    AND aae.deleted = false
                                             END
                                         )
                                     WHEN _type = 'emailsha1' THEN
@@ -150,8 +168,10 @@ $BODY$
                                             CASE _strict
                                                 WHEN true THEN
                                                     aaes.emailsha1 = _value
+                                                    AND aaes.deleted = false
                                                 ELSE
                                                     aaes.emailsha1 LIKE (_value || '%')
+                                                    AND aaes.deleted = false
                                             END
                                         )
                                 END
@@ -180,8 +200,10 @@ $BODY$
                                             CASE _strict
                                                 WHEN true THEN
                                                     aa.agentiri = _value
+                                                    AND aa.deleted = false
                                                 ELSE
                                                     aa.agentiri LIKE (_value || '%')
+                                                    AND aa.deleted = false
                                             END
                                         )
                                     WHEN _type = 'name' THEN
@@ -189,8 +211,10 @@ $BODY$
                                             CASE _strict
                                                 WHEN true THEN
                                                     aan.name = _value
+                                                    AND aan.deleted = false
                                                 ELSE
                                                     aan.name LIKE (_value || '%')
+                                                    AND aan.deleted = false
                                             END
                                         )
                                     WHEN _type = 'nickname' THEN
@@ -198,8 +222,10 @@ $BODY$
                                             CASE _strict
                                                 WHEN true THEN
                                                     aa.nickname = _value
+                                                    AND aa.deleted = false
                                                 ELSE
                                                     aa.nickname LIKE (_value || '%')
+                                                    AND aa.deleted = false
                                             END
                                         )
                                     WHEN _type = 'email' THEN
@@ -207,8 +233,10 @@ $BODY$
                                             CASE _strict
                                                 WHEN true THEN
                                                     aae.email = _value
+                                                    AND aae.deleted = false
                                                 ELSE
                                                     aae.email LIKE (_value || '%')
+                                                    AND aae.deleted = false
                                             END
                                         )
                                     WHEN _type = 'emailsha1' THEN
@@ -216,8 +244,10 @@ $BODY$
                                             CASE _strict
                                                 WHEN true THEN
                                                     aaes.emailsha1 = _value
+                                                    AND aaes.deleted = false
                                                 ELSE
                                                     aaes.emailsha1 LIKE (_value || '%')
+                                                    AND aaes.deleted = false
                                             END
                                         )
                                 END

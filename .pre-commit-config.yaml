@@ -1,5 +1,5 @@
 -   repo: git://github.com/pre-commit/pre-commit-hooks
-    sha: v0.9.1
+    sha: v0.9.3
     hooks:
     -   id: check-case-conflict
     -   id: check-json
