@@ -33,7 +33,7 @@ public class W3CAnnotationStatisticsPageServiceImpl extends AbstractAnnotationSt
     }
 
     @Override
-    protected String buildPageIri(String field, int page) {
-        return iriBuilderService.buildW3CStatisticsPageBodyIri(field, page);
+    protected String buildPageIri(String type, String field, int page) {
+        return iriBuilderService.buildW3CStatisticsPageIri(type, field, page);
     }
 }
