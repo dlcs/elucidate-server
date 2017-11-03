@@ -264,8 +264,8 @@ public class IRIBuilderServiceImpl implements IRIBuilderService {
 
     @Override
     @SuppressWarnings("serial")
-    public String buildW3CStatisticsPageBodyIri(String field, int page) {
-        return buildIri("w3c/services/stats/body", new HashMap<String, Object>() {
+    public String buildW3CStatisticsPageIri(String type, String field, int page) {
+        return buildIri(String.format("w3c/services/stats/%s", type), new HashMap<String, Object>() {
             {
                 put(URLConstants.PARAM_FIELD, field);
                 put(URLConstants.PARAM_PAGE, page);
@@ -510,8 +510,8 @@ public class IRIBuilderServiceImpl implements IRIBuilderService {
 
     @Override
     @SuppressWarnings("serial")
-    public String buildOAStatisticsPageBodyIri(String field, int page) {
-        return buildIri("oa/services/stats/body", new HashMap<String, Object>() {
+    public String buildOAStatisticsPageIri(String type, String field, int page) {
+        return buildIri(String.format("oa/services/stats/%s", type), new HashMap<String, Object>() {
             {
                 put(URLConstants.PARAM_FIELD, field);
                 put(URLConstants.PARAM_PAGE, page);
