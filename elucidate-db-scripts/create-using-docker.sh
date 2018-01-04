@@ -8,7 +8,7 @@
 if [ "$1" == "create" ]; then
 	echo "This script will use Docker to run various .sql files into the PostgreSQL instance."
 
-  docker run -t -i --rm --volume=$(pwd):/scripts postgres:latest psql \'$2/postgres\' -a -f /scripts/group_roles/annotations_role.sql
+	docker run -t -i --rm --volume=$(pwd):/scripts postgres:latest psql \'$2/postgres\' -a -f /scripts/group_roles/annotations_role.sql
 	docker run -t -i --rm --volume=$(pwd):/scripts postgres:latest psql \'$2/postgres\' -a -f /scripts/login_roles/annotations_user.sql
 	docker run -t -i --rm --volume=$(pwd):/scripts postgres:latest psql \'$2/postgres\' -a -f /scripts/annotations.sql
 	docker run -t -i --rm --volume=$(pwd):/scripts postgres:latest psql \'$2/annotations\' -a -f /scripts/tables/annotation_collection.sql
@@ -77,6 +77,4 @@ if [ "$1" == "create" ]; then
 	docker run -t -i --rm --volume=$(pwd):/scripts postgres:latest psql \'$2/annotations\' -a -f /scripts/functions/annotation_search_by_body.sql
 	docker run -t -i --rm --volume=$(pwd):/scripts postgres:latest psql \'$2/annotations\' -a -f /scripts/functions/annotation_search_by_target.sql
 	docker run -t -i --rm --volume=$(pwd):/scripts postgres:latest psql \'$2/annotations\' -a -f /scripts/permissions/annotations_permissions.sql
-
 fi
-
