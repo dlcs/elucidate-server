@@ -27,7 +27,7 @@ public interface IRIBuilderService {
 
     String buildW3CPageGeneratorSearchIri(List<String> levels, String type, String value, boolean strict, int page, boolean embeddedDescriptions);
 
-    String buildW3CStatisticsPageBodyIri(String field, int page);
+    String buildW3CStatisticsPageIri(String type, String field, int page);
 
     String buildW3CAnnotationHistoryIri(String collectionId, String annotationId, int version);
 
@@ -57,7 +57,7 @@ public interface IRIBuilderService {
 
     String buildOAPageGeneratorSearchIri(List<String> levels, String type, String value, boolean strict, int page, boolean embeddedDescriptions);
 
-    String buildOAStatisticsPageBodyIri(String field, int page);
+    String buildOAStatisticsPageIri(String type, String field, int page);
 
     String buildOAAnnotationHistoryIri(String collectionId, String annotationId, int version);
 

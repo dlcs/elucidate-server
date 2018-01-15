@@ -278,7 +278,7 @@ public class AnnotationExtractorServiceImpl implements AnnotationExtractorServic
             String[] typesJson = new String[types.length];
             if (types.length > 0) {
                 for (int i = 0; i < typesJson.length; i++) {
-                    typesJson[i] = JsonUtils.toString(annotationCreator.getTypesJsonList());
+                    typesJson[i] = JsonUtils.toString(annotationCreator.getTypesJsonList().get(i));
                 }
             }
 

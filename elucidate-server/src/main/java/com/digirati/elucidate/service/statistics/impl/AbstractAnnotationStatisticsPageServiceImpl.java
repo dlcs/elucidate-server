@@ -30,7 +30,7 @@ public abstract class AbstractAnnotationStatisticsPageServiceImpl<S extends Abst
 
     protected abstract S convertToStatisticsPage(Map<String, Object> jsonMap);
 
-    protected abstract String buildPageIri(String field, int page);
+    protected abstract String buildPageIri(String type, String field, int page);
 
     @Override
     public ServiceResponse<S> buildBodyStatisticsPage(String field, int page) {
@@ -49,7 +49,7 @@ public abstract class AbstractAnnotationStatisticsPageServiceImpl<S extends Abst
                 return new ServiceResponse<S>(Status.NON_CONFORMANT, null);
         }
 
-        return buildStatisticsPage(counts, field, page);
+        return buildStatisticsPage("body", counts, field, page);
     }
 
     @Override
@@ -69,11 +69,11 @@ public abstract class AbstractAnnotationStatisticsPageServiceImpl<S extends Abst
                 return new ServiceResponse<S>(Status.NON_CONFORMANT, null);
         }
 
-        return buildStatisticsPage(counts, field, page);
+        return buildStatisticsPage("target", counts, field, page);
     }
 
     @SuppressWarnings("serial")
-    public ServiceResponse<S> buildStatisticsPage(List<Pair<String, Integer>> counts, String field, int page) {
+    public ServiceResponse<S> buildStatisticsPage(String type, List<Pair<String, Integer>> counts, String field, int page) {
 
         int totalPages = (int) Math.floor((double) counts.size() / pageSize);
         int from = Math.min(counts.size(), Math.max(0, page * pageSize));
@@ -94,7 +94,7 @@ public abstract class AbstractAnnotationStatisticsPageServiceImpl<S extends Abst
         });
 
         if (page > 0) {
-            String prevIri = buildPageIri(field, page - 1);
+            String prevIri = buildPageIri(type, field, page - 1);
             jsonMap.put(ActivityStreamConstants.URI_PREV, new ArrayList<Map<String, Object>>() {
                 {
                     add(new HashMap<String, Object>() {
@@ -107,7 +107,7 @@ public abstract class AbstractAnnotationStatisticsPageServiceImpl<S extends Abst
         }
 
         if (page < totalPages) {
-            String nextIri = buildPageIri(field, page + 1);
+            String nextIri = buildPageIri(type, field, page + 1);
             jsonMap.put(ActivityStreamConstants.URI_NEXT, new ArrayList<Map<String, Object>>() {
                 {
                     add(new HashMap<String, Object>() {

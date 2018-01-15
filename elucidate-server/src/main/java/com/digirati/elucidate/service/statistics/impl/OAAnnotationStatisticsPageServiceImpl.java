@@ -42,7 +42,7 @@ public class OAAnnotationStatisticsPageServiceImpl extends AbstractAnnotationSta
     }
 
     @Override
-    protected String buildPageIri(String field, int page) {
-        return iriBuilderService.buildOAStatisticsPageBodyIri(field, page);
+    protected String buildPageIri(String type, String field, int page) {
+        return iriBuilderService.buildOAStatisticsPageIri(type, field, page);
     }
 }
