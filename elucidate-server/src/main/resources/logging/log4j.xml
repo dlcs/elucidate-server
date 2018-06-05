@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+<log4j:configuration debug="true">
+    <appender name="stdout" class="org.apache.log4j.ConsoleAppender">
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%d{yyyy-MM-dd HH:mm:ss.SSS} [%t] [%p] %c{1} - %m%n" />
+        </layout>
+    </appender>
+    <appender name="debugFileAppender" class="org.apache.log4j.rolling.RollingFileAppender">
+        <param name="Threshold" value="DEBUG" />
+        <rollingPolicy class="org.apache.log4j.rolling.TimeBasedRollingPolicy">
+            <param name="ActiveFileName" value="logs/debug.log" />
+            <param name="FileNamePattern" value="logs/debug/debug.log.%d{yyyy-MM-dd}.gz" />
+        </rollingPolicy>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%d{yyyy-MM-dd HH:mm:ss.SSS} [%t] [%p] %c{1} - %m%n"/>
+        </layout>
+    </appender>
+    <appender name="infoFileAppender" class="org.apache.log4j.rolling.RollingFileAppender">
+        <param name="Threshold" value="INFO" />
+        <rollingPolicy class="org.apache.log4j.rolling.TimeBasedRollingPolicy">
+            <param name="ActiveFileName" value="logs/info.log" />
+            <param name="FileNamePattern" value="logs/info/info.log.%d{yyyy-MM-dd}.gz" />
+        </rollingPolicy>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%d{yyyy-MM-dd HH:mm:ss.SSS} [%t] [%p] %c{1} - %m%n"/>
+        </layout>
+    </appender>
+    <appender name="warnFileAppender" class="org.apache.log4j.rolling.RollingFileAppender">
+        <param name="Threshold" value="WARN" />
+        <rollingPolicy class="org.apache.log4j.rolling.TimeBasedRollingPolicy">
+            <param name="ActiveFileName" value="logs/warn.log" />
+            <param name="FileNamePattern" value="logs/warn/warn.log.%d{yyyy-MM-dd}.gz" />
+        </rollingPolicy>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%d{yyyy-MM-dd HH:mm:ss.SSS} [%t] [%p] %c{1} - %m%n"/>
+        </layout>
+    </appender>
+    <appender name="errorFileAppender" class="org.apache.log4j.rolling.RollingFileAppender">
+        <param name="Threshold" value="ERROR" />
+        <rollingPolicy class="org.apache.log4j.rolling.TimeBasedRollingPolicy">
+            <param name="ActiveFileName" value="logs/error.log" />
+            <param name="FileNamePattern" value="logs/error/error.log.%d{yyyy-MM-dd}.gz" />
+        </rollingPolicy>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%d{yyyy-MM-dd HH:mm:ss.SSS} [%t] [%p] %c{1} - %m%n"/>
+        </layout>
+    </appender>
+    <root>
+        <priority value ="DEBUG" />
+        <appender-ref ref="stdout" />
+    </root>
+</log4j:configuration>
