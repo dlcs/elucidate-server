@@ -132,6 +132,11 @@
 			<artifactId>postgresql</artifactId>
 			<version>${postgresql-version}</version>
 		</dependency>
+		<dependency>
+			<groupId>org.liquibase</groupId>
+			<artifactId>liquibase-core</artifactId>
+			<version>${liquibase-version}</version>
+		</dependency>
 		<!-- AspectJ Dependencies -->
 		<dependency>
 			<groupId>org.aspectj</groupId>

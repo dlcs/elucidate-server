@@ -36,6 +36,7 @@
 		<powermock-version>1.6.5</powermock-version>
 		<slf4j-log4j12-version>1.7.21</slf4j-log4j12-version>
 		<spring-framework-version>4.3.1.RELEASE</spring-framework-version>
+		<liquibase-version>3.6.1</liquibase-version>
 	</properties>
 
 	<build>
