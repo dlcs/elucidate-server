@@ -10,6 +10,7 @@
 		<groupId>com.digirati.elucidate</groupId>
 		<artifactId>elucidate-parent</artifactId>
 		<version>1.4.3-SNAPSHOT</version>
+		<relativePath>../elucidate-parent</relativePath>
 	</parent>
 
 	<build>

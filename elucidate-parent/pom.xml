@@ -8,6 +8,12 @@
 	<packaging>pom</packaging>
 	<name>Elucidate Parent</name>
 
+	<modules>
+		<module>../elucidate-common-lib</module>
+		<module>../elucidate-converter</module>
+		<module>../elucidate-server</module>
+	</modules>
+
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<aspectj-version>1.8.9</aspectj-version>
