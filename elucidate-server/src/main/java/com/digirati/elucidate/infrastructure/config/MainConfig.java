@@ -5,7 +5,7 @@ import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.PropertySource;
 
 @Configuration
-@PropertySource("${elucidate.server.properties}")
+@PropertySource("classpath:/eludicate-server.properties")
 @Import({MVCConfig.class, ServicesConfig.class, RepositoryConfig.class})
 public class MainConfig {
 

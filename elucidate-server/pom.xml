@@ -10,6 +10,7 @@
 		<groupId>com.digirati.elucidate</groupId>
 		<artifactId>elucidate-parent</artifactId>
 		<version>1.4.3-SNAPSHOT</version>
+		<relativePath>../elucidate-parent</relativePath>
 	</parent>
 
 	<build>
@@ -21,6 +22,27 @@
 				<version>2.6</version>
 				<configuration>
 					<warName>annotation</warName>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>com.spotify</groupId>
+				<artifactId>dockerfile-maven-plugin</artifactId>
+				<version>1.4.0</version>
+				<executions>
+					<execution>
+						<id>default</id>
+						<goals>
+							<goal>build</goal>
+							<goal>push</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<repository>dlcs/elucidate-server</repository>
+					<tag>${project.version}</tag>
+					<buildArgs>
+						<ARTIFACT_NAME>${project.build.finalName}.war</ARTIFACT_NAME>
+					</buildArgs>
 				</configuration>
 			</plugin>
 		</plugins>
@@ -130,6 +152,11 @@
 			<groupId>org.postgresql</groupId>
 			<artifactId>postgresql</artifactId>
 			<version>${postgresql-version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.liquibase</groupId>
+			<artifactId>liquibase-core</artifactId>
+			<version>${liquibase-version}</version>
 		</dependency>
 		<!-- AspectJ Dependencies -->
 		<dependency>

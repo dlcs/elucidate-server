@@ -4,6 +4,7 @@ import java.beans.PropertyVetoException;
 
 import javax.sql.DataSource;
 
+import liquibase.integration.spring.SpringLiquibase;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -24,6 +25,15 @@ public class RepositoryConfig {
 
     @Autowired
     private Environment environment;
+
+    @Bean(name = "liquibaseMigrations")
+    public SpringLiquibase liquibaseMigrations() throws PropertyVetoException {
+        SpringLiquibase liquibase = new SpringLiquibase();
+        liquibase.setDataSource(dataSource());
+        liquibase.setChangeLog("classpath:database/liquibase-changelog.xml");
+
+        return liquibase;
+    }
 
     @Bean(name = "jdbcTemplate")
     public JdbcTemplate jdbcTemplate() throws PropertyVetoException {

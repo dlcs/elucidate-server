@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE log4j:configuration>
+<log4j:configuration debug="true">
+    <appender name="stdout" class="org.apache.log4j.ConsoleAppender">
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%d{yyyy-MM-dd HH:mm:ss.SSS} [%t] [%p] %c{1} - %m%n" />
+        </layout>
+    </appender>
+    <root>
+        <priority value ="DEBUG" />
+        <appender-ref ref="stdout" />
+    </root>
+</log4j:configuration>
