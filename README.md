@@ -69,7 +69,7 @@ Any of these options can be configured or overridden using [JNDI environment pro
 
 Elucidate Server has been built and tested against PostgreSQL 9.4+  (the `jsonb` type is required for persistence).
 
-A [Liquibase](https://liquibase.org/) changelog contains the SQL scripts required to create the Elucidate Server schema.
+A [Liquibase](https://www.liquibase.org/) changelog contains the SQL scripts required to create the Elucidate Server schema.
 On first connection to a JDBC URI (given by `db.url`) the changes will be applied and a changelog table
 created in the database for any subsequent runs.
 
@@ -83,7 +83,7 @@ See [`USAGE.md`](USAGE.md) for some sample requests.
 * [Jackson](http://wiki.fasterxml.com/JacksonHome)
 * [JSONLD-JAVA](https://github.com/jsonld-java/jsonld-java)
 * [JSON Schema Validator](https://github.com/daveclayton/json-schema-validator)
-* [Liquibase](https://liquibase.org)
+* [Liquibase](https://www.liquibase.org)
 
 ## Contributing
 
