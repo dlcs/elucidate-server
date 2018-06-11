@@ -18,7 +18,6 @@ import com.digirati.elucidate.infrastructure.generator.IDGenerator;
 @Configuration
 @EnableAspectJAutoProxy
 @EnableTransactionManagement
-@SuppressWarnings("deprecation")
 @ComponentScan(basePackages = {ServicesConfig.SERVICE_PACKAGE, ServicesConfig.COMMON_SERVICE_PACKAGE, ServicesConfig.INFRASTRUCTURE_PACKAGE})
 public class ServicesConfig {
 
@@ -28,19 +27,6 @@ public class ServicesConfig {
 
     @Autowired
     private Environment environment;
-
-    @Bean(name = "log4jInitialization")
-    public MethodInvoker log4j() {
-        MethodInvokingFactoryBean methodInvoker = new MethodInvokingFactoryBean();
-        methodInvoker.setTargetClass(Log4jConfigurer.class);
-        methodInvoker.setTargetMethod("initLogging");
-        methodInvoker.setArguments(getLog4jArgs());
-        return methodInvoker;
-    }
-
-    private Object[] getLog4jArgs() {
-        return new Object[] {environment.getRequiredProperty("log4j.config.location"), environment.getRequiredProperty("log4j.refresh.interval")};
-    }
 
     @Bean(name = "listenerTaskExecutor", initMethod = "initialize", destroyMethod = "shutdown")
     public TaskExecutor listenerTaskExecutor() {
