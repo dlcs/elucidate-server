@@ -2,6 +2,7 @@ package com.digirati.elucidate.common.service.impl;
 
 import com.digirati.elucidate.common.infrastructure.constants.URLConstants;
 import com.digirati.elucidate.common.infrastructure.exception.InvalidIRIException;
+import com.digirati.elucidate.common.infrastructure.util.URIUtils;
 import com.digirati.elucidate.common.service.IRIBuilderService;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.client.utils.URIBuilder;
@@ -21,32 +22,11 @@ public class IRIBuilderServiceImpl implements IRIBuilderService {
 
     public static final String SERVICE_NAME = "iriBuilderServiceImpl";
 
-    @SuppressWarnings("serial")
-    private static final Map<String, Integer> DEFAULT_PORTS = new HashMap<String, Integer>() {
-        {
-            put("http", 80);
-            put("https", 443);
-        }
-    };
-
     private String baseUrl;
 
     @Autowired
     public IRIBuilderServiceImpl(@Value("${base.scheme}") String baseScheme, @Value("${base.host}") String baseHost, @Value("${base.port}") int basePort, @Value("${base.path}") String basePath) {
-        this.baseUrl = buildBaseUrl(baseScheme, baseHost, basePort, basePath);
-    }
-
-    private String buildBaseUrl(String baseScheme, String baseHost, int basePort, String basePath) {
-        URIBuilder builder = new URIBuilder();
-        builder.setScheme(baseScheme);
-        builder.setHost(baseHost);
-
-        if (!DEFAULT_PORTS.containsKey(baseScheme.toLowerCase()) || DEFAULT_PORTS.get(baseScheme) != basePort) {
-            builder.setPort(basePort);
-        }
-
-        builder.setPath(basePath);
-        return builder.toString();
+        this.baseUrl = URIUtils.buildBaseUrl(baseScheme, baseHost, basePort, basePath);
     }
 
     @Override
