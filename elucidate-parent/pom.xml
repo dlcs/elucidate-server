@@ -35,6 +35,9 @@
 		<postgresql-version>9.4.1209</postgresql-version>
 		<powermock-version>1.6.5</powermock-version>
 		<spring-framework-version>4.3.1.RELEASE</spring-framework-version>
+		<spring-security-version>4.2.6.RELEASE</spring-security-version>
+		<spring-security-jwt-version>1.0.9.RELEASE</spring-security-jwt-version>
+		<spring-security-oauth2-version>2.3.3.RELEASE</spring-security-oauth2-version>
 		<liquibase-version>3.6.1</liquibase-version>
 	</properties>
 
