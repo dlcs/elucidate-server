@@ -1,7 +1,7 @@
 package com.digirati.elucidate.infrastructure.config;
 
+import com.digirati.elucidate.infrastructure.generator.IDGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.config.MethodInvokingFactoryBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -10,10 +10,6 @@ import org.springframework.core.env.Environment;
 import org.springframework.core.task.TaskExecutor;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
-import org.springframework.util.Log4jConfigurer;
-import org.springframework.util.MethodInvoker;
-
-import com.digirati.elucidate.infrastructure.generator.IDGenerator;
 
 @Configuration
 @EnableAspectJAutoProxy
@@ -44,6 +40,18 @@ public class ServicesConfig {
     @Bean(name = "collectionIdGenerator")
     public IDGenerator collectionIdGenerator() throws ClassNotFoundException, InstantiationException, IllegalAccessException {
         Class<?> clazz = Class.forName(environment.getProperty("annotation.collection.id.generator"));
+        return (IDGenerator) clazz.newInstance();
+    }
+
+    @Bean(name = "userIdGenerator")
+    public IDGenerator userIdGenerator() throws ClassNotFoundException, InstantiationException, IllegalAccessException {
+        Class<?> clazz = Class.forName(environment.getProperty("annotation.user.id.generator"));
+        return (IDGenerator) clazz.newInstance();
+    }
+
+    @Bean(name = "groupIdGenerator")
+    public IDGenerator groupIdGenerator() throws ClassNotFoundException, InstantiationException, IllegalAccessException {
+        Class<?> clazz = Class.forName(environment.getProperty("annotation.group.id.generator"));
         return (IDGenerator) clazz.newInstance();
     }
 }

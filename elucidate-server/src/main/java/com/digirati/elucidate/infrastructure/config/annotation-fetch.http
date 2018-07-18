@@ -1,0 +1,68 @@
+### Setup a new annotation container.
+POST http://localhost:8080/w3c/
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJPbmxpbmUgSldUIEJ1aWxkZXIiLCJpYXQiOjE1MzIyMjU4NDgsImV4cCI6MTU2Mzc2MTg0OCwiYXVkIjoiaHR0cDovL2xvY2FsaG9zdDo4MDgwL2Fubm90YXRpb24iLCJzdWIiOiJqcm9ja2V0QGV4YW1wbGUuY29tIiwiR2l2ZW5OYW1lIjoiSm9obm55IiwiU3VybmFtZSI6IlJvY2tldCIsIkVtYWlsIjoianJvY2tldEBleGFtcGxlLmNvbSIsIlJvbGUiOlsiTWFuYWdlciIsIlByb2plY3QgQWRtaW5pc3RyYXRvciJdfQ.Wx7W1GwvgGJxTUEHFu98HP9OgP-tJUup9IoVQS15Ma8
+Accept: application/ld+json; profile="http://www.w3.org/ns/anno.jsonld"
+Content-Type: application/ld+json; profile="http://www.w3.org/ns/anno.jsonld"
+
+{
+  "@context": [
+    "http://www.w3.org/ns/anno.jsonld",
+    "http://www.w3.org/ns/ldp.jsonld"
+  ],
+  "type": [
+    "BasicContainer",
+    "AnnotationCollection"
+  ],
+  "label": "A Container for Web Annotations"
+}
+
+### Create an annotation in it.
+POST http://localhost:8080/w3c/4ad5f2e8-b446-43b9-9426-7d13a6742547/  HTTP/1.1
+Accept: application/ld+json; profile="http://www.w3.org/ns/anno.jsonld"
+Content-Type: application/ld+json; profile="http://www.w3.org/ns/anno.jsonld"
+
+{
+  "@context": "http://www.w3.org/ns/anno.jsonld",
+  "type": "Annotation",
+  "body": {
+    "type": "TextualBody",
+    "value": "I like this page!"
+  },
+  "target": "http://www.example.com/index.html"
+}
+
+### Attempting to get the new annotation as an unauthenticated user results in a 401
+GET http://localhost:8080/w3c/4ad5f2e8-b446-43b9-9426-7d13a6742547/8d307046-7d0b-4db6-bd40-05bbc904c350
+Accept: application/ld+json; profile="http://www.w3.org/ns/anno.jsonld"
+Content-Type: application/ld+json; profile="http://www.w3.org/ns/anno.jsonld"
+
+### Get information on currently authenticated user
+GET http://localhost:8080/user/current
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJPbmxpbmUgSldUIEJ1aWxkZXIiLCJpYXQiOjE1MzIyMjU4NDgsImV4cCI6MTU2Mzc2MTg0OCwiYXVkIjoiaHR0cDovL2xvY2FsaG9zdDo4MDgwL2Fubm90YXRpb24iLCJzdWIiOiJqcm9ja2V0QGV4YW1wbGUuY29tIiwiR2l2ZW5OYW1lIjoiSm9obm55IiwiU3VybmFtZSI6IlJvY2tldCIsIkVtYWlsIjoianJvY2tldEBleGFtcGxlLmNvbSIsIlJvbGUiOlsiTWFuYWdlciIsIlByb2plY3QgQWRtaW5pc3RyYXRvciJdfQ.Wx7W1GwvgGJxTUEHFu98HP9OgP-tJUup9IoVQS15Ma8
+
+### Create a new group
+POST http://localhost:8080/group
+Content-Type: application/json
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJPbmxpbmUgSldUIEJ1aWxkZXIiLCJpYXQiOjE1MzIyMjU4NDgsImV4cCI6MTU2Mzc2MTg0OCwiYXVkIjoiaHR0cDovL2xvY2FsaG9zdDo4MDgwL2Fubm90YXRpb24iLCJzdWIiOiJqcm9ja2V0QGV4YW1wbGUuY29tIiwiR2l2ZW5OYW1lIjoiSm9obm55IiwiU3VybmFtZSI6IlJvY2tldCIsIkVtYWlsIjoianJvY2tldEBleGFtcGxlLmNvbSIsIlJvbGUiOlsiTWFuYWdlciIsIlByb2plY3QgQWRtaW5pc3RyYXRvciJdfQ.Wx7W1GwvgGJxTUEHFu98HP9OgP-tJUup9IoVQS15Ma8
+
+{
+    "label": "test"
+}
+
+### Add annotation to group
+POST http://localhost:8080/group/32134ab6-9bf5-4511-8139-bd583387aaff/annotation/4ad5f2e8-b446-43b9-9426-7d13a6742547/8d307046-7d0b-4db6-bd40-05bbc904c350
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJPbmxpbmUgSldUIEJ1aWxkZXIiLCJpYXQiOjE1MzIyMjU4NDgsImV4cCI6MTU2Mzc2MTg0OCwiYXVkIjoiaHR0cDovL2xvY2FsaG9zdDo4MDgwL2Fubm90YXRpb24iLCJzdWIiOiJqcm9ja2V0QGV4YW1wbGUuY29tIiwiR2l2ZW5OYW1lIjoiSm9obm55IiwiU3VybmFtZSI6IlJvY2tldCIsIkVtYWlsIjoianJvY2tldEBleGFtcGxlLmNvbSIsIlJvbGUiOlsiTWFuYWdlciIsIlByb2plY3QgQWRtaW5pc3RyYXRvciJdfQ.Wx7W1GwvgGJxTUEHFu98HP9OgP-tJUup9IoVQS15Ma8
+
+### Remove annotation from group
+DELETE http://localhost:8080/group/32134ab6-9bf5-4511-8139-bd583387aaff/annotation/4ad5f2e8-b446-43b9-9426-7d13a6742547/8d307046-7d0b-4db6-bd40-05bbc904c350
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJPbmxpbmUgSldUIEJ1aWxkZXIiLCJpYXQiOjE1MzIyMjU4NDgsImV4cCI6MTU2Mzc2MTg0OCwiYXVkIjoiaHR0cDovL2xvY2FsaG9zdDo4MDgwL2Fubm90YXRpb24iLCJzdWIiOiJqcm9ja2V0QGV4YW1wbGUuY29tIiwiR2l2ZW5OYW1lIjoiSm9obm55IiwiU3VybmFtZSI6IlJvY2tldCIsIkVtYWlsIjoianJvY2tldEBleGFtcGxlLmNvbSIsIlJvbGUiOlsiTWFuYWdlciIsIlByb2plY3QgQWRtaW5pc3RyYXRvciJdfQ.Wx7W1GwvgGJxTUEHFu98HP9OgP-tJUup9IoVQS15Ma8
+
+### Add user to group
+POST http://localhost:8080/group/32134ab6-9bf5-4511-8139-bd583387aaff/user/60a3d1c1-f73b-4b8a-a8de-7fca44b38a52
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJPbmxpbmUgSldUIEJ1aWxkZXIiLCJpYXQiOjE1MzIyMjU4NDgsImV4cCI6MTU2Mzc2MTg0OCwiYXVkIjoiaHR0cDovL2xvY2FsaG9zdDo4MDgwL2Fubm90YXRpb24iLCJzdWIiOiJqcm9ja2V0QGV4YW1wbGUuY29tIiwiR2l2ZW5OYW1lIjoiSm9obm55IiwiU3VybmFtZSI6IlJvY2tldCIsIkVtYWlsIjoianJvY2tldEBleGFtcGxlLmNvbSIsIlJvbGUiOlsiTWFuYWdlciIsIlByb2plY3QgQWRtaW5pc3RyYXRvciJdfQ.Wx7W1GwvgGJxTUEHFu98HP9OgP-tJUup9IoVQS15Ma8
+
+### Remove user from group
+DELETE http://localhost:8080/group/32134ab6-9bf5-4511-8139-bd583387aaff/user/60a3d1c1-f73b-4b8a-a8de-7fca44b38a52
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJPbmxpbmUgSldUIEJ1aWxkZXIiLCJpYXQiOjE1MzIyMjU4NDgsImV4cCI6MTU2Mzc2MTg0OCwiYXVkIjoiaHR0cDovL2xvY2FsaG9zdDo4MDgwL2Fubm90YXRpb24iLCJzdWIiOiJqcm9ja2V0QGV4YW1wbGUuY29tIiwiR2l2ZW5OYW1lIjoiSm9obm55IiwiU3VybmFtZSI6IlJvY2tldCIsIkVtYWlsIjoianJvY2tldEBleGFtcGxlLmNvbSIsIlJvbGUiOlsiTWFuYWdlciIsIlByb2plY3QgQWRtaW5pc3RyYXRvciJdfQ.Wx7W1GwvgGJxTUEHFu98HP9OgP-tJUup9IoVQS15Ma8
+
+###

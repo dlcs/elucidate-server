@@ -10,7 +10,7 @@ import org.springframework.core.type.AnnotatedTypeMetadata;
  * A Spring bean condition that causes beans to only be registered when authentication
  * is enabled.
  */
-public class IsSecurityEnabled implements Condition {
+public class IsAuthEnabled implements Condition {
 
     /**
      * The configuration key used to check if authentication is enabled.
