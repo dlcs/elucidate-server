@@ -1,21 +1,21 @@
 package com.digirati.elucidate.service.query.impl;
 
-import java.util.Map;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.stereotype.Service;
-
 import com.digirati.elucidate.common.model.annotation.oa.OAAnnotation;
 import com.digirati.elucidate.common.model.annotation.w3c.W3CAnnotation;
 import com.digirati.elucidate.common.service.IRIBuilderService;
 import com.digirati.elucidate.converter.OAToW3CAnnotationConverter;
 import com.digirati.elucidate.converter.W3CToOAAnnotationConverter;
 import com.digirati.elucidate.infrastructure.generator.IDGenerator;
+import com.digirati.elucidate.infrastructure.security.UserSecurityDetailsContext;
 import com.digirati.elucidate.repository.AnnotationStoreRepository;
 import com.digirati.elucidate.service.query.OAAnnotationService;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Service;
+
+import java.util.Map;
 
 @Service(OAAnnotationServiceImpl.SERVICE_NAME)
 public class OAAnnotationServiceImpl extends AbstractAnnotationServiceImpl<OAAnnotation> implements OAAnnotationService {
@@ -25,8 +25,8 @@ public class OAAnnotationServiceImpl extends AbstractAnnotationServiceImpl<OAAnn
     private IRIBuilderService iriBuilderService;
 
     @Autowired
-    public OAAnnotationServiceImpl(AnnotationStoreRepository annotationStoreRepository, IRIBuilderService iriBuilderService, @Qualifier("annotationIdGenerator") IDGenerator idGenerator) {
-        super(annotationStoreRepository, idGenerator);
+    public OAAnnotationServiceImpl(UserSecurityDetailsContext securityContext, AnnotationStoreRepository annotationStoreRepository, IRIBuilderService iriBuilderService, @Qualifier("annotationIdGenerator") IDGenerator idGenerator) {
+        super(securityContext, annotationStoreRepository, idGenerator);
         this.iriBuilderService = iriBuilderService;
     }
 

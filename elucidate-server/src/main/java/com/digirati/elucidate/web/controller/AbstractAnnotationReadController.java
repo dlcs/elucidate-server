@@ -1,17 +1,16 @@
 package com.digirati.elucidate.web.controller;
 
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-
 import com.digirati.elucidate.common.model.annotation.AbstractAnnotation;
 import com.digirati.elucidate.common.model.annotation.AbstractAnnotationCollection;
 import com.digirati.elucidate.infrastructure.exception.InvalidServiceResponseException;
 import com.digirati.elucidate.model.ServiceResponse;
 import com.digirati.elucidate.model.ServiceResponse.Status;
 import com.digirati.elucidate.service.query.AbstractAnnotationService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 public abstract class AbstractAnnotationReadController<A extends AbstractAnnotation, C extends AbstractAnnotationCollection> {
 
@@ -37,6 +36,10 @@ public abstract class AbstractAnnotationReadController<A extends AbstractAnnotat
 
         if (status.equals(Status.DELETED)) {
             return ResponseEntity.status(HttpStatus.GONE).body(null);
+        }
+
+        if (status.equals(Status.UNAUTHORIZED)) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
         }
 
         if (status.equals(Status.OK)) {

@@ -5,6 +5,8 @@ import com.digirati.elucidate.common.infrastructure.constants.SearchConstants;
 import com.digirati.elucidate.common.infrastructure.constants.URLConstants;
 import com.digirati.elucidate.common.model.annotation.AbstractAnnotation;
 import com.digirati.elucidate.common.model.annotation.w3c.W3CAnnotation;
+import com.digirati.elucidate.infrastructure.security.Permission;
+import com.digirati.elucidate.infrastructure.security.UserSecurityDetailsContext;
 import com.digirati.elucidate.infrastructure.util.SelectorUtils;
 import com.digirati.elucidate.model.ServiceResponse;
 import com.digirati.elucidate.model.ServiceResponse.Status;
@@ -23,9 +25,11 @@ public abstract class AbstractAnnotationSearchServiceImpl<A extends AbstractAnno
 
     protected final Logger LOGGER = Logger.getLogger(getClass());
 
+    private UserSecurityDetailsContext securityContext;
     private AnnotationSearchRepository annotationSearchRepository;
 
-    protected AbstractAnnotationSearchServiceImpl(AnnotationSearchRepository annotationSearchRepository) {
+    protected AbstractAnnotationSearchServiceImpl(UserSecurityDetailsContext securityContext, AnnotationSearchRepository annotationSearchRepository) {
+        this.securityContext = securityContext;
         this.annotationSearchRepository = annotationSearchRepository;
     }
 
@@ -183,9 +187,11 @@ public abstract class AbstractAnnotationSearchServiceImpl<A extends AbstractAnno
     private List<A> convertAnnotations(List<W3CAnnotation> w3cAnnotations) {
         List<A> annotations = new ArrayList<A>();
         for (W3CAnnotation w3cAnnotation : w3cAnnotations) {
-            A annotation = convertToAnnotation(w3cAnnotation);
-            annotation.getJsonMap().put(JSONLDConstants.ATTRIBUTE_ID, buildAnnotationIri(annotation.getCollectionId(), annotation.getAnnotationId()));
-            annotations.add(annotation);
+            if (securityContext.isAuthorized(Permission.READ, w3cAnnotation)) {
+                A annotation = convertToAnnotation(w3cAnnotation);
+                annotation.getJsonMap().put(JSONLDConstants.ATTRIBUTE_ID, buildAnnotationIri(annotation.getCollectionId(), annotation.getAnnotationId()));
+                annotations.add(annotation);
+            }
         }
         return annotations;
     }
