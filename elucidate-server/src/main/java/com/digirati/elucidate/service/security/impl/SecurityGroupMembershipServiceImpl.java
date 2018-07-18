@@ -1,6 +1,7 @@
 package com.digirati.elucidate.service.security.impl;
 
 import com.digirati.elucidate.common.model.annotation.w3c.W3CAnnotation;
+import com.digirati.elucidate.infrastructure.security.Permission;
 import com.digirati.elucidate.infrastructure.security.UserSecurityDetailsContext;
 import com.digirati.elucidate.infrastructure.security.UserSecurityDetailsLoader;
 import com.digirati.elucidate.model.ServiceResponse;
@@ -25,9 +26,8 @@ public class SecurityGroupMembershipServiceImpl implements SecurityGroupMembersh
     private final UserSecurityDetailsContext securityContext;
     private final SecurityGroupService securityGroupService;
     private final W3CAnnotationService w3cAnnotationService;
-    private UserSecurityDetailsLoader securityDetailsLoader;
-    private GroupMembershipRepository membershipRepository;
-    private UserRepository userRepository;
+    private final GroupMembershipRepository membershipRepository;
+    private final UserRepository userRepository;
 
     public SecurityGroupMembershipServiceImpl(
         UserSecurityDetailsContext securityContext,
@@ -86,8 +86,13 @@ public class SecurityGroupMembershipServiceImpl implements SecurityGroupMembersh
 
         W3CAnnotation annotation = annotationRes.getObj();
         SecurityGroup group = groupRes.getObj();
-        consumer.accept(annotation.getPk(), group.getPk());
 
+        if (!securityContext.isAuthorized(Permission.WRITE, annotation)
+            || !securityContext.isAuthorized(Permission.WRITE, group)) {
+            return new ServiceResponse<>(Status.UNAUTHORIZED, null);
+        }
+
+        consumer.accept(annotation.getPk(), group.getPk());
         return new ServiceResponse<>(Status.OK, null);
     }
 
@@ -105,8 +110,12 @@ public class SecurityGroupMembershipServiceImpl implements SecurityGroupMembersh
 
         SecurityUser user = details.get();
         SecurityGroup group = groupRes.getObj();
-        consumer.accept(user.getPk(), group.getPk());
 
+        if (!securityContext.isAuthorized(Permission.WRITE, group)) {
+            return new ServiceResponse<>(Status.UNAUTHORIZED, null);
+        }
+
+        consumer.accept(user.getPk(), group.getPk());
         return new ServiceResponse<>(Status.OK, null);
     }
 }
