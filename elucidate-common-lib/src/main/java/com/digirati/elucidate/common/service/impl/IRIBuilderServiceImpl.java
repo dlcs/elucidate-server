@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.net.URISyntaxException;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -19,6 +20,7 @@ import java.util.Map.Entry;
 @Service(IRIBuilderServiceImpl.SERVICE_NAME)
 public class IRIBuilderServiceImpl implements IRIBuilderService {
 
+    public static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ISO_DATE_TIME;
     public static final String SERVICE_NAME = "iriBuilderServiceImpl";
 
     @SuppressWarnings("serial")
@@ -284,7 +286,7 @@ public class IRIBuilderServiceImpl implements IRIBuilderService {
             {
                 put(URLConstants.PARAM_LEVELS, StringUtils.join(levels, ","));
                 put(URLConstants.PARAM_TYPES, StringUtils.join(types, ","));
-                put(URLConstants.PARAM_SINCE, since);
+                put(URLConstants.PARAM_SINCE, DATE_FORMAT.format(since.toInstant()));
                 put(URLConstants.PARAM_PAGE, page);
                 if (embeddedDescriptions) {
                     put(URLConstants.PARAM_DESC, 1);
@@ -530,7 +532,7 @@ public class IRIBuilderServiceImpl implements IRIBuilderService {
             {
                 put(URLConstants.PARAM_LEVELS, StringUtils.join(levels, ","));
                 put(URLConstants.PARAM_TYPES, StringUtils.join(types, ","));
-                put(URLConstants.PARAM_SINCE, since);
+                put(URLConstants.PARAM_SINCE, DATE_FORMAT.format(since.toInstant()));
             }
         });
     }
@@ -541,7 +543,7 @@ public class IRIBuilderServiceImpl implements IRIBuilderService {
             {
                 put(URLConstants.PARAM_LEVELS, StringUtils.join(levels, ","));
                 put(URLConstants.PARAM_TYPES, StringUtils.join(types, ","));
-                put(URLConstants.PARAM_SINCE, since);
+                put(URLConstants.PARAM_SINCE, DATE_FORMAT.format(since.toInstant()));
                 put(URLConstants.PARAM_PAGE, page);
                 if (embeddedDescriptions) {
                     put(URLConstants.PARAM_DESC, 1);
@@ -558,7 +560,7 @@ public class IRIBuilderServiceImpl implements IRIBuilderService {
             {
                 put(URLConstants.PARAM_LEVELS, StringUtils.join(levels, ","));
                 put(URLConstants.PARAM_TYPES, StringUtils.join(types, ","));
-                put(URLConstants.PARAM_SINCE, since);
+                put(URLConstants.PARAM_SINCE, DATE_FORMAT.format(since.toInstant()));
             }
         });
     }
