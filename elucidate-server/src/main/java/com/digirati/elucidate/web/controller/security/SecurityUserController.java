@@ -9,14 +9,17 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@RestController
+@RestController(SecurityUserController.CONTROLLER_NAME)
 @RequestMapping("/user")
 @Conditional(IsAuthEnabled.class)
 public class SecurityUserController {
 
-    @RequestMapping("/current")
+    public static final String CONTROLLER_NAME = "securityUserController";
+
+    private static final String CURRENT_USER_REQUEST_PATH = "/current";
+
+    @RequestMapping(CURRENT_USER_REQUEST_PATH)
     public ResponseEntity<UserSecurityDetails> getCurrentUser(Authentication authentication) {
         return ResponseEntity.status(HttpStatus.OK).body((UserSecurityDetails) authentication.getPrincipal());
     }
-
 }
