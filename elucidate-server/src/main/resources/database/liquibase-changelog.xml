@@ -3,9 +3,7 @@
 <databaseChangeLog
         xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-        xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
-        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.0.xsd
-        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.0.xsd">
 
     <changeSet id="1" author="gtierney">
         <sqlFile splitStatements="false" relativeToChangelogFile="true" path="sql/group_roles/annotations_role.sql"/>
@@ -207,5 +205,22 @@
     </changeSet>
     <changeSet id="67" author="gtierney">
         <sqlFile splitStatements="false" relativeToChangelogFile="true" path="sql/permissions/annotations_permissions.sql"/>
+    </changeSet>
+    <changeSet id="68" author="gtierney">
+        <sqlFile splitStatements="false" relativeToChangelogFile="true" path="sql/migrations/v001/01_add_annotation_security.sql" />
+    </changeSet>
+    <changeSet id="69" author="gtierney">
+        <sqlFile splitStatements="false" relativeToChangelogFile="true"
+                 path="sql/migrations/v001/02_add_annotation_get_security_fields.sql"/>
+    </changeSet>
+    <changeSet id="70" author="gtierney">
+        <sqlFile splitStatements="false"
+                 relativeToChangelogFile="true"
+                 path="sql/migrations/v001/03_add_annotation_search_security_fields.sql"/>
+    </changeSet>
+    <changeSet id="71" author="gtierney">
+        <sqlFile splitStatements="false"
+                 relativeToChangelogFile="true"
+                 path="sql/migrations/v001/04_add_annotation_security_functions.sql"/>
     </changeSet>
 </databaseChangeLog>

@@ -1,12 +1,12 @@
 package com.digirati.elucidate.service.search.impl;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import com.digirati.elucidate.common.model.annotation.w3c.W3CAnnotation;
 import com.digirati.elucidate.common.service.IRIBuilderService;
+import com.digirati.elucidate.infrastructure.security.UserSecurityDetailsContext;
 import com.digirati.elucidate.repository.AnnotationSearchRepository;
 import com.digirati.elucidate.service.search.W3CAnnotationSearchService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 @Service(W3CAnnotationSearchServiceImpl.SERVICE_NAME)
 public class W3CAnnotationSearchServiceImpl extends AbstractAnnotationSearchServiceImpl<W3CAnnotation> implements W3CAnnotationSearchService {
@@ -16,8 +16,8 @@ public class W3CAnnotationSearchServiceImpl extends AbstractAnnotationSearchServ
     private IRIBuilderService iriBuilderService;
 
     @Autowired
-    public W3CAnnotationSearchServiceImpl(AnnotationSearchRepository annotationSearchRepository, IRIBuilderService iriBuilderService) {
-        super(annotationSearchRepository);
+    public W3CAnnotationSearchServiceImpl(UserSecurityDetailsContext securityContext, AnnotationSearchRepository annotationSearchRepository, IRIBuilderService iriBuilderService) {
+        super(securityContext, annotationSearchRepository);
         this.iriBuilderService = iriBuilderService;
     }
 

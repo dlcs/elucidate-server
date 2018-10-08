@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration>
+    <Properties>
+        <Property name="patternLayout">%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n</Property>
+    </Properties>
+
+    <Appenders>
+        <Console name="ConsoleAppender" target="SYSTEM_OUT">
+            <PatternLayout pattern="${patternLayout}"/>
+        </Console>
+        <RollingFile name="DebugFileAppender"
+                     fileName="logs/debug.log"
+                     filePattern="logs/debug-%d{MM-dd-yyyy}.log.gz">
+            <PatternLayout>
+                <Pattern>${patternLayout}</Pattern>
+            </PatternLayout>
+            <TimeBasedTriggeringPolicy/>
+        </RollingFile>
+
+        <RollingFile name="InfoFileAppender"
+                     fileName="logs/info.log"
+                     filePattern="logs/info-%d{MM-dd-yyyy}.log.gz">
+            <PatternLayout>
+                <Pattern>${patternLayout}</Pattern>
+            </PatternLayout>
+            <TimeBasedTriggeringPolicy/>
+        </RollingFile>
+
+        <RollingFile name="ErrorFileAppender"
+                     fileName="logs/error.log"
+                     filePattern="logs/error-%d{MM-dd-yyyy}.log.gz">
+            <PatternLayout>
+                <Pattern>${patternLayout}</Pattern>
+            </PatternLayout>
+            <TimeBasedTriggeringPolicy/>
+        </RollingFile>
+    </Appenders>
+
+    <Loggers>
+        <Root level="debug">
+            <AppenderRef ref="ConsoleAppender" level="info"/>
+            <AppenderRef ref="DebugFileAppender" level="debug"/>
+            <AppenderRef ref="InfoFileAppender" level="info"/>
+            <AppenderRef ref="ErrorFileAppender" level="error"/>
+        </Root>
+    </Loggers>
+</Configuration>

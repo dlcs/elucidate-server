@@ -1,24 +1,25 @@
 package com.digirati.elucidate.service.query.impl;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
-
 import com.digirati.elucidate.common.infrastructure.constants.JSONLDConstants;
 import com.digirati.elucidate.common.infrastructure.constants.OAConstants;
 import com.digirati.elucidate.common.model.annotation.AbstractAnnotation;
 import com.digirati.elucidate.common.model.annotation.w3c.W3CAnnotation;
 import com.digirati.elucidate.infrastructure.generator.IDGenerator;
+import com.digirati.elucidate.infrastructure.security.Permission;
+import com.digirati.elucidate.infrastructure.security.UserSecurityDetailsContext;
 import com.digirati.elucidate.model.ServiceResponse;
 import com.digirati.elucidate.model.ServiceResponse.Status;
 import com.digirati.elucidate.repository.AnnotationStoreRepository;
 import com.digirati.elucidate.service.query.AbstractAnnotationService;
 import com.github.jsonldjava.utils.JsonUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.log4j.Logger;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public abstract class AbstractAnnotationServiceImpl<A extends AbstractAnnotation> implements AbstractAnnotationService<A> {
 
@@ -26,8 +27,10 @@ public abstract class AbstractAnnotationServiceImpl<A extends AbstractAnnotation
 
     private AnnotationStoreRepository annotationStoreRepository;
     private IDGenerator idGenerator;
+    private UserSecurityDetailsContext securityContext;
 
-    protected AbstractAnnotationServiceImpl(AnnotationStoreRepository annotationStoreRepository, IDGenerator idGenerator) {
+    protected AbstractAnnotationServiceImpl(UserSecurityDetailsContext securityContext, AnnotationStoreRepository annotationStoreRepository, IDGenerator idGenerator) {
+        this.securityContext = securityContext;
         this.annotationStoreRepository = annotationStoreRepository;
         this.idGenerator = idGenerator;
     }
@@ -54,6 +57,10 @@ public abstract class AbstractAnnotationServiceImpl<A extends AbstractAnnotation
             return new ServiceResponse<A>(Status.NOT_FOUND, null);
         }
 
+        if (!securityContext.isAuthorized(Permission.READ, w3cAnnotation)) {
+            return new ServiceResponse<>(Status.UNAUTHORIZED, null);
+        }
+
         A annotation = convertToAnnotation(w3cAnnotation);
         annotation.getJsonMap().put(JSONLDConstants.ATTRIBUTE_ID, buildAnnotationIri(collectionId, annotationId));
         return new ServiceResponse<A>(Status.OK, annotation);
@@ -66,9 +73,11 @@ public abstract class AbstractAnnotationServiceImpl<A extends AbstractAnnotation
 
         List<A> annotations = new ArrayList<A>();
         for (W3CAnnotation w3cAnnotation : w3cAnnotations) {
-            A annotation = convertToAnnotation(w3cAnnotation);
-            annotation.getJsonMap().put(JSONLDConstants.ATTRIBUTE_ID, buildAnnotationIri(collectionId, annotation.getAnnotationId()));
-            annotations.add(annotation);
+            if (securityContext.isAuthorized(Permission.READ, w3cAnnotation)) {
+                A annotation = convertToAnnotation(w3cAnnotation);
+                annotation.getJsonMap().put(JSONLDConstants.ATTRIBUTE_ID, buildAnnotationIri(collectionId, annotation.getAnnotationId()));
+                annotations.add(annotation);
+            }
         }
 
         return new ServiceResponse<List<A>>(Status.OK, annotations);
@@ -114,7 +123,13 @@ public abstract class AbstractAnnotationServiceImpl<A extends AbstractAnnotation
             LOGGER.debug(String.format("Detected invalid JSON in Annotation Map [%s]", annotationMap), e);
             return new ServiceResponse<A>(Status.NON_CONFORMANT, null);
         }
-        w3cAnnotation = annotationStoreRepository.createAnnotation(collectionId, annotationId, annotationJson);
+
+        w3cAnnotation = annotationStoreRepository.createAnnotation(
+            collectionId,
+            annotationId,
+            annotationJson,
+            securityContext.getAuthenticationId()
+        );
 
         annotation = convertToAnnotation(w3cAnnotation);
         annotation.getJsonMap().put(JSONLDConstants.ATTRIBUTE_ID, buildAnnotationIri(collectionId, annotationId));
@@ -136,6 +151,10 @@ public abstract class AbstractAnnotationServiceImpl<A extends AbstractAnnotation
         }
 
         A existingAnnotation = existingAnnotationServiceResponse.getObj();
+
+        if (!securityContext.isAuthorized(Permission.WRITE, existingAnnotation)) {
+            return new ServiceResponse<>(Status.UNAUTHORIZED, null);
+        }
 
         String existingCacheKey = existingAnnotation.getCacheKey();
         if (!StringUtils.equals(cacheKey, existingCacheKey)) {
@@ -185,6 +204,10 @@ public abstract class AbstractAnnotationServiceImpl<A extends AbstractAnnotation
         }
 
         A existingAnnotation = existingAnnotationServiceResponse.getObj();
+
+        if (!securityContext.isAuthorized(Permission.WRITE, existingAnnotation)) {
+            return new ServiceResponse<>(Status.UNAUTHORIZED, null);
+        }
 
         String existingCacheKey = existingAnnotation.getCacheKey();
         if (!StringUtils.equals(cacheKey, existingCacheKey)) {

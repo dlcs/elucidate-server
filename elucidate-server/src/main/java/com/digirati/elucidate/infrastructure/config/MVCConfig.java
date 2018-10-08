@@ -12,6 +12,8 @@ import com.digirati.elucidate.web.converter.oa.history.JSONLDOAAnnotationHistory
 import com.digirati.elucidate.web.converter.oa.history.TurtleOAAnnotationHistoryMessageConverter;
 import com.digirati.elucidate.web.converter.oa.statisticspage.JSONLDOAStatisticsPageMessageConverter;
 import com.digirati.elucidate.web.converter.oa.statisticspage.TurtleOAStatisticsPageMessageConverter;
+import com.digirati.elucidate.web.converter.security.SecurityGroupMessageConverter;
+import com.digirati.elucidate.web.converter.security.UserSecurityDetailsMessageConverter;
 import com.digirati.elucidate.web.converter.validationerror.JSONLDValidationErrorMessageConverter;
 import com.digirati.elucidate.web.converter.w3c.annotation.JSONLDW3CAnnotationMessageConverter;
 import com.digirati.elucidate.web.converter.w3c.annotation.TurtleW3CAnnotationMessageConverter;
@@ -97,6 +99,10 @@ public class MVCConfig extends WebMvcConfigurerAdapter {
     private TurtleOAAnnotationHistoryMessageConverter turtleOAAnnotationHistoryMessageConverter;
     @Autowired
     private JSONLDValidationErrorMessageConverter jsonLdValidationErrorMessageConverter;
+    @Autowired
+    private UserSecurityDetailsMessageConverter userSecurityDetailsMessageConverter;
+    @Autowired
+    private SecurityGroupMessageConverter securityGroupMessageConverter;
 
     @Override
     public void configurePathMatch(PathMatchConfigurer configurer) {
@@ -131,6 +137,8 @@ public class MVCConfig extends WebMvcConfigurerAdapter {
         converters.add(jsonLdOAAnnotationHistoryMessageConverter);
         converters.add(turtleOAAnnotationHistoryMessageConverter);
         converters.add(jsonLdValidationErrorMessageConverter);
+        converters.add(userSecurityDetailsMessageConverter);
+        converters.add(securityGroupMessageConverter);
     }
 
     @Override
