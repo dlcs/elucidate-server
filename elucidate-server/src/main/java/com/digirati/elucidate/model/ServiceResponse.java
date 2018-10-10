@@ -10,6 +10,10 @@ public class ServiceResponse<T> {
     private final Status status;
     private final T obj;
 
+    public ServiceResponse(Status status) {
+        this(status, null);
+    }
+
     public ServiceResponse(Status status, T obj) {
         this.status = status;
         this.obj = obj;
