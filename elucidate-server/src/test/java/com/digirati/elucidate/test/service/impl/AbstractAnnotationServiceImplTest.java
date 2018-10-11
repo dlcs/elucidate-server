@@ -14,9 +14,11 @@ import org.junit.Test;
 
 import java.util.Date;
 import java.util.List;
+import org.mockito.Matchers;
 
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.assertThat;
+import static org.mockito.Matchers.anyInt;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
@@ -122,7 +124,7 @@ public abstract class AbstractAnnotationServiceImplTest<A extends AbstractAnnota
         w3cAnnotation.setDeleted(false);
         w3cAnnotation.setJsonMap(annotation.getJsonMap());
 
-        when(annotationStoreRepository.createAnnotation(eq(collectionId), eq("test-annotation-id"), anyString(), null)).thenReturn(w3cAnnotation);
+        when(annotationStoreRepository.createAnnotation(eq(collectionId), eq("test-annotation-id"), anyString(), Matchers.any())).thenReturn(w3cAnnotation);
 
         ServiceResponse<A> serviceResponse = annotationService.createAnnotation(collectionId, null, annotation);
         assertThat(serviceResponse, is(not(nullValue())));

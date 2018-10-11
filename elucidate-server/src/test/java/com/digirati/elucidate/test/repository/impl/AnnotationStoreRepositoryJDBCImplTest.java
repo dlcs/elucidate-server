@@ -151,8 +151,8 @@ public class AnnotationStoreRepositoryJDBCImplTest extends AbstractTest {
         Map<String, Object> jsonMap = w3cAnnotation.getJsonMap();
         String jsonStr = JsonUtils.toString(jsonMap);
 
-        Object[] params = {collectionId, annotationId, jsonStr};
-        int[] sqlTypes = {Types.VARCHAR, Types.VARCHAR, Types.OTHER};
+        Object[] params = {collectionId, annotationId, jsonStr, null};
+        int[] sqlTypes = {Types.VARCHAR, Types.VARCHAR, Types.OTHER, Types.INTEGER};
         when(jdbcTemplate.query(anyString(), aryEq(params), aryEq(sqlTypes), (W3CAnnotationRowMapper) any())).thenReturn(new ArrayList<W3CAnnotation>() {
             {
                 add(w3cAnnotation);
@@ -175,8 +175,8 @@ public class AnnotationStoreRepositoryJDBCImplTest extends AbstractTest {
         Map<String, Object> jsonMap = w3cAnnotation.getJsonMap();
         String jsonStr = JsonUtils.toString(jsonMap);
 
-        Object[] params = {collectionId, annotationId, jsonStr};
-        int[] sqlTypes = {Types.VARCHAR, Types.VARCHAR, Types.OTHER};
+        Object[] params = {collectionId, annotationId, jsonStr, null};
+        int[] sqlTypes = {Types.VARCHAR, Types.VARCHAR, Types.OTHER, Types.INTEGER};
         when(jdbcTemplate.query(anyString(), aryEq(params), aryEq(sqlTypes), (W3CAnnotationRowMapper) any())).thenReturn(new ArrayList<W3CAnnotation>() {
             {
                 add(w3cAnnotation);
