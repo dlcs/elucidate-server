@@ -83,7 +83,7 @@ public class SecurityGroupMembershipController {
             case NOT_FOUND:
                 return (ResponseEntity<T>) ResponseEntity.notFound().build();
             case UNAUTHORIZED:
-                return (ResponseEntity<T>) ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+                return (ResponseEntity<T>) ResponseEntity.status(HttpStatus.FORBIDDEN).build();
             case DELETED:
                 return (ResponseEntity<T>) ResponseEntity.status(HttpStatus.GONE).build();
         }

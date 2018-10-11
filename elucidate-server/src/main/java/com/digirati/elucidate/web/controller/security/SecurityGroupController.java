@@ -44,7 +44,7 @@ public class SecurityGroupController {
         }
 
         if (status == Status.UNAUTHORIZED) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
         }
 
         return ResponseEntity.ok(response.getObj());

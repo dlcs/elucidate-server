@@ -39,7 +39,7 @@ public abstract class AbstractAnnotationReadController<A extends AbstractAnnotat
         }
 
         if (status.equals(Status.UNAUTHORIZED)) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
         }
 
         if (status.equals(Status.OK)) {
