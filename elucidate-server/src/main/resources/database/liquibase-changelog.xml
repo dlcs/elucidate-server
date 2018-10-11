@@ -455,4 +455,9 @@
           relativeToChangelogFile="true"
           path="sql/migrations/v001/04_add_annotation_security_functions.sql"/>
     </changeSet>
+    <changeSet id="72" author="gtierney">
+        <sqlFile splitStatements="false"
+          relativeToChangelogFile="true"
+          path="sql/migrations/v001/05_add_annotation_security_collection.sql"/>
+    </changeSet>
 </databaseChangeLog>
