@@ -4,6 +4,8 @@ import com.digirati.elucidate.model.security.SecurityUserReference;
 import com.digirati.elucidate.service.security.SecurityUserReferenceCollection;
 import com.digirati.elucidate.web.converter.AbstractMessageConverter;
 import com.github.jsonldjava.utils.JsonUtils;
+import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Maps;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -30,11 +32,14 @@ public class SecurityUserReferenceCollectionConverter extends AbstractMessageCon
     @Override
     protected String getStringRepresentation(SecurityUserReferenceCollection obj, MediaType contentType) throws Exception {
         Map<String, Object> jsonMap = new HashMap<>();
-        List<String> iris = obj.getUsers().stream()
-            .map(SecurityUserReference::getUid)
+        List<Map<String, String>> userJsonMaps = obj.getUsers().stream()
+            .map(user -> ImmutableMap.of(
+                "uid", user.getUid(),
+                "id", user.getId()
+            ))
             .collect(Collectors.toList());
 
-        jsonMap.put("users", iris);
+        jsonMap.put("users", userJsonMaps);
         return JsonUtils.toString(jsonMap);
     }
 

@@ -81,7 +81,7 @@ public class SecurityGroupMembershipServiceImpl implements SecurityGroupMembersh
 
         SecurityGroup group = groupRes.getObj();
 
-        if (!securityContext.isAuthorized(Permission.READ, group)) {
+        if (!securityContext.isAuthorized(Permission.MANAGE, group)) {
             return new ServiceResponse<>(Status.UNAUTHORIZED);
         }
 
@@ -111,7 +111,7 @@ public class SecurityGroupMembershipServiceImpl implements SecurityGroupMembersh
 
         SecurityGroup group = groupRes.getObj();
 
-        if (!securityContext.isAuthorized(Permission.READ, group)) {
+        if (!securityContext.isAuthorized(Permission.MANAGE, group)) {
             return new ServiceResponse<>(Status.UNAUTHORIZED);
         }
 
@@ -135,8 +135,8 @@ public class SecurityGroupMembershipServiceImpl implements SecurityGroupMembersh
         W3CAnnotation annotation = annotationRes.getObj();
         SecurityGroup group = groupRes.getObj();
 
-        if (!securityContext.isAuthorized(Permission.WRITE, annotation)
-            || !securityContext.isAuthorized(Permission.WRITE, group)) {
+        if (!securityContext.isAuthorized(Permission.MANAGE, annotation)
+            || !securityContext.isAuthorized(Permission.MANAGE, group)) {
             return new ServiceResponse<>(Status.UNAUTHORIZED, null);
         }
 
@@ -159,7 +159,7 @@ public class SecurityGroupMembershipServiceImpl implements SecurityGroupMembersh
         SecurityUser user = details.get();
         SecurityGroup group = groupRes.getObj();
 
-        if (!securityContext.isAuthorized(Permission.WRITE, group)) {
+        if (!securityContext.isAuthorized(Permission.MANAGE, group)) {
             return new ServiceResponse<>(Status.UNAUTHORIZED, null);
         }
 

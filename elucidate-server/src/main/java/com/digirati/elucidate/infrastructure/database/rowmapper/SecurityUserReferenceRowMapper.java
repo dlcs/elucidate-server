@@ -10,6 +10,9 @@ public class SecurityUserReferenceRowMapper implements RowMapper<SecurityUserRef
 
     @Override
     public SecurityUserReference mapRow(ResultSet rs, int rowNum) throws SQLException {
-        return new SecurityUserReference(ResultSetUtils.getString(rs, "uid"));
+        String id = ResultSetUtils.getString(rs, "security_user_id");
+        String username = ResultSetUtils.getString(rs, "uid");
+
+        return new SecurityUserReference(id, username);
     }
 }

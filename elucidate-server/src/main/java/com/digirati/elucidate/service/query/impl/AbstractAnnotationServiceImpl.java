@@ -152,7 +152,7 @@ public abstract class AbstractAnnotationServiceImpl<A extends AbstractAnnotation
 
         A existingAnnotation = existingAnnotationServiceResponse.getObj();
 
-        if (!securityContext.isAuthorized(Permission.WRITE, existingAnnotation)) {
+        if (!securityContext.isAuthorized(Permission.MANAGE, existingAnnotation)) {
             return new ServiceResponse<>(Status.UNAUTHORIZED, null);
         }
 
@@ -205,7 +205,7 @@ public abstract class AbstractAnnotationServiceImpl<A extends AbstractAnnotation
 
         A existingAnnotation = existingAnnotationServiceResponse.getObj();
 
-        if (!securityContext.isAuthorized(Permission.WRITE, existingAnnotation)) {
+        if (!securityContext.isAuthorized(Permission.MANAGE, existingAnnotation)) {
             return new ServiceResponse<>(Status.UNAUTHORIZED, null);
         }
 
