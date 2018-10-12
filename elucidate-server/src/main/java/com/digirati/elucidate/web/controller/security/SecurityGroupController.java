@@ -31,7 +31,7 @@ public class SecurityGroupController {
     @PostMapping
     public ResponseEntity<SecurityGroup> createGroup(@RequestBody SecurityGroup group) {
         ServiceResponse<SecurityGroup> response = securityGroupService.createGroup(group.getLabel());
-        return ResponseEntity.ok(response.getObj());
+        return ResponseEntity.status(HttpStatus.CREATED).body(response.getObj());
     }
 
     @GetMapping(GROUP_REQUEST_PATH)

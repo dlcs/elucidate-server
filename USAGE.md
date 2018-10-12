@@ -1,48 +1,77 @@
 # Usage
 
-- [Usage](#usage)
-	- [Introduction](#introduction)
-	- [W3C & OA Conversion](#w3c-oa-conversion)
-	- [Annotation Containers](#annotation-containers)
-		- [Create](#create)
+- [Introduction](#introduction)
+- [W3C & OA Conversion](#w3c-oa-conversion)
+- [Annotation Containers](#annotation-containers)
+	- [Create](#create)
+		- [Request](#request)
+		- [Response](#response)
+	- [Fetch](#fetch)
+		- [Request](#request)
+		- [Response](#response)
+	- [Update](#update)
+	- [Delete](#delete)
+- [Annotations](#annotations)
+	- [Create](#create)
+		- [Request](#request)
+		- [Response](#response)
+	- [Fetch](#fetch)
+		- [Request](#request)
+		- [Response](#response)
+	- [Update](#update)
+		- [Request](#request)
+		- [Response](#response)
+	- [Delete](#delete)
+		- [Request](#request)
+		- [Response](#response)
+- [Search](#search)
+	- [Search By `body`](#search-by-body)
+	- [Search by `target`](#search-by-target)
+	- [Search by `creator`](#search-by-creator)
+	- [Search by `generator`](#search-by-generator)
+	- [Search by `created`, `modified`, `generated`](#search-by-created-modified-generated)
+- [Statistics](#statistics)
+	- [Body Statistics](#body-statistics)
+	- [Target Statistics](#target-statistics)
+- [Batch Operations](#batch-operations)
+	- [Batch Update](#batch-update)
+		- [Request](#request)
+		- [Response](#response)
+	- [Batch Delete](#batch-delete)
+		- [Request](#request)
+		- [Response](#response)
+- [Annotation Histories](#annotation-histories)
+- [Authorization](#authorization)
+	- [User Management](#user-management)
 			- [Request](#request)
 			- [Response](#response)
-		- [Fetch](#fetch)
+	- [Group Management](#group-management)
+		- [Group Creation](#group-creation)
 			- [Request](#request)
 			- [Response](#response)
-		- [Update](#update)
-		- [Delete](#delete)
-	- [Annotations](#annotations)
-		- [Create](#create)
+		- [Group Listing](#group-listing)
 			- [Request](#request)
 			- [Response](#response)
-		- [Fetch](#fetch)
+	- [User Group Management](#user-group-management)
+		- [User Group Listing](#user-group-listing)
 			- [Request](#request)
 			- [Response](#response)
-		- [Update](#update)
+		- [User Group Creation](#user-group-creation)
 			- [Request](#request)
 			- [Response](#response)
-		- [Delete](#delete)
+		- [User Group Deletion](#user-group-deletion)
 			- [Request](#request)
 			- [Response](#response)
-	- [Search](#search)
-		- [Search By `body`](#search-by-body)
-		- [Search by `target`](#search-by-target)
-		- [Search by `creator`](#search-by-creator)
-		- [Search by `generator`](#search-by-generator)
-		- [Search by `created`, `modified`, `generated`](#search-by-created-modified-generated)
-	- [Statistics](#statistics)
-		- [Body Statistics](#body-statistics)
-		- [Target Statistics](#target-statistics)
-	- [Batch Operations](#batch-operations)
-		- [Batch Update](#batch-update)
+	- [Annotation Group Management](#annotation-group-management)
+		- [Annotation Group Listing](#annotation-group-listing)
 			- [Request](#request)
 			- [Response](#response)
-		- [Batch Delete](#batch-delete)
+		- [Annotation Group Creation](#annotation-group-creation)
 			- [Request](#request)
 			- [Response](#response)
-	- [Annotation Histories](#annotation-histories)
-	- [Authorization](#authorization)
+		- [Annotation Group Deletion](#annotation-group-deletion)
+			- [Request](#request)
+			- [Response](#response)
 
 ## Introduction
 
@@ -528,58 +557,265 @@ Queries to the historical Annotation service can expect to always receive the `M
 - If there exists a previous version of the Annotation available, receive a `Link` header with a relationship of `"prev memento"` with a link to that previous version.
 - If there exists a future version of the Annotation available, receive a `Link` header with a relationship of `"next memento"` with a link to that future version.
 
-## Security
+## Authorization
 
-When authentication/authorization is enabled in Elucidate, access to any annotation is protected by a combination of
-user managed [security groups](#security-groups), credential level roles, and user ownership of annotations.
+When authorization is enabled in Elucidate, access to any Annotation is protected by a combination of user managed groups, credential level roles, and owner relationships.
 
-Elucidate follows the implementation of OAuth 2.0 Bearer Tokens outlined in [RFC 6750](https://tools.ietf.org/html/rfc6750#section-6.1.1),
-whereby it will return `401 Unauthorized` for missing/invalid tokens and `403 Forbidden` for insufficient privileges . 
+Elucidate follows the implementation of OAuth 2.0 Bearer Tokens outlined in [RFC 6750](https://tools.ietf.org/html/rfc6750#section-6.1.1), whereby it will return `401 Unauthorized` for missing/invalid tokens and `403 Forbidden` for insufficient privileges .
 
-Any endpoints that previously returned a list of Annotations will now have those results filtered down to the Annotations
-viewable by the permission set of the user making the request.
+The ID of the user that is persised in the Elucidate database is defined using **either** the `uid` or `user_name` field in the token:
 
-### Security Users
+```
+{
+	"uid": "User One",
+  "user_name": "User One"
+}
 
-Every authenticated user that interacts with Elucidate is represented internally as a security user. If a valid authentication
-comes in that is not yet in the database, Elucidate will persist it before continuing with any other operations.
+```
 
-#### Current User Information
+An administrative user can be defined by providing the `admin` authority within the token:
 
-The `/user/current` endpoint provides the ability for an authenticated user to request internal information about
-their own user (including internal UUID and groups that they belong to).
+```
+{
+	"uid": "User One",
+	"user_name": "User One",
+  "authorities": ["admin"]
+}
+```
+
+Any endpoints that previously returned a list of Annotations will now have those results filtered down to the Annotations viewable by the permission set and ownership relationships of the user making the request.
+
+### User Management
+
+Every authenticated user that interacts with Elucidate is represented internally as a user. If a valid authentication for a user comes in that is not yet in the database, Elucidate will create a user before continuing with any other operations.
+
+The `/user/current` endpoint provides the ability for an authenticated user to request information about themselves (including the generated ID and any groups that they belong to).
 
 ##### Request
 
-```http request
-GET http://example.org/user/current
+```
+GET http://example.org/user/current HTTP/1.1
+
 Accept: application/json;charset=UTF-8
+Content-Type: application/json;charset=UTF-8
 ```
 
 ##### Response
 
-```http response
-HTTP/1.1 200 
+```
+HTTP/1.1 200 OK
 
 Allow: GET,OPTIONS,HEAD
 Content-Type: application/json;charset=UTF-8
 
 {
-  "uid" : "test-user@example.org",
-  "groups" : [{
-    "id" : "feb487db-8e16-4d5f-9afd-e4a359305480",
-    "label" : "Group 1"
-  }, {
-    "id" : "650d5478-7882-4dbd-976c-61cb3f87f4e4",
-    "label" : "Group 2"
-  }],
-  "id" : "42fc8f6b-b191-4e2c-8568-214580954862"
+  "uid" : "User One",
+  "groups" : [
+	  {
+			"id" : "group-1",
+			"label" : "Group One"
+		},
+		{
+			"id" : "group-2",
+			"label" : "Group Two"
+		}
+	],
+  "id" : "user-1"
 }
 ```
 
-### Security Groups
+### Group Management
 
-A security group is a logical grouping of users and groups that can be used to extend visibility of annotations
-to other users. An annotation can belong to many groups, and likewise a user can too. Adding or removing new
-memberships to a group can only be done by the user who owns the group itself, and additionally, they must also have
-ownership of the annotation they wish to add to the group.
+A group is a logical collection of users and Annotations. An Annotation can belong to many groups, and likewise a user can too. Adding or removing Annotations and users to and from a group can only be done by the user who created the group and owns the Annotation, or by a user with the `admin` authority.
+
+#### Group Creation
+
+##### Request
+
+```
+POST http://example.org/group HTTP/1.1
+
+Accept: application/json;charset=UTF-8
+Content-Type: application/json;charset=UTF-8
+
+{
+	"label": "Group One"
+}
+```
+
+##### Response
+
+```
+HTTP/1.1 201 CREATED
+
+Allow: GET,OPTIONS,HEAD
+Content-Type: application/json;charset=UTF-8
+
+{
+	"id": "group-1",
+	"label": "Group One"
+}
+```
+
+#### Group Listing
+
+##### Request
+
+```
+GET http://example.org/group/group-1 HTTP/1.1
+
+Accept: application/json;charset=UTF-8
+Content-Type: application/json;charset=UTF-8
+```
+
+##### Response
+
+```
+HTTP/1.1 201 OK
+
+Allow: GET,OPTIONS,HEAD
+Content-Type: application/json;charset=UTF-8
+
+{
+    "id": "group-1",
+    "label": "Group One"
+}
+```
+
+### User Group Management
+
+Either the creator of the group, or a user with the `admin` authority, can view the users of a group and add and remove users to and from a group.
+
+#### User Group Listing
+
+##### Request
+
+```
+GET http://example.org/group/my-group/users HTTP/1.1
+
+Accept: application/json;charset=UTF-8
+Content-Type: application/json;charset=UTF-8
+```
+
+##### Response
+
+```
+HTTP/1.1 200 OK
+
+Allow: GET,OPTIONS,HEAD
+Content-Type: application/json;charset=UTF-8
+
+{
+	"users": [
+		{
+			"uid": "User One",
+			"id": "user-1"
+		},
+		{
+			"uid": "User Two",
+			"id": "user-2"
+		}
+	]
+}
+```
+
+#### User Group Creation
+
+##### Request
+
+```
+POST http://example.org/group/group-1/user/user-1 HTTP/1.1
+
+Accept: application/json;charset=UTF-8
+Content-Type: application/json;charset=UTF-8
+```
+
+##### Response
+
+```
+HTTP/1.1 200 OK
+```
+
+#### User Group Deletion
+
+##### Request
+
+```
+DELETE http://example.org/group/group-1/user/user-1 HTTP/1.1
+
+Accept: application/json;charset=UTF-8
+Content-Type: application/json;charset=UTF-8
+```
+
+##### Response
+
+```
+HTTP/1.1 200 OK
+```
+
+### Annotation Group Management
+
+Either the creator of the group, or a user with the `admin` authority, can view the Annotations of a group and add and remove Annotation to and from a group.
+
+#### Annotation Group Listing
+
+##### Request
+
+```
+GET http://example.org/group/my-group/annotations HTTP/1.1
+
+Accept: application/json;charset=UTF-8
+Content-Type: application/json;charset=UTF-8
+```
+
+##### Response
+
+```
+HTTP/1.1 200 OK
+
+Allow: GET,OPTIONS,HEAD
+Content-Type: application/json;charset=UTF-8
+
+{
+	"annotations": [
+		"http://localhost:8080/annotation/w3c/container-1/annotation-1",
+		"http://localhost:8080/annotation/w3c/container-1/annotation-2",
+		"http://localhost:8080/annotation/w3c/container-2/annotation-3",
+		"http://localhost:8080/annotation/w3c/container-2/annotation-4"
+	]
+}
+```
+
+#### Annotation Group Creation
+
+##### Request
+
+```
+POST http://example.org/group/group-1/annotation/container-1/annotation-1 HTTP/1.1
+
+Accept: application/json;charset=UTF-8
+Content-Type: application/json;charset=UTF-8
+```
+
+##### Response
+
+```
+HTTP/1.1 200 OK
+```
+
+#### Annotation Group Deletion
+
+##### Request
+
+```
+DELETE http://example.org/group/group-1/annotation/container-1/annotation-1 HTTP/1.1
+
+Accept: application/json;charset=UTF-8
+Content-Type: application/json;charset=UTF-8
+```
+
+##### Response
+
+```
+HTTP/1.1 200 OK
+```
