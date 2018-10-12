@@ -42,6 +42,7 @@
 			- [Request](#request)
 			- [Response](#response)
 	- [Annotation Histories](#annotation-histories)
+	- [Authorization](#authorization)
 
 ## Introduction
 
@@ -526,3 +527,59 @@ Queries to the W3C Annotation Protocol endpoint can expect to always receive the
 Queries to the historical Annotation service can expect to always receive the `Memento-Datetime` header, and:
 - If there exists a previous version of the Annotation available, receive a `Link` header with a relationship of `"prev memento"` with a link to that previous version.
 - If there exists a future version of the Annotation available, receive a `Link` header with a relationship of `"next memento"` with a link to that future version.
+
+## Security
+
+When authentication/authorization is enabled in Elucidate, access to any annotation is protected by a combination of
+user managed [security groups](#security-groups), credential level roles, and user ownership of annotations.
+
+Elucidate follows the implementation of OAuth 2.0 Bearer Tokens outlined in [RFC 6750](https://tools.ietf.org/html/rfc6750#section-6.1.1),
+whereby it will return `401 Unauthorized` for missing/invalid tokens and `403 Forbidden` for insufficient privileges . 
+
+Any endpoints that previously returned a list of Annotations will now have those results filtered down to the Annotations
+viewable by the permission set of the user making the request.
+
+### Security Users
+
+Every authenticated user that interacts with Elucidate is represented internally as a security user. If a valid authentication
+comes in that is not yet in the database, Elucidate will persist it before continuing with any other operations.
+
+#### Current User Information
+
+The `/user/current` endpoint provides the ability for an authenticated user to request internal information about
+their own user (including internal UUID and groups that they belong to).
+
+##### Request
+
+```http request
+GET http://example.org/user/current
+Accept: application/json;charset=UTF-8
+```
+
+##### Response
+
+```http response
+HTTP/1.1 200 
+
+Allow: GET,OPTIONS,HEAD
+Content-Type: application/json;charset=UTF-8
+
+{
+  "uid" : "test-user@example.org",
+  "groups" : [{
+    "id" : "feb487db-8e16-4d5f-9afd-e4a359305480",
+    "label" : "Group 1"
+  }, {
+    "id" : "650d5478-7882-4dbd-976c-61cb3f87f4e4",
+    "label" : "Group 2"
+  }],
+  "id" : "42fc8f6b-b191-4e2c-8568-214580954862"
+}
+```
+
+### Security Groups
+
+A security group is a logical grouping of users and groups that can be used to extend visibility of annotations
+to other users. An annotation can belong to many groups, and likewise a user can too. Adding or removing new
+memberships to a group can only be done by the user who owns the group itself, and additionally, they must also have
+ownership of the annotation they wish to add to the group.
