@@ -12,7 +12,7 @@ ADD target/${ARTIFACT_NAME} /usr/local/tomcat/webapps/annotation.war
 
 # An overridable option that points Spring to a log4j config file.
 # The default is a configuratoin that only logs to the console.
-ENV LOG4J_CONFIG_LOCATION="classpath:logging/log4j.console.xml"
+ENV LOG4J_CONFIG_LOCATION="classpath:logging/log4j2.console.xml"
 
 # The URI scheme used to generate annotation IRIs.
 ENV BASE_SCHEME="http"
