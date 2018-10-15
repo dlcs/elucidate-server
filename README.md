@@ -48,19 +48,30 @@ mvn clean package install -U
 
 ### Configuration
 
-Configuration of the Elucidate Server is achieved through the [`elucidate-server.properties`](elucidate-config/elucidate-server.properties). This file can be placed in any location and provided to the JVM as a parameter:
+Elucidate Server requires that several configuration properties are set to function correctly.
 
-```
--Delucidate.server.properties=file:/path/to/file.properties
-```
+| Name | Default value | Description |
+| --- | --- | --- |
+| db.user | `<empty>` | Database user to authenticate as.
+| db.url | `<empty>` | JDBC database URL to connect to.
+| base.scheme | `"http"` | The URI scheme that annotation IRIs will use.
+| base.host | `"localhost"` | The hostname that annotation IRIs will use.
+| base.port | `8080` | The port that annotation IRIs will use.  May be omitted if it set to a default HTTP/HTTPS port.
+| base.path | `"/annotation"` | The path prefix that that annotation IRIs will use.
+| log4j.config.location | `"classpath:logging/log4j.xml"` | A path to a log4j XML configuration/properties file.
 
-In addition to specifying the path to the properties file, users may wish to modify the provided [log4j.xml](elucidate-config/log4j.xml) to modify log file paths or logging levels.
+A full listing of configuration options available to change can be found in [`elucidate-server.properties`](elucidate-server/src/main/resources/elucidate-server.properties).
+Any of these options can be configured or overridden using [JNDI environment properties](https://docs.oracle.com/javase/jndi/tutorial/beyond/env/source.html) by passing a Java system property on the command line or setting an environment variable.
+
+**Note**: if set as an environment variable, the option name should be uppercase with any hyphens and periods replaced with underscores.  E.g., `base.port` becomes `BASE_PORT`.
 
 ### Database
 
 Elucidate Server has been built and tested against PostgreSQL 9.4+  (the `jsonb` type is required for persistence).
 
-Database scripts are available in the [`elucidate-db-scripts`](elucidate-db-scripts/) folder, and include the creation and assignment of permissions to an `annotations_user` user in the [`annotations_user.sql`](elucidate-db-scripts/login_roles/annotations_user.sql) script - **modify the script and update the password of this before executing it.**
+A [Liquibase](https://www.liquibase.org/) changelog contains the SQL scripts required to create the Elucidate Server schema.
+On first connection to a JDBC URI (given by `db.url`) the changes will be applied and a changelog table
+created in the database for any subsequent runs.
 
 ## Usage
 
@@ -72,6 +83,7 @@ See [`USAGE.md`](USAGE.md) for some sample requests.
 * [Jackson](http://wiki.fasterxml.com/JacksonHome)
 * [JSONLD-JAVA](https://github.com/jsonld-java/jsonld-java)
 * [JSON Schema Validator](https://github.com/daveclayton/json-schema-validator)
+* [Liquibase](https://www.liquibase.org)
 
 ## Contributing
 

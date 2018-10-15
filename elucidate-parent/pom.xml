@@ -30,12 +30,14 @@
 		<jsonld-java-version>0.8.3</jsonld-java-version>
 		<jstl-version>1.2</jstl-version>
 		<junit-version>4.12</junit-version>
-		<log4j-version>1.2.17</log4j-version>
+		<log4j-version>2.11.0</log4j-version>
 		<mockito-version>1.10.19</mockito-version>
 		<postgresql-version>9.4.1209</postgresql-version>
 		<powermock-version>1.6.5</powermock-version>
-		<slf4j-log4j12-version>1.7.21</slf4j-log4j12-version>
 		<spring-framework-version>4.3.1.RELEASE</spring-framework-version>
+		<spring-security-version>4.2.6.RELEASE</spring-security-version>
+		<spring-security-jwt-version>1.0.9.RELEASE</spring-security-jwt-version>
+		<spring-security-oauth2-version>2.3.3.RELEASE</spring-security-oauth2-version>
 		<liquibase-version>3.6.1</liquibase-version>
 	</properties>
 
@@ -106,18 +108,28 @@
 	<dependencies>
 		<!-- Logging Dependencies -->
 		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-log4j12</artifactId>
-			<version>${slf4j-log4j12-version}</version>
-		</dependency>
-		<dependency>
-			<groupId>log4j</groupId>
-			<artifactId>log4j</artifactId>
+			<groupId>org.apache.logging.log4j</groupId>
+			<artifactId>log4j-core</artifactId>
 			<version>${log4j-version}</version>
 		</dependency>
 		<dependency>
-			<groupId>log4j</groupId>
-			<artifactId>apache-log4j-extras</artifactId>
+			<groupId>org.apache.logging.log4j</groupId>
+			<artifactId>log4j-api</artifactId>
+			<version>${log4j-version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.logging.log4j</groupId>
+			<artifactId>log4j-slf4j-impl</artifactId>
+			<version>${log4j-version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.logging.log4j</groupId>
+			<artifactId>log4j-1.2-api</artifactId>
+			<version>${log4j-version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.logging.log4j</groupId>
+			<artifactId>log4j-jul</artifactId>
 			<version>${log4j-version}</version>
 		</dependency>
 	</dependencies>

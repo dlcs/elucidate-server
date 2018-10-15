@@ -10,7 +10,7 @@ public interface AnnotationStoreRepository {
 
     List<W3CAnnotation> getAnnotationsByCollectionId(String collectionId);
 
-    W3CAnnotation createAnnotation(String collectionId, String annotationId, String annotationJson);
+    W3CAnnotation createAnnotation(String collectionId, String annotationId, String annotationJson, Integer ownerId);
 
     W3CAnnotation updateAnnotation(String collectionId, String annotationId, String annotationJson);
 

@@ -1,26 +1,26 @@
 package com.digirati.elucidate.test.service.impl;
 
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.assertThat;
-
-import org.junit.runner.RunWith;
-import org.powermock.modules.junit4.PowerMockRunner;
-
 import com.digirati.elucidate.common.model.annotation.w3c.W3CAnnotation;
 import com.digirati.elucidate.common.model.annotation.w3c.W3CAnnotationCollection;
 import com.digirati.elucidate.common.service.IRIBuilderService;
 import com.digirati.elucidate.infrastructure.generator.IDGenerator;
+import com.digirati.elucidate.infrastructure.security.impl.DefaultUserSecurityDetailsContext;
 import com.digirati.elucidate.repository.AnnotationStoreRepository;
 import com.digirati.elucidate.service.query.AbstractAnnotationService;
 import com.digirati.elucidate.service.query.impl.W3CAnnotationServiceImpl;
+import org.junit.runner.RunWith;
+import org.powermock.modules.junit4.PowerMockRunner;
+
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.assertThat;
 
 @RunWith(PowerMockRunner.class)
 public class W3CAnnotationServiceImplTest extends AbstractAnnotationServiceImplTest<W3CAnnotation, W3CAnnotationCollection> {
 
     @Override
     protected AbstractAnnotationService<W3CAnnotation> createAnnotationService(IRIBuilderService iriBuilderService, AnnotationStoreRepository annotationStoreRepository) {
-        return new W3CAnnotationServiceImpl(annotationStoreRepository, iriBuilderService, new StaticIDGenerator());
+        return new W3CAnnotationServiceImpl(new DefaultUserSecurityDetailsContext(), annotationStoreRepository, iriBuilderService, new StaticIDGenerator());
     }
 
     @Override
