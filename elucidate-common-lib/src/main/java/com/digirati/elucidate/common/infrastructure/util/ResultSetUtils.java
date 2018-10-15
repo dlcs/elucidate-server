@@ -1,15 +1,13 @@
 package com.digirati.elucidate.common.infrastructure.util;
 
-import java.io.IOException;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-
+import com.github.jsonldjava.utils.JsonUtils;
 import org.apache.commons.lang3.StringUtils;
 
-import com.github.jsonldjava.utils.JsonUtils;
+import java.io.IOException;
+import java.sql.Array;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.*;
 
 public class ResultSetUtils {
 
@@ -27,6 +25,16 @@ public class ResultSetUtils {
 
     public static int getInt(ResultSet rs, String columnName) throws SQLException {
         return rs.getInt(columnName);
+    }
+
+    public static <T> Set<T> getArrayAsSet(ResultSet rs, String columnName) throws SQLException {
+        Array array = rs.getArray(columnName);
+
+        if (array == null) {
+            return Collections.emptySet();
+        }
+
+        return new HashSet<>(Arrays.asList((T[]) array.getArray()));
     }
 
     @SuppressWarnings("unchecked")

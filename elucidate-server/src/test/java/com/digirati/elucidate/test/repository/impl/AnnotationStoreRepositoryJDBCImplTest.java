@@ -1,24 +1,11 @@
 package com.digirati.elucidate.test.repository.impl;
 
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.nullValue;
-import static org.junit.Assert.assertThat;
-import static org.mockito.AdditionalMatchers.aryEq;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyString;
-import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
-import java.sql.Types;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-
+import com.digirati.elucidate.common.infrastructure.database.rowmapper.W3CAnnotationRowMapper;
+import com.digirati.elucidate.common.model.annotation.w3c.W3CAnnotation;
+import com.digirati.elucidate.common.test.AbstractTest;
+import com.digirati.elucidate.repository.AnnotationStoreRepository;
+import com.digirati.elucidate.repository.impl.AnnotationStoreRepositoryJDBCImpl;
+import com.github.jsonldjava.utils.JsonUtils;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -27,12 +14,19 @@ import org.powermock.modules.junit4.PowerMockRunner;
 import org.springframework.dao.IncorrectResultSizeDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 
-import com.digirati.elucidate.common.infrastructure.database.rowmapper.W3CAnnotationRowMapper;
-import com.digirati.elucidate.common.model.annotation.w3c.W3CAnnotation;
-import com.digirati.elucidate.common.test.AbstractTest;
-import com.digirati.elucidate.repository.AnnotationStoreRepository;
-import com.digirati.elucidate.repository.impl.AnnotationStoreRepositoryJDBCImpl;
-import com.github.jsonldjava.utils.JsonUtils;
+import java.sql.Types;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+
+import static org.hamcrest.Matchers.*;
+import static org.junit.Assert.assertThat;
+import static org.mockito.AdditionalMatchers.aryEq;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyString;
+import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.*;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest(AnnotationStoreRepositoryJDBCImpl.class)
@@ -157,14 +151,14 @@ public class AnnotationStoreRepositoryJDBCImplTest extends AbstractTest {
         Map<String, Object> jsonMap = w3cAnnotation.getJsonMap();
         String jsonStr = JsonUtils.toString(jsonMap);
 
-        Object[] params = {collectionId, annotationId, jsonStr};
-        int[] sqlTypes = {Types.VARCHAR, Types.VARCHAR, Types.OTHER};
+        Object[] params = {collectionId, annotationId, jsonStr, null};
+        int[] sqlTypes = {Types.VARCHAR, Types.VARCHAR, Types.OTHER, Types.INTEGER};
         when(jdbcTemplate.query(anyString(), aryEq(params), aryEq(sqlTypes), (W3CAnnotationRowMapper) any())).thenReturn(new ArrayList<W3CAnnotation>() {
             {
                 add(w3cAnnotation);
             }
         });
-        W3CAnnotation returnedW3CAnnotation = annotationStoreRepository.createAnnotation(collectionId, annotationId, jsonStr);
+        W3CAnnotation returnedW3CAnnotation = annotationStoreRepository.createAnnotation(collectionId, annotationId, jsonStr, null);
         verify(jdbcTemplate, times(1)).query(anyString(), aryEq(params), aryEq(sqlTypes), (W3CAnnotationRowMapper) any());
 
         assertThat(w3cAnnotation, is(equalTo(returnedW3CAnnotation)));
@@ -181,14 +175,14 @@ public class AnnotationStoreRepositoryJDBCImplTest extends AbstractTest {
         Map<String, Object> jsonMap = w3cAnnotation.getJsonMap();
         String jsonStr = JsonUtils.toString(jsonMap);
 
-        Object[] params = {collectionId, annotationId, jsonStr};
-        int[] sqlTypes = {Types.VARCHAR, Types.VARCHAR, Types.OTHER};
+        Object[] params = {collectionId, annotationId, jsonStr, null};
+        int[] sqlTypes = {Types.VARCHAR, Types.VARCHAR, Types.OTHER, Types.INTEGER};
         when(jdbcTemplate.query(anyString(), aryEq(params), aryEq(sqlTypes), (W3CAnnotationRowMapper) any())).thenReturn(new ArrayList<W3CAnnotation>() {
             {
                 add(w3cAnnotation);
             }
         });
-        W3CAnnotation returnedW3CAnnotation = annotationStoreRepository.createAnnotation(collectionId, annotationId, jsonStr);
+        W3CAnnotation returnedW3CAnnotation = annotationStoreRepository.createAnnotation(collectionId, annotationId, jsonStr, null);
         verify(jdbcTemplate, times(1)).query(anyString(), aryEq(params), aryEq(sqlTypes), (W3CAnnotationRowMapper) any());
 
         assertThat(w3cAnnotation, is(equalTo(returnedW3CAnnotation)));

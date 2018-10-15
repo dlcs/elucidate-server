@@ -1,17 +1,16 @@
 package com.digirati.elucidate.repository.impl;
 
-import java.sql.Types;
-import java.util.List;
-
+import com.digirati.elucidate.common.infrastructure.database.rowmapper.W3CAnnotationRowMapper;
+import com.digirati.elucidate.common.model.annotation.w3c.W3CAnnotation;
+import com.digirati.elucidate.common.repository.impl.AbstractRepositoryJDBCImpl;
+import com.digirati.elucidate.repository.AnnotationStoreRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.digirati.elucidate.common.infrastructure.database.rowmapper.W3CAnnotationRowMapper;
-import com.digirati.elucidate.common.model.annotation.w3c.W3CAnnotation;
-import com.digirati.elucidate.common.repository.impl.AbstractRepositoryJDBCImpl;
-import com.digirati.elucidate.repository.AnnotationStoreRepository;
+import java.sql.Types;
+import java.util.List;
 
 @Repository
 public class AnnotationStoreRepositoryJDBCImpl extends AbstractRepositoryJDBCImpl implements AnnotationStoreRepository {
@@ -45,10 +44,10 @@ public class AnnotationStoreRepositoryJDBCImpl extends AbstractRepositoryJDBCImp
 
     @Override
     @Transactional(readOnly = false)
-    public W3CAnnotation createAnnotation(String collectionId, String annotationId, String annotationJson) {
-        String sql = "SELECT * FROM annotation_create(?, ?, ?)";
-        Object[] params = {collectionId, annotationId, annotationJson};
-        int[] sqlTypes = {Types.VARCHAR, Types.VARCHAR, Types.OTHER};
+    public W3CAnnotation createAnnotation(String collectionId, String annotationId, String annotationJson, Integer ownerId) {
+        String sql = "SELECT * FROM annotation_create(?, ?, ?, ?)";
+        Object[] params = {collectionId, annotationId, annotationJson, ownerId};
+        int[] sqlTypes = {Types.VARCHAR, Types.VARCHAR, Types.OTHER, Types.INTEGER};
 
         return queryForObject(sql, params, sqlTypes, new W3CAnnotationRowMapper());
     }

@@ -2,6 +2,7 @@ package com.digirati.elucidate.common.service.impl;
 
 import com.digirati.elucidate.common.infrastructure.constants.URLConstants;
 import com.digirati.elucidate.common.infrastructure.exception.InvalidIRIException;
+import com.digirati.elucidate.common.infrastructure.util.URIUtils;
 import com.digirati.elucidate.common.service.IRIBuilderService;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.client.utils.URIBuilder;
@@ -10,6 +11,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.net.URISyntaxException;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -19,34 +21,14 @@ import java.util.Map.Entry;
 @Service(IRIBuilderServiceImpl.SERVICE_NAME)
 public class IRIBuilderServiceImpl implements IRIBuilderService {
 
+    public static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ISO_DATE_TIME;
     public static final String SERVICE_NAME = "iriBuilderServiceImpl";
-
-    @SuppressWarnings("serial")
-    private static final Map<String, Integer> DEFAULT_PORTS = new HashMap<String, Integer>() {
-        {
-            put("http", 80);
-            put("https", 443);
-        }
-    };
 
     private String baseUrl;
 
     @Autowired
     public IRIBuilderServiceImpl(@Value("${base.scheme}") String baseScheme, @Value("${base.host}") String baseHost, @Value("${base.port}") int basePort, @Value("${base.path}") String basePath) {
-        this.baseUrl = buildBaseUrl(baseScheme, baseHost, basePort, basePath);
-    }
-
-    private String buildBaseUrl(String baseScheme, String baseHost, int basePort, String basePath) {
-        URIBuilder builder = new URIBuilder();
-        builder.setScheme(baseScheme);
-        builder.setHost(baseHost);
-
-        if (!DEFAULT_PORTS.containsKey(baseScheme.toLowerCase()) || DEFAULT_PORTS.get(baseScheme) != basePort) {
-            builder.setPort(basePort);
-        }
-
-        builder.setPath(basePath);
-        return builder.toString();
+        this.baseUrl = URIUtils.buildBaseUrl(baseScheme, baseHost, basePort, basePath);
     }
 
     @Override
@@ -284,7 +266,7 @@ public class IRIBuilderServiceImpl implements IRIBuilderService {
             {
                 put(URLConstants.PARAM_LEVELS, StringUtils.join(levels, ","));
                 put(URLConstants.PARAM_TYPES, StringUtils.join(types, ","));
-                put(URLConstants.PARAM_SINCE, since);
+                put(URLConstants.PARAM_SINCE, DATE_FORMAT.format(since.toInstant()));
                 put(URLConstants.PARAM_PAGE, page);
                 if (embeddedDescriptions) {
                     put(URLConstants.PARAM_DESC, 1);
@@ -530,7 +512,7 @@ public class IRIBuilderServiceImpl implements IRIBuilderService {
             {
                 put(URLConstants.PARAM_LEVELS, StringUtils.join(levels, ","));
                 put(URLConstants.PARAM_TYPES, StringUtils.join(types, ","));
-                put(URLConstants.PARAM_SINCE, since);
+                put(URLConstants.PARAM_SINCE, DATE_FORMAT.format(since.toInstant()));
             }
         });
     }
@@ -541,7 +523,7 @@ public class IRIBuilderServiceImpl implements IRIBuilderService {
             {
                 put(URLConstants.PARAM_LEVELS, StringUtils.join(levels, ","));
                 put(URLConstants.PARAM_TYPES, StringUtils.join(types, ","));
-                put(URLConstants.PARAM_SINCE, since);
+                put(URLConstants.PARAM_SINCE, DATE_FORMAT.format(since.toInstant()));
                 put(URLConstants.PARAM_PAGE, page);
                 if (embeddedDescriptions) {
                     put(URLConstants.PARAM_DESC, 1);
@@ -558,7 +540,7 @@ public class IRIBuilderServiceImpl implements IRIBuilderService {
             {
                 put(URLConstants.PARAM_LEVELS, StringUtils.join(levels, ","));
                 put(URLConstants.PARAM_TYPES, StringUtils.join(types, ","));
-                put(URLConstants.PARAM_SINCE, since);
+                put(URLConstants.PARAM_SINCE, DATE_FORMAT.format(since.toInstant()));
             }
         });
     }

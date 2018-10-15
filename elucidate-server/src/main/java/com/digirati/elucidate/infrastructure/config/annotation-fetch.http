@@ -1,0 +1,152 @@
+### Setup a new annotation container.
+POST http://localhost:8080/w3c/
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lcyIsImlhdCI6MTUxNjIzOTAyMn0.XHKwZ1nENVa9MXzIe9NxIJSY6MVXgoNI7ubBHjNYZHE
+Accept: application/ld+json; profile="http://www.w3.org/ns/anno.jsonld"
+Content-Type: application/ld+json; profile="http://www.w3.org/ns/anno.jsonld"
+
+{
+  "@context": [
+    "http://www.w3.org/ns/anno.jsonld",
+    "http://www.w3.org/ns/ldp.jsonld"
+  ],
+  "type": [
+    "BasicContainer",
+    "AnnotationCollection"
+  ],
+  "label": "A Container for Web Annotations"
+}
+> {%
+client.test("Create annotation container with authorization", function () {
+    var body = JSON.parse(response.body);
+
+    client.assert(response.status === 201, "Container was not created successfully");
+    client.global.set('containerIri', body['id']);
+});
+%}
+
+### Create an annotation in it.
+POST {{containerIri}}  HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lcyIsImlhdCI6MTUxNjIzOTAyMn0.XHKwZ1nENVa9MXzIe9NxIJSY6MVXgoNI7ubBHjNYZHE
+Accept: application/ld+json; profile="http://www.w3.org/ns/anno.jsonld"
+Content-Type: application/ld+json; profile="http://www.w3.org/ns/anno.jsonld"
+
+{
+  "@context": "http://www.w3.org/ns/anno.jsonld",
+  "type": "Annotation",
+  "body": {
+    "type": "TextualBody",
+    "value": "I like this page!"
+  },
+  "target": "http://www.example.com/index.html"
+}
+> {%
+client.test("Create annotation in container with authorization", function () {
+    var body = JSON.parse(response.body);
+
+    client.assert(response.status === 201, "Response did not succeed");
+    client.assert(body['id'] != null, "Annotation has no 'id'");
+    client.global.set('annotationIri', body['id']);
+    client.global.set('annotationId', body['id'].substring('http://localhost:8080/w3c/'.length))
+});
+%}
+
+### Attempting to get the new annotation as an unauthenticated user results in a 401
+GET {{annotationIri}}
+Accept: application/ld+json; profile="http://www.w3.org/ns/anno.jsonld"
+Content-Type: application/ld+json; profile="http://www.w3.org/ns/anno.jsonld"
+
+> {%
+client.test("Fetching an owned annotation as an unauthenticated user results in a 401", function () {
+    client.assert(response.status === 401, "Response was not returned as unauthorized");
+});
+%}
+
+### Attempting to get the new annotation as an administrator.
+GET {{annotationIri}}
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lcyIsImlhdCI6MTUxNjIzOTAyMiwiYXV0aG9yaXRpZXMiOlsiYWRtaW4iXX0.r_V-w7OKO5OZM-32_pYjhkRl1sGOwPdkS0tStsrqCh4
+Accept: application/ld+json; profile="http://www.w3.org/ns/anno.jsonld"
+Content-Type: application/ld+json; profile="http://www.w3.org/ns/anno.jsonld"
+
+> {%
+client.test("Fetching an owned annotation as an admin should show the annotation", function () {
+    client.assert(response.status === 200, "Response was not returned as OK");
+});
+%}
+
+### Get information on currently authenticated user
+GET http://localhost:8080/user/current
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lcyIsImlhdCI6MTUxNjIzOTAyMiwiYXV0aG9yaXRpZXMiOlsiYWRtaW4iXX0.r_V-w7OKO5OZM-32_pYjhkRl1sGOwPdkS0tStsrqCh4
+
+> {%
+client.test("Should contain the users authentication", function () {
+    var uid = response.body['uid'];
+
+    client.assert(uid != null, "IRI not in annotation list");
+    client.global.set('uid', uid);
+});
+%}
+
+### Create a new group
+POST http://localhost:8080/group
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lcyIsImlhdCI6MTUxNjIzOTAyMn0.XHKwZ1nENVa9MXzIe9NxIJSY6MVXgoNI7ubBHjNYZHE
+
+{
+    "label": "test"
+}
+> {%
+client.test("Creating a security group", function () {
+    client.global.set('groupId', response.body['id']);
+});
+%}
+
+### Add annotation to group
+POST http://localhost:8080/group/{{groupId}}/annotation/{{annotationId}}
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lcyIsImlhdCI6MTUxNjIzOTAyMn0.XHKwZ1nENVa9MXzIe9NxIJSY6MVXgoNI7ubBHjNYZHE
+
+> {%
+client.test("Should return a 201", function () {
+    client.assert(response.status === 201, "Response not 201");
+});
+%}
+
+### Get annotations IRIs in the given group
+GET http://localhost:8080/group/{{groupId}}/annotations
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lcyIsImlhdCI6MTUxNjIzOTAyMn0.XHKwZ1nENVa9MXzIe9NxIJSY6MVXgoNI7ubBHjNYZHE
+
+> {%
+client.test("Should contain the annotation IRI added to the group", function () {
+    var body = response.body;
+    var annotations = body['annotations'];
+    var annotationIri = client.global.get('annotationIri');
+
+    client.assert(annotations[0] === annotationIri, "IRI not in annotation list");
+});
+%}
+
+### Remove annotation from group
+DELETE http://localhost:8080/group/{{groupId}}/annotation/{{annotationId}}
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJPbmxpbmUgSldUIEJ1aWxkZXIiLCJpYXQiOjE1MzIyMjU4NDgsImV4cCI6MTU2Mzc2MTg0OCwiYXVkIjoiaHR0cDovL2xvY2FsaG9zdDo4MDgwL2Fubm90YXRpb24iLCJzdWIiOiJqcm9ja2V0QGV4YW1wbGUuY29tIiwiR2l2ZW5OYW1lIjoiSm9obm55IiwiU3VybmFtZSI6IlJvY2tldCIsIkVtYWlsIjoianJvY2tldEBleGFtcGxlLmNvbSIsIlJvbGUiOlsiTWFuYWdlciIsIlByb2plY3QgQWRtaW5pc3RyYXRvciJdfQ.Wx7W1GwvgGJxTUEHFu98HP9OgP-tJUup9IoVQS15Ma8
+
+### Get uids belonging to the given group
+GET http://localhost:8080/group/{{groupId}}/users
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lcyIsImlhdCI6MTUxNjIzOTAyMn0.XHKwZ1nENVa9MXzIe9NxIJSY6MVXgoNI7ubBHjNYZHE
+
+> {%
+client.test("Should contain the annotation IRI added to the group", function () {
+    var body = response.body;
+    var users = body['users'];
+    var uid = client.global.get('uid');
+
+    client.log(uid);
+    client.assert(users[0] === uid, "UID not in user list");
+});
+%}
+
+### Add user to group
+POST http://localhost:8080/group/32134ab6-9bf5-4511-8139-bd583387aaff/user/60a3d1c1-f73b-4b8a-a8de-7fca44b38a52
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJPbmxpbmUgSldUIEJ1aWxkZXIiLCJpYXQiOjE1MzIyMjU4NDgsImV4cCI6MTU2Mzc2MTg0OCwiYXVkIjoiaHR0cDovL2xvY2FsaG9zdDo4MDgwL2Fubm90YXRpb24iLCJzdWIiOiJqcm9ja2V0QGV4YW1wbGUuY29tIiwiR2l2ZW5OYW1lIjoiSm9obm55IiwiU3VybmFtZSI6IlJvY2tldCIsIkVtYWlsIjoianJvY2tldEBleGFtcGxlLmNvbSIsIlJvbGUiOlsiTWFuYWdlciIsIlByb2plY3QgQWRtaW5pc3RyYXRvciJdfQ.Wx7W1GwvgGJxTUEHFu98HP9OgP-tJUup9IoVQS15Ma8
+
+### Remove user from group
+DELETE http://localhost:8080/group/32134ab6-9bf5-4511-8139-bd583387aaff/user/60a3d1c1-f73b-4b8a-a8de-7fca44b38a52
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJPbmxpbmUgSldUIEJ1aWxkZXIiLCJpYXQiOjE1MzIyMjU4NDgsImV4cCI6MTU2Mzc2MTg0OCwiYXVkIjoiaHR0cDovL2xvY2FsaG9zdDo4MDgwL2Fubm90YXRpb24iLCJzdWIiOiJqcm9ja2V0QGV4YW1wbGUuY29tIiwiR2l2ZW5OYW1lIjoiSm9obm55IiwiU3VybmFtZSI6IlJvY2tldCIsIkVtYWlsIjoianJvY2tldEBleGFtcGxlLmNvbSIsIlJvbGUiOlsiTWFuYWdlciIsIlByb2plY3QgQWRtaW5pc3RyYXRvciJdfQ.Wx7W1GwvgGJxTUEHFu98HP9OgP-tJUup9IoVQS15Ma8

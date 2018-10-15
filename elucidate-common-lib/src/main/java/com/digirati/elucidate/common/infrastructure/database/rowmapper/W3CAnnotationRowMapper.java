@@ -1,12 +1,11 @@
 package com.digirati.elucidate.common.infrastructure.database.rowmapper;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
-
-import org.springframework.jdbc.core.RowMapper;
-
 import com.digirati.elucidate.common.infrastructure.util.ResultSetUtils;
 import com.digirati.elucidate.common.model.annotation.w3c.W3CAnnotation;
+import org.springframework.jdbc.core.RowMapper;
+
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 public class W3CAnnotationRowMapper implements RowMapper<W3CAnnotation> {
 
@@ -21,6 +20,8 @@ public class W3CAnnotationRowMapper implements RowMapper<W3CAnnotation> {
         w3cAnnotation.setDeleted(ResultSetUtils.getBoolean(rs, "deleted"));
         w3cAnnotation.setJsonMap(ResultSetUtils.getJsonMap(rs, "json"));
         w3cAnnotation.setModifiedDateTime(ResultSetUtils.getDate(rs, "modifieddatetime"));
+        w3cAnnotation.setOwnerId(ResultSetUtils.getInt(rs, "ownerid"));
+        w3cAnnotation.setGroups(ResultSetUtils.getArrayAsSet(rs, "group_ids"));
         return w3cAnnotation;
     }
 }

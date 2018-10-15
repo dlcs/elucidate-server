@@ -1,6 +1,7 @@
 package com.digirati.elucidate.common.model.annotation;
 
 import java.io.Serializable;
+import java.util.Set;
 
 @SuppressWarnings("serial")
 public abstract class AbstractAnnotation extends AbstractObject implements Serializable {
@@ -8,6 +9,8 @@ public abstract class AbstractAnnotation extends AbstractObject implements Seria
     private String annotationId;
     private String collectionId;
     private String cacheKey;
+    private int ownerId;
+    private Set<Integer> groups;
 
     public String getAnnotationId() {
         return annotationId;
@@ -31,5 +34,21 @@ public abstract class AbstractAnnotation extends AbstractObject implements Seria
 
     public void setCacheKey(String cacheKey) {
         this.cacheKey = cacheKey;
+    }
+
+    public int getOwnerId() {
+        return this.ownerId;
+    }
+
+    public void setOwnerId(int ownerId) {
+        this.ownerId = ownerId;
+    }
+
+    public Set<Integer> getGroups() {
+        return this.groups;
+    }
+
+    public void setGroups(Set<Integer> groups) {
+        this.groups = groups;
     }
 }

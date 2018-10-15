@@ -9,7 +9,8 @@
 	<parent>
 		<groupId>com.digirati.elucidate</groupId>
 		<artifactId>elucidate-parent</artifactId>
-		<version>1.4.2</version>
+		<version>1.4.3-SNAPSHOT</version>
+		<relativePath>../elucidate-parent</relativePath>
 	</parent>
 
 	<build>
@@ -21,7 +22,7 @@
 		<dependency>
 			<groupId>com.digirati.elucidate</groupId>
 			<artifactId>elucidate-common-lib</artifactId>
-			<version>1.4.2</version>
+			<version>1.4.3-SNAPSHOT</version>
 		</dependency>
 		<!-- Apache Commons Dependencies -->
 		<dependency>
