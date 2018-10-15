@@ -56,7 +56,7 @@ Elucidate Server requires that several configuration properties are set to funct
 | db.url | `<empty>` | JDBC database URL to connect to.
 | base.scheme | `"http"` | The URI scheme that annotation IRIs will use.
 | base.host | `"localhost"` | The hostname that annotation IRIs will use.
-| base.port | `8080` | The port that annotation IRIs will use.  May be omitted if it set to a default HTTP/HTTPS port.
+| base.port | `8080` | The port that annotation IRIs will use. May be omitted if it set to a default HTTP/HTTPS port.
 | base.path | `"/annotation"` | The path prefix that that annotation IRIs will use.
 | log4j.config.location | `"classpath:logging/log4j.xml"` | A path to a log4j XML configuration/properties file.
 | auth.enabled | `false` | A flag indicating if authorization on annotation access should be enabled.
@@ -67,7 +67,7 @@ Elucidate Server requires that several configuration properties are set to funct
 A full listing of configuration options available to change can be found in [`elucidate-server.properties`](elucidate-server/src/main/resources/elucidate-server.properties).
 Any of these options can be configured or overridden using [JNDI environment properties](https://docs.oracle.com/javase/jndi/tutorial/beyond/env/source.html) by passing a Java system property on the command line or setting an environment variable.
 
-**Note**: if set as an environment variable, the option name should be uppercase with any hyphens and periods replaced with underscores.  E.g., `base.port` becomes `BASE_PORT`.
+**Note**: if set as an environment variable, the option name should be uppercase with any hyphens and periods replaced with underscores. E.g., `base.port` becomes `BASE_PORT`.
 
 ### Database
 
@@ -79,8 +79,8 @@ created in the database for any subsequent runs.
 
 ### Security
 
-Elucidate Server supports user authentication and authorization using detached JWTs as credentials.  Authentication
-can be enabled or disabled by toggling the `auth.enabled` property listed above.  Those tokens can be verified using
+Elucidate Server supports user authentication and authorization using detached JWTs as credentials. Authentication
+can be enabled or disabled by toggling the `auth.enabled` property listed above. Those tokens can be verified using
 either a shared secret key or RSA public key (given by `auth.token.verifierType` and `auth.token.verifierKey`).
 
 Since Elucidate doesn't store authoritative user information on its own, it relies on the token providing
