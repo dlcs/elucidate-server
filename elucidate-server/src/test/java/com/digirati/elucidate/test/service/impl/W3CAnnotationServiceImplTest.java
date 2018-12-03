@@ -9,6 +9,7 @@ import com.digirati.elucidate.repository.AnnotationStoreRepository;
 import com.digirati.elucidate.service.query.AbstractAnnotationService;
 import com.digirati.elucidate.service.query.impl.W3CAnnotationServiceImpl;
 import org.junit.runner.RunWith;
+import org.powermock.core.classloader.annotations.PowerMockIgnore;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 import static org.hamcrest.Matchers.equalTo;
@@ -16,6 +17,7 @@ import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 
 @RunWith(PowerMockRunner.class)
+@PowerMockIgnore({"javax.management.*"})
 public class W3CAnnotationServiceImplTest extends AbstractAnnotationServiceImplTest<W3CAnnotation, W3CAnnotationCollection> {
 
     @Override
