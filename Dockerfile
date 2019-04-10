@@ -1,14 +1,15 @@
-# This Dockerfile is ran by Maven during the `package` phase.
-# If running manually it should be built from the elucidate-server
-# module after building `annotations.war` artifact.
+FROM maven:latest AS build
+
+COPY . /opt/elucidate
+WORKDIR /opt/elucidate
+RUN mvn -f elucidate-parent/pom.xml package
 
 # We use a JRE 10 image so the JVM is able to discover Docker's
 # memory/cpu cgroup settings.
-FROM tomcat:8-jre10
+FROM tomcat:8-jre8
 EXPOSE 8080
 
-ARG ARTIFACT_NAME="annotation.war"
-ADD target/${ARTIFACT_NAME} /usr/local/tomcat/webapps/annotation.war
+COPY --from=build /opt/elucidate/elucidate-server/target/annotation.war /usr/local/tomcat/webapps/annotation.war
 
 # An overridable option that points Spring to a log4j config file.
 # The default is a configuratoin that only logs to the console.
