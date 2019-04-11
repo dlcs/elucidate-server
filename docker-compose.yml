@@ -1,0 +1,24 @@
+version: "3"
+services:
+  annotation-db:
+    container_name: madoc-platform-postgres
+    image: postgres
+    restart: always
+    environment:
+      - POSTGRES_PASSWORD=example
+      - POSTGRES_DB=annotations
+    ports:
+      - "5432:5432"
+
+  annotation-server:
+    container_name: madoc-platform-annotation-server
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    links:
+      - annotation-db:db
+    environment:
+      - DATABASE_USER=postgres
+      - CATALINA_OPTS=-Ddb.url=jdbc:postgresql://db:5432/annotations -Ddb.user="postgres" -Ddb.password="example"
+    ports:
+      - 8889:8080

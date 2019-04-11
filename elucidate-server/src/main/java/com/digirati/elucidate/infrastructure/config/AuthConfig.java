@@ -151,6 +151,10 @@ public class AuthConfig implements ResourceServerConfigurer {
 
     @Bean
     JwtAccessTokenConverter accessTokenConverter() {
+        if (!authEnabled) {
+            return new JwtAccessTokenConverter();
+        }
+
         if (StringUtils.isEmpty(verifierKey)) {
             throw new IllegalStateException(MISSING_TOKEN_KEY_ERROR);
         }
