@@ -1,0 +1,42 @@
+on: push
+name: CI
+jobs:
+  build:
+    name: Build and test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@master
+
+      - name: Setup cache
+        uses: actions/cache@v1
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-
+
+      - name: Setup JDK installation
+        uses: actions/setup-java@v1
+        with:
+          java-version: '1.8'
+          java-package: jdk
+          architecture: x64
+
+      - name: Build with Maven
+        run: mvn -B package --file elucidate-parent/pom.xml
+
+      - name: Build Docker image
+        run: docker build --tag elucidate-server elucidate-server/
+
+      - name: Authenticate with Docker
+        run: |
+          docker login docker.pkg.github.com --username "$DOCKER_USERNAME" --password "$DOCKER_PASSWORD"
+        env:
+          DOCKER_USERNAME: ${{ github.repository }}
+          DOCKER_PASSWORD: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Publish to GitHub Packages
+        run: mvn deploy -Dregistry=https://maven.pkg.github.com/dlcs --file elucidate-parent/pom.xml
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
