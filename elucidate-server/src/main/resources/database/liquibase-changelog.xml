@@ -460,4 +460,34 @@
           relativeToChangelogFile="true"
           path="sql/migrations/v001/05_add_annotation_security_collection.sql"/>
     </changeSet>
+    <changeSet id="73" author="hairmare">
+        <sqlFile splitStatements="false"
+          relativeToChangelogFile="true"
+          path="sql/migrations/v002/01_fix_annotation_delete.sql"/>
+    </changeSet>
+    <changeSet id="74" author="hairmare">
+        <sqlFile splitStatements="false"
+          relativeToChangelogFile="true"
+          path="sql/migrations/v002/02_fix_annotation_search_by_creator.sql"/>
+    </changeSet>
+    <changeSet id="75" author="hairmare">
+        <sqlFile splitStatements="false"
+          relativeToChangelogFile="true"
+          path="sql/migrations/v002/03_fix_annotation_search_by_generator.sql"/>
+    </changeSet>
+    <changeSet id="76" author="hairmare">
+        <sqlFile splitStatements="false"
+          relativeToChangelogFile="true"
+          path="sql/migrations/v002/04_fix_annotation_search_by_target.sql"/>
+    </changeSet>
+    <changeSet id="77" author="hairmare">
+        <sqlFile splitStatements="false"
+          relativeToChangelogFile="true"
+          path="sql/migrations/v002/05_fix_annotation_search_by_temporal.sql"/>
+    </changeSet>
+    <changeSet id="78" author="hairmare">
+        <sqlFile splitStatements="false"
+          relativeToChangelogFile="true"
+          path="sql/migrations/v002/06_fix_annotation_search_by_body.sql"/>
+    </changeSet>
 </databaseChangeLog>
