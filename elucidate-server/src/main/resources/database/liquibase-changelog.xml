@@ -490,4 +490,9 @@
           relativeToChangelogFile="true"
           path="sql/migrations/v002/06_fix_annotation_search_by_body.sql"/>
     </changeSet>
+    <changeSet id="79" author="hairmare">
+        <sqlFile splitStatements="false"
+          relativeToChangelogFile="true"
+          path="sql/migrations/v002/07_fix_annotation_update.sql"/>
+    </changeSet>
 </databaseChangeLog>
