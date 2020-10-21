@@ -11,6 +11,7 @@ import com.digirati.elucidate.infrastructure.security.impl.UserSecurityDetailsLo
 import com.digirati.elucidate.repository.security.GroupRepository;
 import com.digirati.elucidate.repository.security.UserRepository;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.http.HttpMethod;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
@@ -19,7 +20,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configurers.ExpressionUrlAuthorizationConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.jwt.crypto.sign.MacSigner;
 import org.springframework.security.jwt.crypto.sign.RsaVerifier;
@@ -69,10 +69,16 @@ public class AuthConfig implements ResourceServerConfigurer {
     private String uidProperties;
 
     /**
-     * The public key used to verify a tokens signature.
+     * Is auth enabled?
      */
     @Value("${auth.enabled:false}")
     private boolean authEnabled;
+
+    /**
+     * Allow anonymous access to /w3c/* and /oa/* endpoints even when auth is enabled?
+     */
+    @Value("${auth.anonReadAccess:false}")
+    private boolean anonReadAccess;
 
     /**
      * The URL scheme that will be used in the OAuth2 resource id.
@@ -119,16 +125,30 @@ public class AuthConfig implements ResourceServerConfigurer {
 
     @Override
     public void configure(HttpSecurity http) throws Exception {
-        ExpressionUrlAuthorizationConfigurer.AuthorizedUrl authorizationConfigurer = http
-            .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-            .and()
-            .authorizeRequests()
-            .anyRequest();
+        HttpSecurity authorizationConfigurer = http
+            .sessionManagement()
+            .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+            .and();
 
-        if (authEnabled) {
-            authorizationConfigurer.authenticated();
+        if (authEnabled && anonReadAccess) {
+            authorizationConfigurer
+                .authorizeRequests()
+                    .antMatchers(HttpMethod.GET, "/w3c/**", "/oa/**")
+                    .permitAll()
+                    .and()
+                .authorizeRequests()
+                    .anyRequest()
+                    .authenticated();
+        } else if (authEnabled) {
+            authorizationConfigurer
+                .authorizeRequests()
+                    .anyRequest()
+                    .authenticated();
         } else {
-            authorizationConfigurer.permitAll();
+            authorizationConfigurer
+                .authorizeRequests()
+                    .anyRequest()
+                    .permitAll();
         }
     }
 
