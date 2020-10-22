@@ -18,6 +18,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<aspectj-version>1.8.9</aspectj-version>
 		<c3p0-version>0.9.5.2</c3p0-version>
+		<jakarta-xml-bind-version>2.3.3</jakarta-xml-bind-version>
 		<commons-collections-version>3.2.2</commons-collections-version>
 		<commons-lang3-version>3.4</commons-lang3-version>
 		<commons-io-version>2.5</commons-io-version>
@@ -31,10 +32,10 @@
 		<jstl-version>1.2</jstl-version>
 		<junit-version>4.12</junit-version>
 		<log4j-version>2.13.3</log4j-version>
-		<mockito-version>1.10.19</mockito-version>
+		<mockito-version>3.5.13</mockito-version>
 		<postgresql-version>9.4.1209</postgresql-version>
-		<powermock-version>1.6.5</powermock-version>
-		<spring-framework-version>4.3.1.RELEASE</spring-framework-version>
+		<powermock-version>2.0.2</powermock-version>
+		<spring-framework-version>4.3.29.RELEASE</spring-framework-version>
 		<spring-security-version>4.2.6.RELEASE</spring-security-version>
 		<spring-security-jwt-version>1.0.9.RELEASE</spring-security-jwt-version>
 		<spring-security-oauth2-version>2.3.3.RELEASE</spring-security-oauth2-version>
