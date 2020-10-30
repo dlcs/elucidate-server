@@ -10,6 +10,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
 
 import java.util.Collection;
 
@@ -20,6 +21,9 @@ public class JwtUserSecurityDetailsContext implements UserSecurityDetailsContext
     @Override
     public boolean isAuthorized(Permission operation, AbstractAnnotation annotation) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (auth instanceof AnonymousAuthenticationToken) {
+            return true;
+        }
         UserSecurityDetails details = (UserSecurityDetails) auth.getPrincipal();
         Collection<? extends GrantedAuthority> roles = auth.getAuthorities();
 
