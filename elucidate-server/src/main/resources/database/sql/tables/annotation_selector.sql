@@ -33,9 +33,6 @@ WITH (
   OIDS=FALSE
 );
 
-ALTER TABLE public.annotation_selector OWNER TO postgres;
-GRANT ALL ON TABLE public.annotation_selector TO postgres;
-GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE public.annotation_selector TO annotations_role;
 
 -- Index: public.idx_annotation_selector_bodyid
 

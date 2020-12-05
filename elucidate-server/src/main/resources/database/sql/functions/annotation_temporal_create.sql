@@ -61,8 +61,3 @@ $BODY$
     END;
 $BODY$
 LANGUAGE plpgsql VOLATILE COST 100 ROWS 1000;
-
-ALTER FUNCTION public.annotation_temporal_create(integer, integer, integer, character varying, timestamp without time zone, jsonb) OWNER TO postgres;
-GRANT EXECUTE ON FUNCTION public.annotation_temporal_create(integer, integer, integer, character varying, timestamp without time zone, jsonb) TO postgres;
-GRANT EXECUTE ON FUNCTION public.annotation_temporal_create(integer, integer, integer, character varying, timestamp without time zone, jsonb) TO annotations_role;
-REVOKE ALL ON FUNCTION public.annotation_temporal_create(integer, integer, integer, character varying, timestamp without time zone, jsonb) FROM public;

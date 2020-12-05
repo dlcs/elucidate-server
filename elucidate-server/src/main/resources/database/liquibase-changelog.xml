@@ -3,438 +3,313 @@
 <databaseChangeLog
   xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.0.xsd">
+  xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.6.xsd">
 
-    <changeSet id="1" author="gtierney">
+    <changeSet id="1" author="gtierney" context="dlcs-permissions">
         <preConditions onFail="CONTINUE">
-            <not>
-                <viewExists viewName="annotation_get" schemaName="public"/>
-            </not>
+            <and>
+                <sqlCheck expectedResult="t">
+                    select rolcreaterole from pg_roles where rolname = (select current_user);
+                </sqlCheck>
+            </and>
+            <and>
+                <not>
+                    <viewExists viewName="annotation_get" schemaName="public"/>
+                </not>
+            </and>
         </preConditions>
         <sqlFile splitStatements="false" relativeToChangelogFile="true" path="sql/group_roles/annotations_role.sql"/>
     </changeSet>
     <changeSet id="2" author="gtierney">
-        <preConditions onFail="MARK_RAN">
-            <changeSetExecuted id="1" author="gtierney" changeLogFile="database/liquibase-changelog.xml" />
-        </preConditions>
+        <validCheckSum>8:5a82d9257451978664d4c95b19d2e04b</validCheckSum>
         <sqlFile splitStatements="false" relativeToChangelogFile="true" path="sql/tables/annotation_collection.sql"/>
     </changeSet>
     <changeSet id="3" author="gtierney">
-        <preConditions onFail="MARK_RAN">
-            <changeSetExecuted id="1" author="gtierney" changeLogFile="database/liquibase-changelog.xml" />
-        </preConditions>
+        <validCheckSum>8:ad39ddf8b5401f24211fa30addb1677c</validCheckSum>
         <sqlFile splitStatements="false" relativeToChangelogFile="true" path="sql/tables/annotation.sql"/>
     </changeSet>
     <changeSet id="4" author="gtierney">
-        <preConditions onFail="MARK_RAN">
-            <changeSetExecuted id="1" author="gtierney" changeLogFile="database/liquibase-changelog.xml" />
-        </preConditions>
+        <validCheckSum>8:352036887b861494aa9b3be355497903</validCheckSum>
         <sqlFile splitStatements="false" relativeToChangelogFile="true" path="sql/tables/annotation_body.sql"/>
     </changeSet>
     <changeSet id="5" author="gtierney">
-        <preConditions onFail="MARK_RAN">
-            <changeSetExecuted id="1" author="gtierney" changeLogFile="database/liquibase-changelog.xml" />
-        </preConditions>
+        <validCheckSum>8:64a882ffc0b572c34aad9958a8ae00c6</validCheckSum>
         <sqlFile splitStatements="false" relativeToChangelogFile="true" path="sql/tables/annotation_target.sql"/>
     </changeSet>
     <changeSet id="6" author="gtierney">
-        <preConditions onFail="MARK_RAN">
-            <changeSetExecuted id="1" author="gtierney" changeLogFile="database/liquibase-changelog.xml" />
-        </preConditions>
+        <validCheckSum>8:b3e84edc16a2ec1c572442a61a8846e3</validCheckSum>
         <sqlFile splitStatements="false" relativeToChangelogFile="true" path="sql/tables/annotation_agent.sql"/>
     </changeSet>
     <changeSet id="7" author="gtierney">
-        <preConditions onFail="MARK_RAN">
-            <changeSetExecuted id="1" author="gtierney" changeLogFile="database/liquibase-changelog.xml" />
-        </preConditions>
+        <validCheckSum>8:3ff69bec5bba89add375bf505aee9774</validCheckSum>
         <sqlFile splitStatements="false" relativeToChangelogFile="true" path="sql/tables/annotation_agent_email.sql"/>
     </changeSet>
     <changeSet id="8" author="gtierney">
-        <preConditions onFail="MARK_RAN">
-            <changeSetExecuted id="1" author="gtierney" changeLogFile="database/liquibase-changelog.xml" />
-        </preConditions>
+        <validCheckSum>8:7f17f9ef86300ea21fa771dcfa2ed8d7</validCheckSum>
         <sqlFile splitStatements="false" relativeToChangelogFile="true" path="sql/tables/annotation_agent_email_sha1.sql"/>
     </changeSet>
     <changeSet id="9" author="gtierney">
-        <preConditions onFail="MARK_RAN">
-            <changeSetExecuted id="1" author="gtierney" changeLogFile="database/liquibase-changelog.xml" />
-        </preConditions>
+        <validCheckSum>8:9aa46006532f691ec4c19b47ecd3378a</validCheckSum>
         <sqlFile splitStatements="false" relativeToChangelogFile="true" path="sql/tables/annotation_agent_homepage.sql"/>
     </changeSet>
     <changeSet id="10" author="gtierney">
-        <preConditions onFail="MARK_RAN">
-            <changeSetExecuted id="1" author="gtierney" changeLogFile="database/liquibase-changelog.xml" />
-        </preConditions>
+        <validCheckSum>8:b67bb1f770506bf44a4987d293813315</validCheckSum>
         <sqlFile splitStatements="false" relativeToChangelogFile="true" path="sql/tables/annotation_agent_name.sql"/>
     </changeSet>
     <changeSet id="11" author="gtierney">
-        <preConditions onFail="MARK_RAN">
-            <changeSetExecuted id="1" author="gtierney" changeLogFile="database/liquibase-changelog.xml" />
-        </preConditions>
+        <validCheckSum>8:ee627d559d209d35491f6652e1450f25</validCheckSum>
         <sqlFile splitStatements="false" relativeToChangelogFile="true" path="sql/tables/annotation_agent_type.sql"/>
     </changeSet>
     <changeSet id="12" author="gtierney">
-        <preConditions onFail="MARK_RAN">
-            <changeSetExecuted id="1" author="gtierney" changeLogFile="database/liquibase-changelog.xml" />
-        </preConditions>
+        <validCheckSum>8:b5eb97580968c2a5e9e7e7f8568ef245</validCheckSum>
         <sqlFile splitStatements="false" relativeToChangelogFile="true" path="sql/tables/annotation_selector.sql"/>
     </changeSet>
     <changeSet id="13" author="gtierney">
-        <preConditions onFail="MARK_RAN">
-            <changeSetExecuted id="1" author="gtierney" changeLogFile="database/liquibase-changelog.xml" />
-        </preConditions>
+        <validCheckSum>8:a33c9a066bc57a5a9109f280bb7fe801</validCheckSum>
         <sqlFile splitStatements="false" relativeToChangelogFile="true" path="sql/tables/annotation_history.sql"/>
     </changeSet>
     <changeSet id="14" author="gtierney">
-        <preConditions onFail="MARK_RAN">
-            <changeSetExecuted id="1" author="gtierney" changeLogFile="database/liquibase-changelog.xml" />
-        </preConditions>
+        <validCheckSum>8:469c30706dafb42c6092b5358c5a51d1</validCheckSum>
         <sqlFile splitStatements="false" relativeToChangelogFile="true" path="sql/tables/annotation_temporal.sql"/>
     </changeSet>
     <changeSet id="15" author="gtierney">
-        <preConditions onFail="MARK_RAN">
-            <changeSetExecuted id="1" author="gtierney" changeLogFile="database/liquibase-changelog.xml" />
-        </preConditions>
+        <validCheckSum>8:9679710974b986ab9a493855e40f36d5</validCheckSum>
         <sqlFile splitStatements="false" relativeToChangelogFile="true" path="sql/views/annotation_body_get.sql"/>
     </changeSet>
     <changeSet id="16" author="gtierney">
-        <preConditions onFail="MARK_RAN">
-            <changeSetExecuted id="1" author="gtierney" changeLogFile="database/liquibase-changelog.xml" />
-        </preConditions>
+        <validCheckSum>8:95aa74fc85b20bb2aef98bee89688acd</validCheckSum>
         <sqlFile splitStatements="false" relativeToChangelogFile="true" path="sql/views/annotation_collection_get.sql"/>
     </changeSet>
     <changeSet id="17" author="gtierney">
-        <preConditions onFail="MARK_RAN">
-            <changeSetExecuted id="1" author="gtierney" changeLogFile="database/liquibase-changelog.xml" />
-        </preConditions>
+        <validCheckSum>8:28b61a438e644583467004bcdbbe6135</validCheckSum>
         <sqlFile splitStatements="false" relativeToChangelogFile="true" path="sql/views/annotation_creator_get.sql"/>
     </changeSet>
     <changeSet id="18" author="gtierney">
-        <preConditions onFail="MARK_RAN">
-            <changeSetExecuted id="1" author="gtierney" changeLogFile="database/liquibase-changelog.xml" />
-        </preConditions>
+        <validCheckSum>8:4865938b1273f082e806da07e19f5c9c</validCheckSum>
         <sqlFile splitStatements="false" relativeToChangelogFile="true" path="sql/views/annotation_css_selector_get.sql"/>
     </changeSet>
     <changeSet id="19" author="gtierney">
-        <preConditions onFail="MARK_RAN">
-            <changeSetExecuted id="1" author="gtierney" changeLogFile="database/liquibase-changelog.xml" />
-        </preConditions>
+        <validCheckSum>8:0d64abfe8a524deb14f8ba669ea96837</validCheckSum>
         <sqlFile splitStatements="false" relativeToChangelogFile="true"
           path="sql/views/annotation_data_position_selector_get.sql"/>
     </changeSet>
     <changeSet id="20" author="gtierney">
-        <preConditions onFail="MARK_RAN">
-            <changeSetExecuted id="1" author="gtierney" changeLogFile="database/liquibase-changelog.xml" />
-        </preConditions>
+        <validCheckSum>8:962033ef79688b9a2c196a52016cd3d4</validCheckSum>
         <sqlFile splitStatements="false" relativeToChangelogFile="true"
           path="sql/views/annotation_fragment_selector_get.sql"/>
     </changeSet>
     <changeSet id="21" author="gtierney">
-        <preConditions onFail="MARK_RAN">
-            <changeSetExecuted id="1" author="gtierney" changeLogFile="database/liquibase-changelog.xml" />
-        </preConditions>
+        <validCheckSum>8:225300ea860b31baeda63dc82a9c824f</validCheckSum>
         <sqlFile splitStatements="false" relativeToChangelogFile="true" path="sql/views/annotation_get.sql"/>
     </changeSet>
     <changeSet id="22" author="gtierney">
-        <preConditions onFail="MARK_RAN">
-            <changeSetExecuted id="1" author="gtierney" changeLogFile="database/liquibase-changelog.xml" />
-        </preConditions>
+        <validCheckSum>8:34b23ecc9f1789593ea6522e5f301fd1</validCheckSum>
         <sqlFile splitStatements="false" relativeToChangelogFile="true" path="sql/views/annotation_svg_selector_get.sql"/>
     </changeSet>
     <changeSet id="23" author="gtierney">
-        <preConditions onFail="MARK_RAN">
-            <changeSetExecuted id="1" author="gtierney" changeLogFile="database/liquibase-changelog.xml" />
-        </preConditions>
+        <validCheckSum>8:83e6f722a7868fe5533587e9e5ed7f86</validCheckSum>
         <sqlFile splitStatements="false" relativeToChangelogFile="true" path="sql/views/annotation_target_get.sql"/>
     </changeSet>
     <changeSet id="24" author="gtierney">
-        <preConditions onFail="MARK_RAN">
-            <changeSetExecuted id="1" author="gtierney" changeLogFile="database/liquibase-changelog.xml" />
-        </preConditions>
+        <validCheckSum>8:5151bfbe5709d51675d5897de78adf3a</validCheckSum>
         <sqlFile splitStatements="false" relativeToChangelogFile="true"
           path="sql/views/annotation_text_position_selector_get.sql"/>
     </changeSet>
     <changeSet id="25" author="gtierney">
-        <preConditions onFail="MARK_RAN">
-            <changeSetExecuted id="1" author="gtierney" changeLogFile="database/liquibase-changelog.xml" />
-        </preConditions>
+        <validCheckSum>8:04577c21a2d8dc3abcdbf094d5f2c9e9</validCheckSum>
         <sqlFile splitStatements="false" relativeToChangelogFile="true"
           path="sql/views/annotation_text_quote_selector_get.sql"/>
     </changeSet>
     <changeSet id="26" author="gtierney">
-        <preConditions onFail="MARK_RAN">
-            <changeSetExecuted id="1" author="gtierney" changeLogFile="database/liquibase-changelog.xml" />
-        </preConditions>
+        <validCheckSum>8:89301c93a93cb64b1b7f57cfe9070a3b</validCheckSum>
         <sqlFile splitStatements="false" relativeToChangelogFile="true" path="sql/views/annotation_xpath_selector_get.sql"/>
     </changeSet>
     <changeSet id="27" author="gtierney">
-        <preConditions onFail="MARK_RAN">
-            <changeSetExecuted id="1" author="gtierney" changeLogFile="database/liquibase-changelog.xml" />
-        </preConditions>
+        <validCheckSum>8:ce9f88aadb56d198911ddfc454d014c2</validCheckSum>
         <sqlFile splitStatements="false" relativeToChangelogFile="true" path="sql/views/annotation_history_get.sql"/>
     </changeSet>
     <changeSet id="28" author="gtierney">
-        <preConditions onFail="MARK_RAN">
-            <changeSetExecuted id="1" author="gtierney" changeLogFile="database/liquibase-changelog.xml" />
-        </preConditions>
+        <validCheckSum>8:d993e707c439bbfc8b4a24c0e8c9b609</validCheckSum>
         <sqlFile splitStatements="false" relativeToChangelogFile="true" path="sql/views/annotation_generator_get.sql"/>
     </changeSet>
     <changeSet id="29" author="gtierney">
-        <preConditions onFail="MARK_RAN">
-            <changeSetExecuted id="1" author="gtierney" changeLogFile="database/liquibase-changelog.xml" />
-        </preConditions>
+        <validCheckSum>8:027934ddab1f05618b4b34daf6e9f54e</validCheckSum>
         <sqlFile splitStatements="false" relativeToChangelogFile="true" path="sql/views/annotation_temporal_get.sql"/>
     </changeSet>
     <changeSet id="30" author="gtierney">
-        <preConditions onFail="MARK_RAN">
-            <changeSetExecuted id="1" author="gtierney" changeLogFile="database/liquibase-changelog.xml" />
-        </preConditions>
+        <validCheckSum>8:e2a973f0522581cb1b3e1d3ae1f4061b</validCheckSum>
         <sqlFile splitStatements="false" relativeToChangelogFile="true" path="sql/functions/annotation_body_create.sql"/>
     </changeSet>
     <changeSet id="31" author="gtierney">
-        <preConditions onFail="MARK_RAN">
-            <changeSetExecuted id="1" author="gtierney" changeLogFile="database/liquibase-changelog.xml" />
-        </preConditions>
+        <validCheckSum>8:f9ce1af0258d8ef826dfbdb7cf5d83af</validCheckSum>
         <sqlFile splitStatements="false" relativeToChangelogFile="true" path="sql/functions/annotation_body_delete.sql"/>
     </changeSet>
     <changeSet id="32" author="gtierney">
-        <preConditions onFail="MARK_RAN">
-            <changeSetExecuted id="1" author="gtierney" changeLogFile="database/liquibase-changelog.xml" />
-        </preConditions>
+        <validCheckSum>8:fe39f740218aeffea1c562f8a05f7080</validCheckSum>
         <sqlFile splitStatements="false" relativeToChangelogFile="true"
           path="sql/functions/annotation_collection_create.sql"/>
     </changeSet>
     <changeSet id="33" author="gtierney">
-        <preConditions onFail="MARK_RAN">
-            <changeSetExecuted id="1" author="gtierney" changeLogFile="database/liquibase-changelog.xml" />
-        </preConditions>
+        <validCheckSum>8:dfcaaec95746f7f89ef7bba8da97b304</validCheckSum>
         <sqlFile splitStatements="false" relativeToChangelogFile="true" path="sql/functions/annotation_create.sql"/>
     </changeSet>
     <changeSet id="34" author="gtierney">
-        <preConditions onFail="MARK_RAN">
-            <changeSetExecuted id="1" author="gtierney" changeLogFile="database/liquibase-changelog.xml" />
-        </preConditions>
+        <validCheckSum>8:3a87a2627a7bee9bce1e873e44211fc7</validCheckSum>
         <sqlFile splitStatements="false" relativeToChangelogFile="true" path="sql/functions/annotation_creator_create.sql"/>
     </changeSet>
     <changeSet id="35" author="gtierney">
-        <preConditions onFail="MARK_RAN">
-            <changeSetExecuted id="1" author="gtierney" changeLogFile="database/liquibase-changelog.xml" />
-        </preConditions>
+        <validCheckSum>8:19699781d6cfcd98e71e8b310f096a7d</validCheckSum>
         <sqlFile splitStatements="false" relativeToChangelogFile="true" path="sql/functions/annotation_creator_delete.sql"/>
     </changeSet>
     <changeSet id="36" author="gtierney">
-        <preConditions onFail="MARK_RAN">
-            <changeSetExecuted id="1" author="gtierney" changeLogFile="database/liquibase-changelog.xml" />
-        </preConditions>
+        <validCheckSum>8:519e8cebdc806d02d1f9001606143c68</validCheckSum>
         <sqlFile splitStatements="false" relativeToChangelogFile="true"
           path="sql/functions/annotation_css_selector_create.sql"/>
     </changeSet>
     <changeSet id="37" author="gtierney">
-        <preConditions onFail="MARK_RAN">
-            <changeSetExecuted id="1" author="gtierney" changeLogFile="database/liquibase-changelog.xml" />
-        </preConditions>
+        <validCheckSum>8:731a903579a3812ff3fcf3db8b60fd6c</validCheckSum>
         <sqlFile splitStatements="false" relativeToChangelogFile="true"
           path="sql/functions/annotation_css_selector_delete.sql"/>
     </changeSet>
     <changeSet id="38" author="gtierney">
-        <preConditions onFail="MARK_RAN">
-            <changeSetExecuted id="1" author="gtierney" changeLogFile="database/liquibase-changelog.xml" />
-        </preConditions>
+        <validCheckSum>8:f8179a1597fc70ee7b106bfd047a0c3f</validCheckSum>
         <sqlFile splitStatements="false" relativeToChangelogFile="true"
           path="sql/functions/annotation_data_position_selector_create.sql"/>
     </changeSet>
     <changeSet id="39" author="gtierney">
-        <preConditions onFail="MARK_RAN">
-            <changeSetExecuted id="1" author="gtierney" changeLogFile="database/liquibase-changelog.xml" />
-        </preConditions>
+        <validCheckSum>8:6094546d42dba74198dd5717c0da3482</validCheckSum>
         <sqlFile splitStatements="false" relativeToChangelogFile="true"
           path="sql/functions/annotation_data_position_selector_delete.sql"/>
     </changeSet>
     <changeSet id="40" author="gtierney">
-        <preConditions onFail="MARK_RAN">
-            <changeSetExecuted id="1" author="gtierney" changeLogFile="database/liquibase-changelog.xml" />
-        </preConditions>
+        <validCheckSum>8:bf4bcb6c7429aaf868a2ff5a58b9feae</validCheckSum>
         <sqlFile splitStatements="false" relativeToChangelogFile="true" path="sql/functions/annotation_delete.sql"/>
     </changeSet>
     <changeSet id="41" author="gtierney">
-        <preConditions onFail="MARK_RAN">
-            <changeSetExecuted id="1" author="gtierney" changeLogFile="database/liquibase-changelog.xml" />
-        </preConditions>
+        <validCheckSum>8:c620fdb9d3e5cccaaddf2fda285f8bda</validCheckSum>
         <sqlFile splitStatements="false" relativeToChangelogFile="true"
           path="sql/functions/annotation_fragment_selector_create.sql"/>
     </changeSet>
     <changeSet id="42" author="gtierney">
-        <preConditions onFail="MARK_RAN">
-            <changeSetExecuted id="1" author="gtierney" changeLogFile="database/liquibase-changelog.xml" />
-        </preConditions>
+        <validCheckSum>8:583b2308727fc7e0206575c9be98d44a</validCheckSum>
         <sqlFile splitStatements="false" relativeToChangelogFile="true"
           path="sql/functions/annotation_fragment_selector_delete.sql"/>
     </changeSet>
     <changeSet id="43" author="gtierney">
-        <preConditions onFail="MARK_RAN">
-            <changeSetExecuted id="1" author="gtierney" changeLogFile="database/liquibase-changelog.xml" />
-        </preConditions>
+        <validCheckSum>8:52321e49a91b62942414ffda5cd1f40c</validCheckSum>
         <sqlFile splitStatements="false" relativeToChangelogFile="true" path="sql/functions/annotation_search_by_body.sql"/>
     </changeSet>
     <changeSet id="44" author="gtierney">
-        <preConditions onFail="MARK_RAN">
-            <changeSetExecuted id="1" author="gtierney" changeLogFile="database/liquibase-changelog.xml" />
-        </preConditions>
+        <validCheckSum>8:2a5b9a053a3aaf12371cf6f3e8fbcc6f</validCheckSum>
         <sqlFile splitStatements="false" relativeToChangelogFile="true"
           path="sql/functions/annotation_search_by_creator.sql"/>
     </changeSet>
     <changeSet id="45" author="gtierney">
-        <preConditions onFail="MARK_RAN">
-            <changeSetExecuted id="1" author="gtierney" changeLogFile="database/liquibase-changelog.xml" />
-        </preConditions>
+        <validCheckSum>8:69e0fa4f24a521301e9545f1b69a11ef</validCheckSum>
         <sqlFile splitStatements="false" relativeToChangelogFile="true"
           path="sql/functions/annotation_search_by_target.sql"/>
     </changeSet>
     <changeSet id="46" author="gtierney">
-        <preConditions onFail="MARK_RAN">
-            <changeSetExecuted id="1" author="gtierney" changeLogFile="database/liquibase-changelog.xml" />
-        </preConditions>
+        <validCheckSum>8:dc948675c0adbfc8be9835122fa6df38</validCheckSum>
         <sqlFile splitStatements="false" relativeToChangelogFile="true"
           path="sql/functions/annotation_svg_selector_create.sql"/>
     </changeSet>
     <changeSet id="47" author="gtierney">
-        <preConditions onFail="MARK_RAN">
-            <changeSetExecuted id="1" author="gtierney" changeLogFile="database/liquibase-changelog.xml" />
-        </preConditions>
+        <validCheckSum>8:b77dfd6aa9068d0d1d00414219f9e6a8</validCheckSum>
         <sqlFile splitStatements="false" relativeToChangelogFile="true"
           path="sql/functions/annotation_svg_selector_delete.sql"/>
     </changeSet>
     <changeSet id="48" author="gtierney">
-        <preConditions onFail="MARK_RAN">
-            <changeSetExecuted id="1" author="gtierney" changeLogFile="database/liquibase-changelog.xml" />
-        </preConditions>
+        <validCheckSum>8:a1f4079a65803025056acdf4df280dc3</validCheckSum>
         <sqlFile splitStatements="false" relativeToChangelogFile="true" path="sql/functions/annotation_target_create.sql"/>
     </changeSet>
     <changeSet id="49" author="gtierney">
-        <preConditions onFail="MARK_RAN">
-            <changeSetExecuted id="1" author="gtierney" changeLogFile="database/liquibase-changelog.xml" />
-        </preConditions>
+        <validCheckSum>8:bd176d3891d5ab8347a99932499bb65b</validCheckSum>
         <sqlFile splitStatements="false" relativeToChangelogFile="true" path="sql/functions/annotation_target_delete.sql"/>
     </changeSet>
     <changeSet id="50" author="gtierney">
-        <preConditions onFail="MARK_RAN">
-            <changeSetExecuted id="1" author="gtierney" changeLogFile="database/liquibase-changelog.xml" />
-        </preConditions>
+        <validCheckSum>8:8dfdd20e25f40aa0a4b2c4a2e71b021a</validCheckSum>
         <sqlFile splitStatements="false" relativeToChangelogFile="true"
           path="sql/functions/annotation_text_position_selector_create.sql"/>
     </changeSet>
     <changeSet id="51" author="gtierney">
-        <preConditions onFail="MARK_RAN">
-            <changeSetExecuted id="1" author="gtierney" changeLogFile="database/liquibase-changelog.xml" />
-        </preConditions>
+        <validCheckSum>8:01259336de9d56cb07e4340c23909198</validCheckSum>
         <sqlFile splitStatements="false" relativeToChangelogFile="true"
           path="sql/functions/annotation_text_position_selector_delete.sql"/>
     </changeSet>
     <changeSet id="52" author="gtierney">
-        <preConditions onFail="MARK_RAN">
-            <changeSetExecuted id="1" author="gtierney" changeLogFile="database/liquibase-changelog.xml" />
-        </preConditions>
+        <validCheckSum>8:2d3af21ec675b2d98877ae1eed2f5084</validCheckSum>
         <sqlFile splitStatements="false" relativeToChangelogFile="true"
           path="sql/functions/annotation_text_quote_selector_create.sql"/>
     </changeSet>
     <changeSet id="53" author="gtierney">
-        <preConditions onFail="MARK_RAN">
-            <changeSetExecuted id="1" author="gtierney" changeLogFile="database/liquibase-changelog.xml" />
-        </preConditions>
+        <validCheckSum>8:7b1e16359e4bf0160c8218bf29d54ac5</validCheckSum>
         <sqlFile splitStatements="false" relativeToChangelogFile="true"
           path="sql/functions/annotation_text_quote_selector_delete.sql"/>
     </changeSet>
     <changeSet id="54" author="gtierney">
-        <preConditions onFail="MARK_RAN">
-            <changeSetExecuted id="1" author="gtierney" changeLogFile="database/liquibase-changelog.xml" />
-        </preConditions>
+        <validCheckSum>8:0ab4d4d13f987bbe5781f90c0da0a7b1</validCheckSum>
         <sqlFile splitStatements="false" relativeToChangelogFile="true" path="sql/functions/annotation_update.sql"/>
     </changeSet>
     <changeSet id="55" author="gtierney">
-        <preConditions onFail="MARK_RAN">
-            <changeSetExecuted id="1" author="gtierney" changeLogFile="database/liquibase-changelog.xml" />
-        </preConditions>
+        <validCheckSum>8:579caa54061abfb661323e995651aefd</validCheckSum>
         <sqlFile splitStatements="false" relativeToChangelogFile="true"
           path="sql/functions/annotation_xpath_selector_create.sql"/>
     </changeSet>
     <changeSet id="56" author="gtierney">
-        <preConditions onFail="MARK_RAN">
-            <changeSetExecuted id="1" author="gtierney" changeLogFile="database/liquibase-changelog.xml" />
-        </preConditions>
+        <validCheckSum>8:a65e9e65ea8756777e16b7de632b6248</validCheckSum>
         <sqlFile splitStatements="false" relativeToChangelogFile="true"
           path="sql/functions/annotation_xpath_selector_delete.sql"/>
     </changeSet>
     <changeSet id="57" author="gtierney">
-        <preConditions onFail="MARK_RAN">
-            <changeSetExecuted id="1" author="gtierney" changeLogFile="database/liquibase-changelog.xml" />
-        </preConditions>
+        <validCheckSum>8:d5967c71da9c3bb3db96296b0cb8df45</validCheckSum>
         <sqlFile splitStatements="false" relativeToChangelogFile="true" path="sql/functions/annotation_history_create.sql"/>
     </changeSet>
     <changeSet id="58" author="gtierney">
-        <preConditions onFail="MARK_RAN">
-            <changeSetExecuted id="1" author="gtierney" changeLogFile="database/liquibase-changelog.xml" />
-        </preConditions>
+        <validCheckSum>8:ff846c205ce8d9d67b20199fb456f4f0</validCheckSum>
         <sqlFile splitStatements="false" relativeToChangelogFile="true" path="sql/functions/annotation_history_delete.sql"/>
     </changeSet>
     <changeSet id="59" author="gtierney">
-        <preConditions onFail="MARK_RAN">
-            <changeSetExecuted id="1" author="gtierney" changeLogFile="database/liquibase-changelog.xml" />
-        </preConditions>
+        <validCheckSum>8:67329f2e8969b21a93bba9055862f46b</validCheckSum>
         <sqlFile splitStatements="false" relativeToChangelogFile="true"
           path="sql/functions/annotation_generator_create.sql"/>
     </changeSet>
     <changeSet id="60" author="gtierney">
-        <preConditions onFail="MARK_RAN">
-            <changeSetExecuted id="1" author="gtierney" changeLogFile="database/liquibase-changelog.xml" />
-        </preConditions>
+        <validCheckSum>8:6e2e52e6c7ccf8443bb12a26a69171bf</validCheckSum>
         <sqlFile splitStatements="false" relativeToChangelogFile="true"
           path="sql/functions/annotation_generator_delete.sql"/>
     </changeSet>
     <changeSet id="61" author="gtierney">
-        <preConditions onFail="MARK_RAN">
-            <changeSetExecuted id="1" author="gtierney" changeLogFile="database/liquibase-changelog.xml" />
-        </preConditions>
+        <validCheckSum>8:29b43d1ce1dc59f895906c7d72e1a0e0</validCheckSum>
         <sqlFile splitStatements="false" relativeToChangelogFile="true"
           path="sql/functions/annotation_search_by_generator.sql"/>
     </changeSet>
     <changeSet id="62" author="gtierney">
-        <preConditions onFail="MARK_RAN">
-            <changeSetExecuted id="1" author="gtierney" changeLogFile="database/liquibase-changelog.xml" />
-        </preConditions>
+        <validCheckSum>8:9c951ad9a458191b09a52baee4358376</validCheckSum>
         <sqlFile splitStatements="false" relativeToChangelogFile="true"
           path="sql/functions/annotation_search_by_temporal.sql"/>
     </changeSet>
     <changeSet id="63" author="gtierney">
-        <preConditions onFail="MARK_RAN">
-            <changeSetExecuted id="1" author="gtierney" changeLogFile="database/liquibase-changelog.xml" />
-        </preConditions>
+        <validCheckSum>8:4c0b589877d5ceb1b42aff9bb607fd46</validCheckSum>
         <sqlFile splitStatements="false" relativeToChangelogFile="true"
           path="sql/functions/annotation_temporal_create.sql"/>
     </changeSet>
     <changeSet id="64" author="gtierney">
-        <preConditions onFail="MARK_RAN">
-            <changeSetExecuted id="1" author="gtierney" changeLogFile="database/liquibase-changelog.xml" />
-        </preConditions>
+        <validCheckSum>8:79852eb73838648e8b7a749478a6e04e</validCheckSum>
         <sqlFile splitStatements="false" relativeToChangelogFile="true"
           path="sql/functions/annotation_temporal_delete.sql"/>
     </changeSet>
     <changeSet id="65" author="gtierney">
-        <preConditions onFail="MARK_RAN">
-            <changeSetExecuted id="1" author="gtierney" changeLogFile="database/liquibase-changelog.xml" />
-        </preConditions>
+        <validCheckSum>8:52321e49a91b62942414ffda5cd1f40c</validCheckSum>
         <sqlFile splitStatements="false" relativeToChangelogFile="true" path="sql/functions/annotation_search_by_body.sql"/>
     </changeSet>
     <changeSet id="66" author="gtierney">
-        <preConditions onFail="MARK_RAN">
-            <changeSetExecuted id="1" author="gtierney" changeLogFile="database/liquibase-changelog.xml" />
-        </preConditions>
+        <validCheckSum>8:69e0fa4f24a521301e9545f1b69a11ef</validCheckSum>
         <sqlFile splitStatements="false" relativeToChangelogFile="true"
           path="sql/functions/annotation_search_by_target.sql"/>
     </changeSet>
-    <changeSet id="67" author="gtierney">
-        <preConditions onFail="MARK_RAN">
-            <changeSetExecuted id="1" author="gtierney" changeLogFile="database/liquibase-changelog.xml" />
-        </preConditions>
+    <changeSet id="67" author="gtierney" context="dlcs-permissions" runOnChange="true">
+        <validCheckSum>8:e6ef50783e3cae30197449fcc6eb8f74</validCheckSum>
         <sqlFile splitStatements="false" relativeToChangelogFile="true" path="sql/permissions/annotations_permissions.sql"/>
     </changeSet>
     <changeSet id="68" author="gtierney">
@@ -446,6 +321,7 @@
           path="sql/migrations/v001/02_add_annotation_get_security_fields.sql"/>
     </changeSet>
     <changeSet id="70" author="gtierney">
+        <validCheckSum>8:a66f2f512c16a24e7faa74b64109bba1</validCheckSum>
         <sqlFile splitStatements="false"
           relativeToChangelogFile="true"
           path="sql/migrations/v001/03_add_annotation_search_security_fields.sql"/>
@@ -461,38 +337,55 @@
           path="sql/migrations/v001/05_add_annotation_security_collection.sql"/>
     </changeSet>
     <changeSet id="73" author="hairmare">
+        <validCheckSum>8:1487376f2e7283d828230092f1cbb1ce</validCheckSum>
         <sqlFile splitStatements="false"
           relativeToChangelogFile="true"
           path="sql/migrations/v002/01_fix_annotation_delete.sql"/>
     </changeSet>
     <changeSet id="74" author="hairmare">
+        <validCheckSum>8:2c0c5aea3dea78f830f94422fc2cb9df</validCheckSum>
         <sqlFile splitStatements="false"
           relativeToChangelogFile="true"
           path="sql/migrations/v002/02_fix_annotation_search_by_creator.sql"/>
     </changeSet>
     <changeSet id="75" author="hairmare">
+        <validCheckSum>8:0632d822bb537de5d22c99393cfe9776</validCheckSum>
         <sqlFile splitStatements="false"
           relativeToChangelogFile="true"
           path="sql/migrations/v002/03_fix_annotation_search_by_generator.sql"/>
     </changeSet>
     <changeSet id="76" author="hairmare">
+        <validCheckSum>8:444383e424cc59c91a3286c910228e2f</validCheckSum>
         <sqlFile splitStatements="false"
           relativeToChangelogFile="true"
           path="sql/migrations/v002/04_fix_annotation_search_by_target.sql"/>
     </changeSet>
     <changeSet id="77" author="hairmare">
+        <validCheckSum>8:be3a1e3ff1f67c40d44b741cac0578ed</validCheckSum>
         <sqlFile splitStatements="false"
           relativeToChangelogFile="true"
           path="sql/migrations/v002/05_fix_annotation_search_by_temporal.sql"/>
     </changeSet>
     <changeSet id="78" author="hairmare">
+        <validCheckSum>8:c67855fec05e888d83645d274e3eda62</validCheckSum>
         <sqlFile splitStatements="false"
           relativeToChangelogFile="true"
           path="sql/migrations/v002/06_fix_annotation_search_by_body.sql"/>
     </changeSet>
     <changeSet id="79" author="hairmare">
+        <validCheckSum>8:dbe26215ce3a479bfe5992bc7f9fb25a</validCheckSum>
         <sqlFile splitStatements="false"
           relativeToChangelogFile="true"
           path="sql/migrations/v002/07_fix_annotation_update.sql"/>
+    </changeSet>
+    <changeSet id="permissions-2" author="gtierney" context="dlcs-permissions" runOnChange="true">
+        <sqlFile splitStatements="false"
+          relativeToChangelogFile="true"
+          path="sql/permissions/postgres_permissions.sql"/>
+    </changeSet>
+    <changeSet id="permissions-3" author="gtierney" context="dlcs-permissions" runOnChange="true">
+        <sqlFile splitStatements="false"
+          relativeToChangelogFile="true"
+          path="sql/permissions/public_permissions.sql"/>
     </changeSet>
 </databaseChangeLog>

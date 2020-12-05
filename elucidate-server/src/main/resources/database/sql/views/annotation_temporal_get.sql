@@ -23,7 +23,3 @@ CREATE OR REPLACE VIEW public.annotation_temporal_get AS
             LEFT JOIN annotation_target at ON at.id = atp.targetid
             LEFT JOIN annotation a ON a.id = atp.annotationid
             LEFT JOIN annotation_collection ac ON ac.id = a.collectionid;
-
-ALTER TABLE public.annotation_temporal_get OWNER TO postgres;
-GRANT ALL ON TABLE public.annotation_temporal_get TO postgres;
-GRANT ALL ON TABLE public.annotation_temporal_get TO annotations_role;

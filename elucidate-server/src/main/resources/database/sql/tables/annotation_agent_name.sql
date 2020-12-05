@@ -18,9 +18,6 @@ WITH (
   OIDS=FALSE
 );
 
-ALTER TABLE public.annotation_agent_name OWNER TO postgres;
-GRANT ALL ON TABLE public.annotation_agent_name TO postgres;
-GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE public.annotation_agent_name TO annotations_role;
 
 -- Index: public.idx_annotation_agent_name_annotationagentid
 

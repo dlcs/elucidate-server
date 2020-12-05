@@ -51,8 +51,3 @@ $BODY$
     END;
 $BODY$
 LANGUAGE plpgsql VOLATILE COST 100 ROWS 1000;
-
-ALTER FUNCTION public.annotation_history_create(integer, jsonb) OWNER TO postgres;
-GRANT EXECUTE ON FUNCTION public.annotation_history_create(integer, jsonb) TO postgres;
-GRANT EXECUTE ON FUNCTION public.annotation_history_create(integer, jsonb) TO annotations_role;
-REVOKE ALL ON FUNCTION public.annotation_history_create(integer, jsonb) FROM public;

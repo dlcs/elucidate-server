@@ -18,7 +18,3 @@ CREATE TABLE public.annotation_history
 WITH (
     OIDS = FALSE
 );
-
-ALTER TABLE public.annotation_history OWNER TO postgres;
-GRANT ALL ON TABLE public.annotation_history TO postgres;
-GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE public.annotation_history TO annotations_role;

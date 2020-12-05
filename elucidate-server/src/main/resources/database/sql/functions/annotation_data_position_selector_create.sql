@@ -64,8 +64,3 @@ $BODY$
     END;
 $BODY$
 LANGUAGE plpgsql VOLATILE COST 100 ROWS 1000;
-
-ALTER FUNCTION public.annotation_data_position_selector_create(integer, integer, character varying, integer, integer, jsonb) OWNER TO postgres;
-GRANT EXECUTE ON FUNCTION public.annotation_data_position_selector_create(integer, integer, character varying, integer, integer, jsonb) TO postgres;
-GRANT EXECUTE ON FUNCTION public.annotation_data_position_selector_create(integer, integer, character varying, integer, integer, jsonb) TO annotations_role;
-REVOKE ALL ON FUNCTION public.annotation_data_position_selector_create(integer, integer, character varying, integer, integer, jsonb) FROM public;

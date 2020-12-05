@@ -180,8 +180,3 @@ $BODY$
     END;
 $BODY$
 LANGUAGE plpgsql VOLATILE COST 100 ROWS 1000;
-
-ALTER FUNCTION public.annotation_generator_create(integer, integer, integer, character varying, jsonb, character varying[], jsonb[], text[], jsonb[], character varying, text[], jsonb[], text[], jsonb[], text[], jsonb[]) OWNER TO postgres;
-GRANT EXECUTE ON FUNCTION public.annotation_generator_create(integer, integer, integer, character varying, jsonb, character varying[], jsonb[], text[], jsonb[], character varying, text[], jsonb[], text[], jsonb[], text[], jsonb[]) TO postgres;
-GRANT EXECUTE ON FUNCTION public.annotation_generator_create(integer, integer, integer, character varying, jsonb, character varying[], jsonb[], text[], jsonb[], character varying, text[], jsonb[], text[], jsonb[], text[], jsonb[]) TO annotations_role;
-REVOKE ALL ON FUNCTION public.annotation_generator_create(integer, integer, integer, character varying, jsonb, character varying[], jsonb[], text[], jsonb[], character varying, text[], jsonb[], text[], jsonb[], text[], jsonb[]) FROM public;

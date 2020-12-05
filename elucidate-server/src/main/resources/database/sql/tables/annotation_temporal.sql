@@ -23,9 +23,6 @@ WITH (
   OIDS=FALSE
 );
 
-ALTER TABLE public.annotation_temporal OWNER TO postgres;
-GRANT ALL ON TABLE public.annotation_temporal TO postgres;
-GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE public.annotation_temporal TO annotations_role;
 
 -- Index: public.idx_annotation_temporal_annotationid
 

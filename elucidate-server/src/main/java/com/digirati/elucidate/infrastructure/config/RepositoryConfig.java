@@ -31,6 +31,7 @@ public class RepositoryConfig {
         SpringLiquibase liquibase = new SpringLiquibase();
         liquibase.setDataSource(dataSource());
         liquibase.setChangeLog("classpath:database/liquibase-changelog.xml");
+        liquibase.setContexts(environment.getRequiredProperty("liquibase.contexts", String.class));
 
         return liquibase;
     }

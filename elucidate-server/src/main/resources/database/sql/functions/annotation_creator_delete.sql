@@ -75,8 +75,3 @@ $BODY$
     END;
 $BODY$
 LANGUAGE plpgsql VOLATILE COST 100 ROWS 1000;
-
-ALTER FUNCTION public.annotation_creator_delete(integer, integer, integer) OWNER TO postgres;
-GRANT EXECUTE ON FUNCTION public.annotation_creator_delete(integer, integer, integer) TO postgres;
-GRANT EXECUTE ON FUNCTION public.annotation_creator_delete(integer, integer, integer) TO annotations_role;
-REVOKE ALL ON FUNCTION public.annotation_creator_delete(integer, integer, integer) FROM public;
