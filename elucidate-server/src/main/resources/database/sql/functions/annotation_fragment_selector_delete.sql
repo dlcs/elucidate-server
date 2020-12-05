@@ -56,8 +56,3 @@ $BODY$
     END;
 $BODY$
 LANGUAGE plpgsql VOLATILE COST 100 ROWS 1000;
-
-ALTER FUNCTION public.annotation_fragment_selector_delete(integer, integer) OWNER TO postgres;
-GRANT EXECUTE ON FUNCTION public.annotation_fragment_selector_delete(integer, integer) TO postgres;
-GRANT EXECUTE ON FUNCTION public.annotation_fragment_selector_delete(integer, integer) TO annotations_role;
-REVOKE ALL ON FUNCTION public.annotation_fragment_selector_delete(integer, integer) FROM public;

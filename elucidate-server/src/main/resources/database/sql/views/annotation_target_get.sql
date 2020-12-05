@@ -17,7 +17,3 @@ CREATE OR REPLACE VIEW public.annotation_target_get AS
         annotation_target at
             LEFT JOIN annotation a ON at.annotationid = a.id
             LEFT JOIN annotation_collection ac ON a.collectionid = ac.id;
-
-ALTER TABLE public.annotation_target_get OWNER TO postgres;
-GRANT ALL ON TABLE public.annotation_target_get TO postgres;
-GRANT ALL ON TABLE public.annotation_target_get TO annotations_role;
