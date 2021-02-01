@@ -38,7 +38,7 @@ $BODY$
                     LEFT JOIN annotation_agent AS agc ON agc.bodyid = ab.id
                     LEFT JOIN annotation_agent AS agg ON agg.bodyid = ab.id
                     LEFT JOIN annotation_owner ao ON ao.annotation_id = a.id
-                    LEFT JOIN annotation_group_memberships agm ON agm.annotaion_id = a.id
+                    LEFT JOIN annotation_group_memberships agm ON agm.annotation_id = a.id
             WHERE
                 (CASE _searchids
                     WHEN true THEN
