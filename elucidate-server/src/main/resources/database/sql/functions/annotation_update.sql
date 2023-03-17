@@ -54,8 +54,3 @@ $BODY$
     END;
 $BODY$
 LANGUAGE plpgsql VOLATILE COST 100 ROWS 1000;
-
-ALTER FUNCTION public.annotation_update(character varying, character varying, jsonb) OWNER TO postgres;
-GRANT EXECUTE ON FUNCTION public.annotation_update(character varying, character varying, jsonb) TO postgres;
-GRANT EXECUTE ON FUNCTION public.annotation_update(character varying, character varying, jsonb) TO annotations_role;
-REVOKE ALL ON FUNCTION public.annotation_update(character varying, character varying, jsonb) FROM public;

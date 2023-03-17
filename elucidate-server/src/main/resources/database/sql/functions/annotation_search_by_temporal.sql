@@ -121,8 +121,3 @@ $BODY$
 END;
 $BODY$
 LANGUAGE plpgsql VOLATILE COST 100 ROWS 1000;
-
-ALTER FUNCTION public.annotation_search_by_temporal(boolean, boolean, boolean, character varying[], timestamp without time zone) OWNER TO postgres;
-GRANT EXECUTE ON FUNCTION public.annotation_search_by_temporal(boolean, boolean, boolean, character varying[], timestamp without time zone) TO postgres;
-GRANT EXECUTE ON FUNCTION public.annotation_search_by_temporal(boolean, boolean, boolean, character varying[], timestamp without time zone) TO annotations_role;
-REVOKE ALL ON FUNCTION public.annotation_search_by_temporal(boolean, boolean, boolean, character varying[], timestamp without time zone) FROM public;

@@ -40,7 +40,3 @@ CREATE OR REPLACE VIEW public.annotation_creator_get AS
             LEFT JOIN annotation_collection ac ON ac.id = a.collectionid
     WHERE
         aa.relationshiptype = 'CREATOR';
-
-ALTER TABLE public.annotation_creator_get OWNER TO postgres;
-GRANT ALL ON TABLE public.annotation_creator_get TO postgres;
-GRANT ALL ON TABLE public.annotation_creator_get TO annotations_role;
